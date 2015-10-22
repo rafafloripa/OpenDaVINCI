@@ -404,9 +404,11 @@ namespace core {
             core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
+                    1, "TimeStamp.seconds", "seconds",
                     m_seconds);
 
             s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
+                    2, "TimeStamp.microseconds", "microseconds",
                     m_microseconds);
 
             return out;
@@ -418,10 +420,12 @@ namespace core {
             core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('s', 'e', 'c') >::RESULT,
-                   m_seconds);
+                    1, "TimeStamp.seconds", "seconds",
+                    m_seconds);
 
             d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('m', 'i', 'c') >::RESULT,
-                   m_microseconds);
+                    2, "TimeStamp.microseconds", "microseconds",
+                    m_microseconds);
 
             return in;
         }

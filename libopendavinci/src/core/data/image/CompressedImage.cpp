@@ -135,22 +135,28 @@ namespace core {
                 core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                        getName());
+                         1, "CompressedImage.name", "name",
+                         getName());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
-                        getWidth());
+                         2, "CompressedImage.width", "width",
+                         getWidth());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                        getHeight());
+                         3, "CompressedImage.height", "height",
+                         getHeight());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
-                        getBytesPerPixel());
+                         4, "CompressedImage.bytesPerPixel", "bytesPerPixel",
+                         getBytesPerPixel());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 's', 'i', 'z', 'e') >::RESULT,
-                        getCompressedSize());
+                         5, "CompressedImage.compressedSize", "compressedSize",
+                         getCompressedSize());
 
                 s->write(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                        m_imageData, m_compressedSize);
+                         6, "CompressedImage.data", "data",
+                         m_imageData, m_compressedSize);
 
                 return out;
             }
@@ -161,25 +167,31 @@ namespace core {
                 core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
-                       m_name);
+                        1, "CompressedImage.name", "name",
+                        m_name);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
-                       m_width);
+                        2, "CompressedImage.width", "width",
+                        m_width);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
-                       m_height);
+                        3, "CompressedImage.height", "height",
+                        m_height);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
-                       m_bytesPerPixel);
+                        4, "CompressedImage.bytesPerPixel", "bytesPerPixel",
+                        m_bytesPerPixel);
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('c', 's', 'i', 'z', 'e') >::RESULT,
-                       m_compressedSize);
+                        5, "CompressedImage.compressedSize", "compressedSize",
+                        m_compressedSize);
 
                 OPENDAVINCI_CORE_DELETE_ARRAY(m_imageData);
                 m_imageData = new uint8_t[m_compressedSize];
 
                 d->read(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
-                       m_imageData, m_compressedSize);
+                        6, "CompressedImage.data", "data",
+                        m_imageData, m_compressedSize);
 
                 return in;
             }
