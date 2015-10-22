@@ -37,14 +37,22 @@ namespace core {
             deserializeDataFrom(in);
         }
 
-        uint8_t QueryableNetstringsDeserializerABCF::decodeVarInt(istream &in, int64_t &value) {
+        uint64_t QueryableNetstringsDeserializerABCF::getID(const uint64_t &v) const {
+            return (v >> 3);
+        }
+
+        ProtoSerializerVisitor::PROTOBUF_TYPE QueryableNetstringsDeserializerABCF::getType(const uint64_t &v) const {
+            return static_cast<ProtoSerializerVisitor::PROTOBUF_TYPE>(v & 0x7);
+        }
+
+        uint8_t QueryableNetstringsDeserializerABCF::decodeVarInt(istream &in, int64_t &value) const {
             uint64_t uvalue = 0;
             uint8_t size = decodeVarUInt(in, uvalue);
             value = static_cast<int64_t>( uvalue & 1 ? ~(uvalue >> 1) : (uvalue >> 1) );
             return size;
         }
 
-        uint8_t QueryableNetstringsDeserializerABCF::decodeVarUInt(istream &in, uint64_t &value) {
+        uint8_t QueryableNetstringsDeserializerABCF::decodeVarUInt(istream &in, uint64_t &value) const {
             value = 0;
             uint8_t size = 0;
             while (in.good()) {
@@ -103,30 +111,45 @@ namespace core {
             char c = 0;
             uint64_t tokenIdentifier = 0;
             uint64_t lengthOfPayload = 0;
+            uint64_t IDandType = 0;
+            ProtoSerializerVisitor::PROTOBUF_TYPE tokenType = ProtoSerializerVisitor::VARINT;
 
             // Buffer to store payload "en bloc"; length is identical to UDP payload.
             const uint32_t MAX_SIZE_PAYLOAD = 65535;
             char buffer[MAX_SIZE_PAYLOAD];
 
             while (in.good() && (length > 0)) {
-                // Start of next token by reading ID.
-                length -= decodeVarUInt(in, tokenIdentifier);
+                // Read ID and type.
+                length -= decodeVarUInt(in, IDandType);
 
-                // Read length of payload and adjust loop.
-                lengthOfPayload = 0;
-                length -= decodeVarUInt(in, lengthOfPayload);
+                // Extract ID for next token.
+                tokenIdentifier = getID(IDandType);
+                tokenType = getType(IDandType);
 
-                // Create new (tokenIdentifier, m_buffer) hashmap entry.
-                m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
+                // Only if the payload is not of type boolean we need to store
+                // bytes for later decoding.
+                if ( (tokenType != ProtoSerializerVisitor::BOOLEAN_FALSE) &&
+                     (tokenType != ProtoSerializerVisitor::BOOLEAN_TRUE) ) {
+                    // Read length of payload and adjust loop.
+                    lengthOfPayload = 0;
+                    length -= decodeVarUInt(in, lengthOfPayload);
 
-                // Decode payload.
-                if (lengthOfPayload > 0) {
-                    // Read data "en bloc".
-                    in.read(buffer, lengthOfPayload);
-                    m_buffer.write(buffer, lengthOfPayload);
+                    // Create new (tokenIdentifier, m_buffer) hashmap entry.
+                    m_values.insert(make_pair(tokenIdentifier, m_buffer.tellp()));
 
-                    // Update amount of processed data.
-                    length -= lengthOfPayload;
+                    // Decode payload.
+                    if (lengthOfPayload > 0) {
+                        // Read data "en bloc".
+                        in.read(buffer, lengthOfPayload);
+                        m_buffer.write(buffer, lengthOfPayload);
+
+                        // Update amount of processed data.
+                        length -= lengthOfPayload;
+                    }
+                }
+                else {
+                    // Otherwise, we simply store the encoded value extracted from the type.
+                    m_values.insert(make_pair(tokenIdentifier, (tokenType == ProtoSerializerVisitor::BOOLEAN_TRUE ? 1 : 0) ));
                 }
             }
 
@@ -212,10 +235,8 @@ namespace core {
             map<uint32_t, streampos>::iterator it = m_values.find( (oneByteID > 0 ? oneByteID : fourByteID) );
 
             if (it != m_values.end()) {
-                m_buffer.seekg(it->second);
-                uint64_t tmp = 0;
-                decodeVarUInt(m_buffer, tmp);
-                v = static_cast<bool>(tmp);
+                // Boolean types are directly stored in the type information to save further space.
+                v = static_cast<bool>(it->second);
             }
         }
 

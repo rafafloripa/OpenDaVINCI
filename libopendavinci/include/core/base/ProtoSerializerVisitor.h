@@ -42,6 +42,8 @@ namespace core {
                                      EIGHT_BYTES      = 1, 
                                      LENGTH_DELIMITED = 2, 
                                      FOUR_BYTES       = 5, 
+                                     BOOLEAN_FALSE    = 6,
+                                     BOOLEAN_TRUE     = 7,
                                      OTHER            = 255 };
 
             private:

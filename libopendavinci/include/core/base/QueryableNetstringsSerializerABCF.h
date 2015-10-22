@@ -23,6 +23,7 @@
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
+#include "core/base/ProtoSerializerVisitor.h"
 #include "core/base/Serializer.h"
 
 namespace core {
@@ -119,6 +120,16 @@ namespace core {
                  * @return size Number of bytes written.
                  */
                 uint8_t encodeVarInt(ostream &out, int64_t value);
+
+                /**
+                 * This method encodes the ID (shifted by 3 to make space for the type)
+                 * and the type of the value following Protobuf's format using varint encoding.
+                 *
+                 * @param ID Identifier.
+                 * @param type Proto type.
+                 * @return varint-encoded ID/type combination.
+                 */
+                uint64_t encodeIDandType(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &type);
 
             private:
                 stringstream m_buffer;

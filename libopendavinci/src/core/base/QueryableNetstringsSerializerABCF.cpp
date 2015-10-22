@@ -30,6 +30,10 @@ namespace core {
 
         QueryableNetstringsSerializerABCF::~QueryableNetstringsSerializerABCF() {}
 
+        uint64_t QueryableNetstringsSerializerABCF::encodeIDandType(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &type) {
+            return ((id << 3) | static_cast<uint8_t>(type));
+        }
+
         uint8_t QueryableNetstringsSerializerABCF::encodeVarInt(ostream &out, int64_t value) {
             uint64_t uvalue = static_cast<uint64_t>( value < 0 ? ~(value << 1) : (value << 1) );
             return encodeVarUInt(out, uvalue);
@@ -136,7 +140,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const Serializable &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::LENGTH_DELIMITED ));
 
             stringstream buffer;
             buffer << v;
@@ -149,21 +153,16 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const bool &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
-
-            // Get the varint-encoded length of the value and save the varint-encoded payload.
-            stringstream tmp;
-            uint32_t size = encodeVarUInt(tmp, v);
-
-            // Write the length of the payload.
-            encodeVarUInt(m_buffer, size);
-
-            // Write the payload.
-            m_buffer << tmp.str();
+            if (v) {
+                encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::BOOLEAN_TRUE ));
+            }
+            else {
+                encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::BOOLEAN_FALSE ));
+            }
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const char &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -177,7 +176,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const unsigned char &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -191,7 +190,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int8_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -205,7 +204,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int16_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -219,7 +218,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint16_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -233,7 +232,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int32_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -247,7 +246,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint32_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -261,7 +260,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const int64_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -275,7 +274,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const uint64_t &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::VARINT ));
 
             // Get the varint-encoded length of the value and save the varint-encoded payload.
             stringstream tmp;
@@ -289,7 +288,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const float &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::FOUR_BYTES ));
             encodeVarUInt(m_buffer, sizeof(float));
 
             float _f = v;
@@ -298,7 +297,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const double &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::EIGHT_BYTES ));
             encodeVarUInt(m_buffer, sizeof(double));
 
             double _d = v;
@@ -307,7 +306,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const string &v) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::LENGTH_DELIMITED ));
 
             // Length of the raw string.
             const uint32_t stringLength = v.length();
@@ -330,7 +329,7 @@ namespace core {
         }
 
         void QueryableNetstringsSerializerABCF::write(const uint32_t &fourByteID, const uint8_t &oneByteID, const string &/*longName*/, const string &/*shortName*/, const void *data, const uint32_t &size) {
-            encodeVarUInt(m_buffer, (oneByteID > 0 ? oneByteID : fourByteID));
+            encodeVarUInt(m_buffer, encodeIDandType( (oneByteID > 0 ? oneByteID : fourByteID), ProtoSerializerVisitor::LENGTH_DELIMITED ));
             encodeVarUInt(m_buffer, size);
 
             m_buffer.write(reinterpret_cast<const char*>(data), size);

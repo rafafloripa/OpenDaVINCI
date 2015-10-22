@@ -24,6 +24,7 @@
 #include "core/platform.h"
 
 #include "core/base/Deserializer.h"
+#include "core/base/ProtoSerializerVisitor.h"
 
 namespace core {
     namespace base {
@@ -123,7 +124,7 @@ namespace core {
                  * @param value Destination variable to be written into.
                  * @return size Number of bytes read.
                  */
-                uint8_t decodeVarUInt(istream& in, uint64_t &value);
+                uint8_t decodeVarUInt(istream& in, uint64_t &value) const;
 
                 /**
                  * This method decodes a signed value from a given varint encoding.
@@ -132,7 +133,23 @@ namespace core {
                  * @param value Destination variable to be written into.
                  * @return size Number of bytes read.
                  */
-                uint8_t decodeVarInt(istream& in, int64_t &value);
+                uint8_t decodeVarInt(istream& in, int64_t &value) const;
+
+                /**
+                 * This method returns the ID extracted from the Protobuf's key/type pair.
+                 *
+                 * @param v value from which the ID shall be extracted.
+                 * @return ID.
+                 */
+                uint64_t getID(const uint64_t &v) const;
+
+                /**
+                 * This method returns the ID extracted from the Protobuf's key/type pair.
+                 *
+                 * @param v value from which the ID shall be extracted.
+                 * @return ID.
+                 */
+                ProtoSerializerVisitor::PROTOBUF_TYPE getType(const uint64_t &v) const;
 
             private:
                 stringstream m_buffer;
