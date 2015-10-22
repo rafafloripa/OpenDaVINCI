@@ -84,6 +84,32 @@ namespace core {
             m_received = receivedTimeStamp;
         }
 
+        void Container::accept(core::base::Visitor &v) {
+            // Containers can only be visited in read only mode.
+            uint32_t dataType = getDataType();
+            stringstream sstrRawData;
+            sstrRawData << "Data of length " << m_serializedData.str().size() << " bytes.";
+            string rawData = sstrRawData.str();
+            TimeStamp sent = m_sent;
+            TimeStamp received = m_received;
+
+            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL2('i', 'd') >::RESULT,
+                    1, "Container.id", "id",
+                    dataType);
+
+            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('d', 'a', 't', 'a') >::RESULT,
+                    2, "Container.data", "data",
+                    rawData);
+
+            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('s', 'e', 'n', 't') >::RESULT,
+                    3, "Container.sent", "sent",
+                    sent);
+
+            v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('r', 'e', 'c', 'v', 'd') >::RESULT,
+                    4, "Container.received", "received",
+                    received);
+        }
+
         ostream& Container::operator<<(ostream &out) const {
             SerializationFactory& sf=SerializationFactory::getInstance();;
 

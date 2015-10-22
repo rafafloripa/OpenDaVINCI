@@ -23,6 +23,7 @@
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
+#include "core/base/Visitable.h"
 #include "core/data/SerializableData.h"
 
 namespace core {
@@ -33,7 +34,7 @@ namespace core {
         /**
          * This class can be used for time computations.
          */
-        class OPENDAVINCI_API TimeStamp : public SerializableData {
+        class OPENDAVINCI_API TimeStamp : public SerializableData, public core::base::Visitable {
             private:
                 enum CUMULATIVE_DAYS {
                     January = 31,   // 31
@@ -199,6 +200,8 @@ namespace core {
                 virtual istream& operator>>(istream &in);
 
                 virtual const string toString() const;
+
+                virtual void accept(core::base::Visitor &v);
 
             private:
                 int32_t m_seconds;

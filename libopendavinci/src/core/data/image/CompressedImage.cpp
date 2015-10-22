@@ -129,6 +129,29 @@ namespace core {
                 return m_imageData;
             }
 
+            void CompressedImage::accept(core::base::Visitor &v) {
+                string name = m_name;
+                uint32_t width = m_width;
+                uint32_t height = m_height;
+                uint32_t bytesPerPixel = m_bytesPerPixel;
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL4('n', 'a', 'm', 'e') >::RESULT,
+                        1, "CompressedImage.name", "name",
+                        name);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL5('w', 'i', 'd', 't', 'h') >::RESULT,
+                        2, "CompressedImage.width", "width",
+                        width);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL6('h', 'e', 'i', 'g', 'h', 't') >::RESULT,
+                        3, "CompressedImage.height", "height",
+                        height);
+
+                v.visit(CRC32 < OPENDAVINCI_CORE_STRINGLITERAL3('b', 'p', 'p') >::RESULT,
+                        4, "CompressedImage.bytesPerPixel", "bytesPerPixel",
+                        bytesPerPixel);
+            }
+
             ostream& CompressedImage::operator<<(ostream &out) const {
                 SerializationFactory& sf=SerializationFactory::getInstance();;
 

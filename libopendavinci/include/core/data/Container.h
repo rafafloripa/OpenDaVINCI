@@ -23,6 +23,7 @@
 // core/platform.h must be included to setup platform-dependent header files and configurations.
 #include "core/platform.h"
 
+#include "core/base/Visitable.h"
 #include "core/base/Serializable.h"
 #include "core/data/SerializableData.h"
 #include "core/data/TimeStamp.h"
@@ -35,7 +36,7 @@ namespace core {
         /**
          * Container for all interchangeable data.
          */
-        class OPENDAVINCI_API Container : public core::base::Serializable {
+        class OPENDAVINCI_API Container : public core::base::Serializable, public core::base::Visitable {
             public:
                 enum DATATYPE {
                     UNDEFINEDDATA                =  1,
@@ -185,6 +186,8 @@ namespace core {
                  * @return The data type.
                  */
                 const string toString() const;
+
+                virtual void accept(core::base::Visitor &v);
 
             private:
                 DATATYPE m_dataType;

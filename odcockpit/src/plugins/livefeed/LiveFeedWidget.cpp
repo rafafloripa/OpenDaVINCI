@@ -27,6 +27,7 @@
 
 #include "hesperia/data/environment/Position.h"
 #include "core/data/TimeStamp.h"
+#include "core/data/image/CompressedImage.h"
 #include "core/reflection/MessageFromVisitableVisitor.h"
 #include "core/reflection/MessagePrettyPrinterVisitor.h"
 
@@ -114,7 +115,28 @@ namespace cockpit {
             }
 
             void LiveFeedWidget::transformContainerToTree(Container &container) {
+                // Containers are visitable.
+                if (dynamic_cast<Visitable*>(&container) != NULL) {
+                    addMessageToTree("Container", container, c);
+                }
+
                 switch (container.getDataType()) {
+                    case Container::TIMESTAMP:
+                    {
+                        core::data::TimeStamp tmp = container.getData<core::data::TimeStamp>();
+                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                            addMessageToTree(tmp.LongName(), container, tmp);
+                        }
+                        break;
+                    }
+                    case Container::COMPRESSED_IMAGE:
+                    {
+                        core::data::image::CompressedImage tmp = container.getData<core::data::image::CompressedImage>();
+                        if (dynamic_cast<Visitable*>(&tmp) != NULL) {
+                            addMessageToTree(tmp.LongName(), container, tmp);
+                        }
+                        break;
+                    }
                     case Container::CONFIGURATION:
                     {
                         coredata::Configuration tmp = container.getData<coredata::Configuration>();

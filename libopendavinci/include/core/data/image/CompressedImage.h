@@ -25,6 +25,7 @@
 // native.h must be included as first header file for definition of _WIN32_WINNT.
 #include "core/native.h"
 
+#include "core/base/Visitable.h"
 #include "core/data/SerializableData.h"
 
 namespace core {
@@ -37,7 +38,7 @@ namespace core {
              * This class provides information about a compressed image using
              * JPEG encoding based on IJG.
              */
-            class OPENDAVINCI_API CompressedImage : public core::data::SerializableData {
+            class OPENDAVINCI_API CompressedImage : public core::data::SerializableData, public core::base::Visitable {
                 public:
                     CompressedImage();
 
@@ -152,6 +153,8 @@ namespace core {
                     virtual istream& operator>>(istream &in);
 
                     virtual const string toString() const;
+
+                    virtual void accept(core::base::Visitor &v);
 
                 private:
                     string m_name;
