@@ -363,7 +363,7 @@
 
 		// Write number of elements in m_listOfMyBoolList.
 		const uint32_t numberOfMyBoolList = static_cast<uint32_t>(m_listOfMyBoolList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
 		        numberOfMyBoolList);
 		
 		// Write actual elements into a stringstream.
@@ -379,7 +379,7 @@
 		}
 		// Write number of elements in m_listOfMyCharList.
 		const uint32_t numberOfMyCharList = static_cast<uint32_t>(m_listOfMyCharList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
 		        numberOfMyCharList);
 		
 		// Write actual elements into a stringstream.
@@ -395,7 +395,7 @@
 		}
 		// Write number of elements in m_listOfMyInt32List.
 		const uint32_t numberOfMyInt32List = static_cast<uint32_t>(m_listOfMyInt32List.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
 		        numberOfMyInt32List);
 		
 		// Write actual elements into a stringstream.
@@ -411,7 +411,7 @@
 		}
 		// Write number of elements in m_listOfMyUint32List.
 		const uint32_t numberOfMyUint32List = static_cast<uint32_t>(m_listOfMyUint32List.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		        numberOfMyUint32List);
 		
 		// Write actual elements into a stringstream.
@@ -427,7 +427,7 @@
 		}
 		// Write number of elements in m_listOfMyFloatList.
 		const uint32_t numberOfMyFloatList = static_cast<uint32_t>(m_listOfMyFloatList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
 		        numberOfMyFloatList);
 		
 		// Write actual elements into a stringstream.
@@ -443,7 +443,7 @@
 		}
 		// Write number of elements in m_listOfMyDoubleList.
 		const uint32_t numberOfMyDoubleList = static_cast<uint32_t>(m_listOfMyDoubleList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		        numberOfMyDoubleList);
 		
 		// Write actual elements into a stringstream.
@@ -459,7 +459,7 @@
 		}
 		// Write number of elements in m_listOfMyStringList.
 		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		        numberOfMyStringList);
 		
 		// Write actual elements into a stringstream.
@@ -487,7 +487,7 @@
 		
 		// Read number of elements in m_listOfMyBoolList.
 		uint32_t numberOfMyBoolList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
 		       numberOfMyBoolList);
 		
 		if (numberOfMyBoolList > 0) {
@@ -510,7 +510,7 @@
 		
 		// Read number of elements in m_listOfMyCharList.
 		uint32_t numberOfMyCharList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
 		       numberOfMyCharList);
 		
 		if (numberOfMyCharList > 0) {
@@ -533,7 +533,7 @@
 		
 		// Read number of elements in m_listOfMyInt32List.
 		uint32_t numberOfMyInt32List = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
 		       numberOfMyInt32List);
 		
 		if (numberOfMyInt32List > 0) {
@@ -556,7 +556,7 @@
 		
 		// Read number of elements in m_listOfMyUint32List.
 		uint32_t numberOfMyUint32List = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		       numberOfMyUint32List);
 		
 		if (numberOfMyUint32List > 0) {
@@ -579,7 +579,7 @@
 		
 		// Read number of elements in m_listOfMyFloatList.
 		uint32_t numberOfMyFloatList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
 		       numberOfMyFloatList);
 		
 		if (numberOfMyFloatList > 0) {
@@ -602,7 +602,7 @@
 		
 		// Read number of elements in m_listOfMyDoubleList.
 		uint32_t numberOfMyDoubleList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		       numberOfMyDoubleList);
 		
 		if (numberOfMyDoubleList > 0) {
@@ -625,7 +625,7 @@
 		
 		// Read number of elements in m_listOfMyStringList.
 		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		       numberOfMyStringList);
 		
 		if (numberOfMyStringList > 0) {

@@ -246,7 +246,7 @@
 
 		// Write number of elements in m_listOfMyStringList.
 		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		        numberOfMyStringList);
 		
 		// Write actual elements into a stringstream.
@@ -262,7 +262,7 @@
 		}
 		// Write number of elements in m_listOfMyPointList.
 		const uint32_t numberOfMyPointList = static_cast<uint32_t>(m_listOfMyPointList.size());
-		s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
+		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
 		        numberOfMyPointList);
 		
 		// Write actual elements into a stringstream.
@@ -279,7 +279,7 @@
 		{
 			// Write number of elements in m_mapOfMyIntStringMap.
 			const uint32_t numberOfMyIntStringMap = static_cast<uint32_t>(m_mapOfMyIntStringMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
+			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
 			        numberOfMyIntStringMap);
 		
 			// Write actual elements into a stringstream.
@@ -299,7 +299,7 @@
 		{
 			// Write number of elements in m_mapOfMyIntPointMap.
 			const uint32_t numberOfMyIntPointMap = static_cast<uint32_t>(m_mapOfMyIntPointMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > >  >::RESULT,
+			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
 			        numberOfMyIntPointMap);
 		
 			// Write actual elements into a stringstream.
@@ -330,7 +330,7 @@
 		
 		// Read number of elements in m_listOfMyStringList.
 		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 		       numberOfMyStringList);
 		
 		if (numberOfMyStringList > 0) {
@@ -353,7 +353,7 @@
 		
 		// Read number of elements in m_listOfMyPointList.
 		uint32_t numberOfMyPointList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
 		       numberOfMyPointList);
 		
 		if (numberOfMyPointList > 0) {
@@ -376,7 +376,7 @@
 		
 		// Read number of elements in m_mapOfMyIntStringMap.
 		uint32_t numberOfMyIntStringMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
 			   numberOfMyIntStringMap);
 		
 		if (numberOfMyIntStringMap > 0) {
@@ -427,7 +427,7 @@
 		
 		// Read number of elements in m_mapOfMyIntPointMap.
 		uint32_t numberOfMyIntPointMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > > > > > >  >::RESULT,
+		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
 			   numberOfMyIntPointMap);
 		
 		if (numberOfMyIntPointMap > 0) {

@@ -229,7 +229,7 @@ namespace testpackage {
 					m_attribute7);
 			// Write number of elements in m_listOfMyStringList.
 			const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-			s->write(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 			        numberOfMyStringList);
 			
 			// Write actual elements into a stringstream.
@@ -271,7 +271,7 @@ namespace testpackage {
 			
 			// Read number of elements in m_listOfMyStringList.
 			uint32_t numberOfMyStringList = 0;
-			d->read(CRC32 < CharList<'n', CharList<'u', CharList<'m', CharList<'b', CharList<'e', CharList<'r', CharList<'O', CharList<'f', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
 			       numberOfMyStringList);
 			
 			if (numberOfMyStringList > 0) {
