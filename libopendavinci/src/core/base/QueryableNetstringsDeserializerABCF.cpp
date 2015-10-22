@@ -38,11 +38,15 @@ namespace core {
         }
 
         uint64_t QueryableNetstringsDeserializerABCF::getID(const uint64_t &v) const {
-            return (v >> 3);
+            uint64_t retVal = v;
+            retVal = (retVal >> 3);
+            return retVal;
         }
 
         ProtoSerializerVisitor::PROTOBUF_TYPE QueryableNetstringsDeserializerABCF::getType(const uint64_t &v) const {
-            return static_cast<ProtoSerializerVisitor::PROTOBUF_TYPE>(v & 0x7);
+            uint64_t retVal = v;
+            retVal = static_cast<unsigned int>(retVal & 0x7);
+            return static_cast<ProtoSerializerVisitor::PROTOBUF_TYPE>(retVal);
         }
 
         uint8_t QueryableNetstringsDeserializerABCF::decodeVarInt(istream &in, int64_t &value) const {
@@ -62,7 +66,6 @@ namespace core {
             }
             // Decode as little endian like in Protobuf's case.
             value = le64toh(value);
-
             return size;
         }
 

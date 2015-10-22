@@ -31,7 +31,9 @@ namespace core {
         QueryableNetstringsSerializerABCF::~QueryableNetstringsSerializerABCF() {}
 
         uint64_t QueryableNetstringsSerializerABCF::encodeIDandType(const uint32_t &id, const ProtoSerializerVisitor::PROTOBUF_TYPE &type) {
-            return ((id << 3) | static_cast<uint8_t>(type));
+            uint64_t v = id;
+            v = static_cast<uint64_t>(v<<3) | static_cast<uint64_t>(type);
+            return v;
         }
 
         uint8_t QueryableNetstringsSerializerABCF::encodeVarInt(ostream &out, int64_t value) {
