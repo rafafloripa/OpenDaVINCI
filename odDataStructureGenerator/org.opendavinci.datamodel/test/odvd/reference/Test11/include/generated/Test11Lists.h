@@ -51,368 +51,368 @@ class Test11Lists : public core::data::SerializableData, public core::base::Visi
 
 	public:
 		/**
-		 * @return myBoolList.
+		 * @return list1.
 		 */
-		std::vector<bool> getListOfMyBoolList() const;
+		std::vector<bool> getListOfList1() const;
 	
 		/**
-		 * This method sets myBoolList.
+		 * This method sets list1.
 		 *
-		 * @param val Value for myBoolList.
+		 * @param val Value for list1.
 		 */
-		void setListOfMyBoolList(const std::vector<bool> &val);
+		void setListOfList1(const std::vector<bool> &val);
 	
 		/**
-		 * This method clears the list of myBoolList.
+		 * This method clears the list of list1.
 		 */
-		void clear_ListOfMyBoolList();
+		void clear_ListOfList1();
 	
 		/**
-		 * @return the size of the list of myBoolList.
+		 * @return the size of the list of list1.
 		 */
-		uint32_t getSize_ListOfMyBoolList() const;
+		uint32_t getSize_ListOfList1() const;
 	
 		/**
-		 * @return true if the list of myBoolList is empty.
+		 * @return true if the list of list1 is empty.
 		 */
-		bool isEmpty_ListOfMyBoolList() const;
+		bool isEmpty_ListOfList1() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myBoolList.
+		 * This method adds an element to the end of the list of list1.
 		 *
-		 * @param val Value to be added to the end of the list of myBoolList.
+		 * @param val Value to be added to the end of the list of list1.
 		 */
-		void addTo_ListOfMyBoolList(const bool &val);
+		void addTo_ListOfList1(const bool &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myBoolList.
+		 * This method adds an element to the beginning of the list of list1.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myBoolList.
+		 * @param val Value to be inserted to the beginning of the list of list1.
 		 */
-		void insertTo_ListOfMyBoolList(const bool &val);
+		void insertTo_ListOfList1(const bool &val);
 	
 		/**
-		 * @return true if the list of myBoolList contains the element val.
+		 * @return true if the list of list1 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyBoolList(const bool &val) const;
+		bool contains_ListOfList1(const bool &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myBoolList.
+		 * @return Pair of iterators for the begin and end of the list of list1.
 		 */
-		std::pair<std::vector<bool>::iterator, std::vector<bool>::iterator> iteratorPair_ListOfMyBoolList();
+		std::pair<std::vector<bool>::iterator, std::vector<bool>::iterator> iteratorPair_ListOfList1();
 	public:
 		/**
-		 * @return myCharList.
+		 * @return list2.
 		 */
-		std::vector<char> getListOfMyCharList() const;
+		std::vector<char> getListOfList2() const;
 	
 		/**
-		 * This method sets myCharList.
+		 * This method sets list2.
 		 *
-		 * @param val Value for myCharList.
+		 * @param val Value for list2.
 		 */
-		void setListOfMyCharList(const std::vector<char> &val);
+		void setListOfList2(const std::vector<char> &val);
 	
 		/**
-		 * This method clears the list of myCharList.
+		 * This method clears the list of list2.
 		 */
-		void clear_ListOfMyCharList();
+		void clear_ListOfList2();
 	
 		/**
-		 * @return the size of the list of myCharList.
+		 * @return the size of the list of list2.
 		 */
-		uint32_t getSize_ListOfMyCharList() const;
+		uint32_t getSize_ListOfList2() const;
 	
 		/**
-		 * @return true if the list of myCharList is empty.
+		 * @return true if the list of list2 is empty.
 		 */
-		bool isEmpty_ListOfMyCharList() const;
+		bool isEmpty_ListOfList2() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myCharList.
+		 * This method adds an element to the end of the list of list2.
 		 *
-		 * @param val Value to be added to the end of the list of myCharList.
+		 * @param val Value to be added to the end of the list of list2.
 		 */
-		void addTo_ListOfMyCharList(const char &val);
+		void addTo_ListOfList2(const char &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myCharList.
+		 * This method adds an element to the beginning of the list of list2.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myCharList.
+		 * @param val Value to be inserted to the beginning of the list of list2.
 		 */
-		void insertTo_ListOfMyCharList(const char &val);
+		void insertTo_ListOfList2(const char &val);
 	
 		/**
-		 * @return true if the list of myCharList contains the element val.
+		 * @return true if the list of list2 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyCharList(const char &val) const;
+		bool contains_ListOfList2(const char &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myCharList.
+		 * @return Pair of iterators for the begin and end of the list of list2.
 		 */
-		std::pair<std::vector<char>::iterator, std::vector<char>::iterator> iteratorPair_ListOfMyCharList();
+		std::pair<std::vector<char>::iterator, std::vector<char>::iterator> iteratorPair_ListOfList2();
 	public:
 		/**
-		 * @return myInt32List.
+		 * @return list3.
 		 */
-		std::vector<int32_t> getListOfMyInt32List() const;
+		std::vector<int32_t> getListOfList3() const;
 	
 		/**
-		 * This method sets myInt32List.
+		 * This method sets list3.
 		 *
-		 * @param val Value for myInt32List.
+		 * @param val Value for list3.
 		 */
-		void setListOfMyInt32List(const std::vector<int32_t> &val);
+		void setListOfList3(const std::vector<int32_t> &val);
 	
 		/**
-		 * This method clears the list of myInt32List.
+		 * This method clears the list of list3.
 		 */
-		void clear_ListOfMyInt32List();
+		void clear_ListOfList3();
 	
 		/**
-		 * @return the size of the list of myInt32List.
+		 * @return the size of the list of list3.
 		 */
-		uint32_t getSize_ListOfMyInt32List() const;
+		uint32_t getSize_ListOfList3() const;
 	
 		/**
-		 * @return true if the list of myInt32List is empty.
+		 * @return true if the list of list3 is empty.
 		 */
-		bool isEmpty_ListOfMyInt32List() const;
+		bool isEmpty_ListOfList3() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myInt32List.
+		 * This method adds an element to the end of the list of list3.
 		 *
-		 * @param val Value to be added to the end of the list of myInt32List.
+		 * @param val Value to be added to the end of the list of list3.
 		 */
-		void addTo_ListOfMyInt32List(const int32_t &val);
+		void addTo_ListOfList3(const int32_t &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myInt32List.
+		 * This method adds an element to the beginning of the list of list3.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myInt32List.
+		 * @param val Value to be inserted to the beginning of the list of list3.
 		 */
-		void insertTo_ListOfMyInt32List(const int32_t &val);
+		void insertTo_ListOfList3(const int32_t &val);
 	
 		/**
-		 * @return true if the list of myInt32List contains the element val.
+		 * @return true if the list of list3 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyInt32List(const int32_t &val) const;
+		bool contains_ListOfList3(const int32_t &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myInt32List.
+		 * @return Pair of iterators for the begin and end of the list of list3.
 		 */
-		std::pair<std::vector<int32_t>::iterator, std::vector<int32_t>::iterator> iteratorPair_ListOfMyInt32List();
+		std::pair<std::vector<int32_t>::iterator, std::vector<int32_t>::iterator> iteratorPair_ListOfList3();
 	public:
 		/**
-		 * @return myUint32List.
+		 * @return list4.
 		 */
-		std::vector<uint32_t> getListOfMyUint32List() const;
+		std::vector<uint32_t> getListOfList4() const;
 	
 		/**
-		 * This method sets myUint32List.
+		 * This method sets list4.
 		 *
-		 * @param val Value for myUint32List.
+		 * @param val Value for list4.
 		 */
-		void setListOfMyUint32List(const std::vector<uint32_t> &val);
+		void setListOfList4(const std::vector<uint32_t> &val);
 	
 		/**
-		 * This method clears the list of myUint32List.
+		 * This method clears the list of list4.
 		 */
-		void clear_ListOfMyUint32List();
+		void clear_ListOfList4();
 	
 		/**
-		 * @return the size of the list of myUint32List.
+		 * @return the size of the list of list4.
 		 */
-		uint32_t getSize_ListOfMyUint32List() const;
+		uint32_t getSize_ListOfList4() const;
 	
 		/**
-		 * @return true if the list of myUint32List is empty.
+		 * @return true if the list of list4 is empty.
 		 */
-		bool isEmpty_ListOfMyUint32List() const;
+		bool isEmpty_ListOfList4() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myUint32List.
+		 * This method adds an element to the end of the list of list4.
 		 *
-		 * @param val Value to be added to the end of the list of myUint32List.
+		 * @param val Value to be added to the end of the list of list4.
 		 */
-		void addTo_ListOfMyUint32List(const uint32_t &val);
+		void addTo_ListOfList4(const uint32_t &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myUint32List.
+		 * This method adds an element to the beginning of the list of list4.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myUint32List.
+		 * @param val Value to be inserted to the beginning of the list of list4.
 		 */
-		void insertTo_ListOfMyUint32List(const uint32_t &val);
+		void insertTo_ListOfList4(const uint32_t &val);
 	
 		/**
-		 * @return true if the list of myUint32List contains the element val.
+		 * @return true if the list of list4 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyUint32List(const uint32_t &val) const;
+		bool contains_ListOfList4(const uint32_t &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myUint32List.
+		 * @return Pair of iterators for the begin and end of the list of list4.
 		 */
-		std::pair<std::vector<uint32_t>::iterator, std::vector<uint32_t>::iterator> iteratorPair_ListOfMyUint32List();
+		std::pair<std::vector<uint32_t>::iterator, std::vector<uint32_t>::iterator> iteratorPair_ListOfList4();
 	public:
 		/**
-		 * @return myFloatList.
+		 * @return list5.
 		 */
-		std::vector<float> getListOfMyFloatList() const;
+		std::vector<float> getListOfList5() const;
 	
 		/**
-		 * This method sets myFloatList.
+		 * This method sets list5.
 		 *
-		 * @param val Value for myFloatList.
+		 * @param val Value for list5.
 		 */
-		void setListOfMyFloatList(const std::vector<float> &val);
+		void setListOfList5(const std::vector<float> &val);
 	
 		/**
-		 * This method clears the list of myFloatList.
+		 * This method clears the list of list5.
 		 */
-		void clear_ListOfMyFloatList();
+		void clear_ListOfList5();
 	
 		/**
-		 * @return the size of the list of myFloatList.
+		 * @return the size of the list of list5.
 		 */
-		uint32_t getSize_ListOfMyFloatList() const;
+		uint32_t getSize_ListOfList5() const;
 	
 		/**
-		 * @return true if the list of myFloatList is empty.
+		 * @return true if the list of list5 is empty.
 		 */
-		bool isEmpty_ListOfMyFloatList() const;
+		bool isEmpty_ListOfList5() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myFloatList.
+		 * This method adds an element to the end of the list of list5.
 		 *
-		 * @param val Value to be added to the end of the list of myFloatList.
+		 * @param val Value to be added to the end of the list of list5.
 		 */
-		void addTo_ListOfMyFloatList(const float &val);
+		void addTo_ListOfList5(const float &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myFloatList.
+		 * This method adds an element to the beginning of the list of list5.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myFloatList.
+		 * @param val Value to be inserted to the beginning of the list of list5.
 		 */
-		void insertTo_ListOfMyFloatList(const float &val);
+		void insertTo_ListOfList5(const float &val);
 	
 		/**
-		 * @return true if the list of myFloatList contains the element val.
+		 * @return true if the list of list5 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyFloatList(const float &val) const;
+		bool contains_ListOfList5(const float &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myFloatList.
+		 * @return Pair of iterators for the begin and end of the list of list5.
 		 */
-		std::pair<std::vector<float>::iterator, std::vector<float>::iterator> iteratorPair_ListOfMyFloatList();
+		std::pair<std::vector<float>::iterator, std::vector<float>::iterator> iteratorPair_ListOfList5();
 	public:
 		/**
-		 * @return myDoubleList.
+		 * @return list6.
 		 */
-		std::vector<double> getListOfMyDoubleList() const;
+		std::vector<double> getListOfList6() const;
 	
 		/**
-		 * This method sets myDoubleList.
+		 * This method sets list6.
 		 *
-		 * @param val Value for myDoubleList.
+		 * @param val Value for list6.
 		 */
-		void setListOfMyDoubleList(const std::vector<double> &val);
+		void setListOfList6(const std::vector<double> &val);
 	
 		/**
-		 * This method clears the list of myDoubleList.
+		 * This method clears the list of list6.
 		 */
-		void clear_ListOfMyDoubleList();
+		void clear_ListOfList6();
 	
 		/**
-		 * @return the size of the list of myDoubleList.
+		 * @return the size of the list of list6.
 		 */
-		uint32_t getSize_ListOfMyDoubleList() const;
+		uint32_t getSize_ListOfList6() const;
 	
 		/**
-		 * @return true if the list of myDoubleList is empty.
+		 * @return true if the list of list6 is empty.
 		 */
-		bool isEmpty_ListOfMyDoubleList() const;
+		bool isEmpty_ListOfList6() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myDoubleList.
+		 * This method adds an element to the end of the list of list6.
 		 *
-		 * @param val Value to be added to the end of the list of myDoubleList.
+		 * @param val Value to be added to the end of the list of list6.
 		 */
-		void addTo_ListOfMyDoubleList(const double &val);
+		void addTo_ListOfList6(const double &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myDoubleList.
+		 * This method adds an element to the beginning of the list of list6.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myDoubleList.
+		 * @param val Value to be inserted to the beginning of the list of list6.
 		 */
-		void insertTo_ListOfMyDoubleList(const double &val);
+		void insertTo_ListOfList6(const double &val);
 	
 		/**
-		 * @return true if the list of myDoubleList contains the element val.
+		 * @return true if the list of list6 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyDoubleList(const double &val) const;
+		bool contains_ListOfList6(const double &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myDoubleList.
+		 * @return Pair of iterators for the begin and end of the list of list6.
 		 */
-		std::pair<std::vector<double>::iterator, std::vector<double>::iterator> iteratorPair_ListOfMyDoubleList();
+		std::pair<std::vector<double>::iterator, std::vector<double>::iterator> iteratorPair_ListOfList6();
 	public:
 		/**
-		 * @return myStringList.
+		 * @return list7.
 		 */
-		std::vector<std::string> getListOfMyStringList() const;
+		std::vector<std::string> getListOfList7() const;
 	
 		/**
-		 * This method sets myStringList.
+		 * This method sets list7.
 		 *
-		 * @param val Value for myStringList.
+		 * @param val Value for list7.
 		 */
-		void setListOfMyStringList(const std::vector<std::string> &val);
+		void setListOfList7(const std::vector<std::string> &val);
 	
 		/**
-		 * This method clears the list of myStringList.
+		 * This method clears the list of list7.
 		 */
-		void clear_ListOfMyStringList();
+		void clear_ListOfList7();
 	
 		/**
-		 * @return the size of the list of myStringList.
+		 * @return the size of the list of list7.
 		 */
-		uint32_t getSize_ListOfMyStringList() const;
+		uint32_t getSize_ListOfList7() const;
 	
 		/**
-		 * @return true if the list of myStringList is empty.
+		 * @return true if the list of list7 is empty.
 		 */
-		bool isEmpty_ListOfMyStringList() const;
+		bool isEmpty_ListOfList7() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myStringList.
+		 * This method adds an element to the end of the list of list7.
 		 *
-		 * @param val Value to be added to the end of the list of myStringList.
+		 * @param val Value to be added to the end of the list of list7.
 		 */
-		void addTo_ListOfMyStringList(const std::string &val);
+		void addTo_ListOfList7(const std::string &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myStringList.
+		 * This method adds an element to the beginning of the list of list7.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myStringList.
+		 * @param val Value to be inserted to the beginning of the list of list7.
 		 */
-		void insertTo_ListOfMyStringList(const std::string &val);
+		void insertTo_ListOfList7(const std::string &val);
 	
 		/**
-		 * @return true if the list of myStringList contains the element val.
+		 * @return true if the list of list7 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyStringList(const std::string &val) const;
+		bool contains_ListOfList7(const std::string &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myStringList.
+		 * @return Pair of iterators for the begin and end of the list of list7.
 		 */
-		std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> iteratorPair_ListOfMyStringList();
+		std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> iteratorPair_ListOfList7();
 
 	public:
 		/**
@@ -445,19 +445,19 @@ class Test11Lists : public core::data::SerializableData, public core::base::Visi
 		virtual const string toString() const;
 
 	private:
-		std::vector<bool> m_listOfMyBoolList;
+		std::vector<bool> m_listOfList1;
 	private:
-		std::vector<char> m_listOfMyCharList;
+		std::vector<char> m_listOfList2;
 	private:
-		std::vector<int32_t> m_listOfMyInt32List;
+		std::vector<int32_t> m_listOfList3;
 	private:
-		std::vector<uint32_t> m_listOfMyUint32List;
+		std::vector<uint32_t> m_listOfList4;
 	private:
-		std::vector<float> m_listOfMyFloatList;
+		std::vector<float> m_listOfList5;
 	private:
-		std::vector<double> m_listOfMyDoubleList;
+		std::vector<double> m_listOfList6;
 	private:
-		std::vector<std::string> m_listOfMyStringList;
+		std::vector<std::string> m_listOfList7;
 
 };
 

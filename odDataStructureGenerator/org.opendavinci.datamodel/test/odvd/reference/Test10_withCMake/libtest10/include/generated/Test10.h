@@ -51,214 +51,214 @@ class Test10 : public core::data::SerializableData, public core::base::Visitable
 
 	public:
 		/**
-		 * @return myStringList.
+		 * @return list1.
 		 */
-		std::vector<std::string> getListOfMyStringList() const;
+		std::vector<std::string> getListOfList1() const;
 	
 		/**
-		 * This method sets myStringList.
+		 * This method sets list1.
 		 *
-		 * @param val Value for myStringList.
+		 * @param val Value for list1.
 		 */
-		void setListOfMyStringList(const std::vector<std::string> &val);
+		void setListOfList1(const std::vector<std::string> &val);
 	
 		/**
-		 * This method clears the list of myStringList.
+		 * This method clears the list of list1.
 		 */
-		void clear_ListOfMyStringList();
+		void clear_ListOfList1();
 	
 		/**
-		 * @return the size of the list of myStringList.
+		 * @return the size of the list of list1.
 		 */
-		uint32_t getSize_ListOfMyStringList() const;
+		uint32_t getSize_ListOfList1() const;
 	
 		/**
-		 * @return true if the list of myStringList is empty.
+		 * @return true if the list of list1 is empty.
 		 */
-		bool isEmpty_ListOfMyStringList() const;
+		bool isEmpty_ListOfList1() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myStringList.
+		 * This method adds an element to the end of the list of list1.
 		 *
-		 * @param val Value to be added to the end of the list of myStringList.
+		 * @param val Value to be added to the end of the list of list1.
 		 */
-		void addTo_ListOfMyStringList(const std::string &val);
+		void addTo_ListOfList1(const std::string &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myStringList.
+		 * This method adds an element to the beginning of the list of list1.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myStringList.
+		 * @param val Value to be inserted to the beginning of the list of list1.
 		 */
-		void insertTo_ListOfMyStringList(const std::string &val);
+		void insertTo_ListOfList1(const std::string &val);
 	
 		/**
-		 * @return true if the list of myStringList contains the element val.
+		 * @return true if the list of list1 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyStringList(const std::string &val) const;
+		bool contains_ListOfList1(const std::string &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myStringList.
+		 * @return Pair of iterators for the begin and end of the list of list1.
 		 */
-		std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> iteratorPair_ListOfMyStringList();
+		std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> iteratorPair_ListOfList1();
 	public:
 		/**
-		 * @return myPointList.
+		 * @return list2.
 		 */
-		std::vector<Test10Point> getListOfMyPointList() const;
+		std::vector<Test10Point> getListOfList2() const;
 	
 		/**
-		 * This method sets myPointList.
+		 * This method sets list2.
 		 *
-		 * @param val Value for myPointList.
+		 * @param val Value for list2.
 		 */
-		void setListOfMyPointList(const std::vector<Test10Point> &val);
+		void setListOfList2(const std::vector<Test10Point> &val);
 	
 		/**
-		 * This method clears the list of myPointList.
+		 * This method clears the list of list2.
 		 */
-		void clear_ListOfMyPointList();
+		void clear_ListOfList2();
 	
 		/**
-		 * @return the size of the list of myPointList.
+		 * @return the size of the list of list2.
 		 */
-		uint32_t getSize_ListOfMyPointList() const;
+		uint32_t getSize_ListOfList2() const;
 	
 		/**
-		 * @return true if the list of myPointList is empty.
+		 * @return true if the list of list2 is empty.
 		 */
-		bool isEmpty_ListOfMyPointList() const;
+		bool isEmpty_ListOfList2() const;
 	
 		/**
-		 * This method adds an element to the end of the list of myPointList.
+		 * This method adds an element to the end of the list of list2.
 		 *
-		 * @param val Value to be added to the end of the list of myPointList.
+		 * @param val Value to be added to the end of the list of list2.
 		 */
-		void addTo_ListOfMyPointList(const Test10Point &val);
+		void addTo_ListOfList2(const Test10Point &val);
 	
 		/**
-		 * This method adds an element to the beginning of the list of myPointList.
+		 * This method adds an element to the beginning of the list of list2.
 		 *
-		 * @param val Value to be inserted to the beginning of the list of myPointList.
+		 * @param val Value to be inserted to the beginning of the list of list2.
 		 */
-		void insertTo_ListOfMyPointList(const Test10Point &val);
+		void insertTo_ListOfList2(const Test10Point &val);
 	
 		/**
-		 * @return true if the list of myPointList contains the element val.
+		 * @return true if the list of list2 contains the element val.
 		 *              If the list has a complex data type, the entries are compared using their .toString() method.
 		 */
-		bool contains_ListOfMyPointList(const Test10Point &val) const;
+		bool contains_ListOfList2(const Test10Point &val) const;
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the list of myPointList.
+		 * @return Pair of iterators for the begin and end of the list of list2.
 		 */
-		std::pair<std::vector<Test10Point>::iterator, std::vector<Test10Point>::iterator> iteratorPair_ListOfMyPointList();
+		std::pair<std::vector<Test10Point>::iterator, std::vector<Test10Point>::iterator> iteratorPair_ListOfList2();
 	public:
 		/**
-		 * @return myIntStringMap.
+		 * @return map1.
 		 */
-		std::map<int32_t, std::string> getMapOfMyIntStringMap() const;
+		std::map<int32_t, std::string> getMapOfMap1() const;
 	
 		/**
-		 * This method sets myIntStringMap.
+		 * This method sets map1.
 		 *
-		 * @param val Value for myIntStringMap.
+		 * @param val Value for map1.
 		 */
-		void setMapOfMyIntStringMap(const std::map<int32_t, std::string> &val);
+		void setMapOfMap1(const std::map<int32_t, std::string> &val);
 	
 		/**
-		 * This method clears the map of myIntStringMap.
+		 * This method clears the map of map1.
 		 */
-		void clear_MapOfMyIntStringMap();
+		void clear_MapOfMap1();
 	
 		/**
-		 * @return the size of the map of myIntStringMap.
+		 * @return the size of the map of map1.
 		 */
-		uint32_t getSize_MapOfMyIntStringMap() const;
+		uint32_t getSize_MapOfMap1() const;
 	
 		/**
-		 * @return true if the map of myIntStringMap is empty.
+		 * @return true if the map of map1 is empty.
 		 */
-		bool isEmpty_MapOfMyIntStringMap() const;
+		bool isEmpty_MapOfMap1() const;
 	
 		/**
-		 * This method adds an element to the map of myIntStringMap.
+		 * This method adds an element to the map of map1.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myIntStringMap.
-		 * @param val Value of the key/value pair to be added to the map of myIntStringMap.
+		 * @param key Key of the key/value pair to be added to the map of map1.
+		 * @param val Value of the key/value pair to be added to the map of map1.
 		 */
-		void putTo_MapOfMyIntStringMap(const int32_t &key, const std::string &val);
+		void putTo_MapOfMap1(const int32_t &key, const std::string &val);
 	
 		/**
-		 * @return true if the map of myIntStringMap is contains the given key.
+		 * @return true if the map of map1 is contains the given key.
 		 */
-		bool containsKey_MapOfMyIntStringMap(const int32_t &key) const;
+		bool containsKey_MapOfMap1(const int32_t &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myIntStringMap.
-		 * @return Value to given key from the map of myIntStringMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map1.
+		 * @return Value to given key from the map of map1 is contains the given key.
 		 */
-		std::string getValueForKey_MapOfMyIntStringMap(const int32_t &key);
+		std::string getValueForKey_MapOfMap1(const int32_t &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myIntStringMap.
+		 * @return Pair of iterators for the begin and end of the map of map1.
 		 */
-		std::pair<std::map<int32_t, std::string>::iterator, std::map<int32_t, std::string>::iterator> iteratorPair_MapOfMyIntStringMap();
+		std::pair<std::map<int32_t, std::string>::iterator, std::map<int32_t, std::string>::iterator> iteratorPair_MapOfMap1();
 	public:
 		/**
-		 * @return myIntPointMap.
+		 * @return map2.
 		 */
-		std::map<int32_t, Test10Point> getMapOfMyIntPointMap() const;
+		std::map<int32_t, Test10Point> getMapOfMap2() const;
 	
 		/**
-		 * This method sets myIntPointMap.
+		 * This method sets map2.
 		 *
-		 * @param val Value for myIntPointMap.
+		 * @param val Value for map2.
 		 */
-		void setMapOfMyIntPointMap(const std::map<int32_t, Test10Point> &val);
+		void setMapOfMap2(const std::map<int32_t, Test10Point> &val);
 	
 		/**
-		 * This method clears the map of myIntPointMap.
+		 * This method clears the map of map2.
 		 */
-		void clear_MapOfMyIntPointMap();
+		void clear_MapOfMap2();
 	
 		/**
-		 * @return the size of the map of myIntPointMap.
+		 * @return the size of the map of map2.
 		 */
-		uint32_t getSize_MapOfMyIntPointMap() const;
+		uint32_t getSize_MapOfMap2() const;
 	
 		/**
-		 * @return true if the map of myIntPointMap is empty.
+		 * @return true if the map of map2 is empty.
 		 */
-		bool isEmpty_MapOfMyIntPointMap() const;
+		bool isEmpty_MapOfMap2() const;
 	
 		/**
-		 * This method adds an element to the map of myIntPointMap.
+		 * This method adds an element to the map of map2.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myIntPointMap.
-		 * @param val Value of the key/value pair to be added to the map of myIntPointMap.
+		 * @param key Key of the key/value pair to be added to the map of map2.
+		 * @param val Value of the key/value pair to be added to the map of map2.
 		 */
-		void putTo_MapOfMyIntPointMap(const int32_t &key, const Test10Point &val);
+		void putTo_MapOfMap2(const int32_t &key, const Test10Point &val);
 	
 		/**
-		 * @return true if the map of myIntPointMap is contains the given key.
+		 * @return true if the map of map2 is contains the given key.
 		 */
-		bool containsKey_MapOfMyIntPointMap(const int32_t &key) const;
+		bool containsKey_MapOfMap2(const int32_t &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myIntPointMap.
-		 * @return Value to given key from the map of myIntPointMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map2.
+		 * @return Value to given key from the map of map2 is contains the given key.
 		 */
-		Test10Point getValueForKey_MapOfMyIntPointMap(const int32_t &key);
+		Test10Point getValueForKey_MapOfMap2(const int32_t &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myIntPointMap.
+		 * @return Pair of iterators for the begin and end of the map of map2.
 		 */
-		std::pair<std::map<int32_t, Test10Point>::iterator, std::map<int32_t, Test10Point>::iterator> iteratorPair_MapOfMyIntPointMap();
+		std::pair<std::map<int32_t, Test10Point>::iterator, std::map<int32_t, Test10Point>::iterator> iteratorPair_MapOfMap2();
 
 	public:
 		/**
@@ -291,13 +291,13 @@ class Test10 : public core::data::SerializableData, public core::base::Visitable
 		virtual const string toString() const;
 
 	private:
-		std::vector<std::string> m_listOfMyStringList;
+		std::vector<std::string> m_listOfList1;
 	private:
-		std::vector<Test10Point> m_listOfMyPointList;
+		std::vector<Test10Point> m_listOfList2;
 	private:
-		std::map<int32_t, std::string> m_mapOfMyIntStringMap;
+		std::map<int32_t, std::string> m_mapOfMap1;
 	private:
-		std::map<int32_t, Test10Point> m_mapOfMyIntPointMap;
+		std::map<int32_t, Test10Point> m_mapOfMap2;
 
 };
 

@@ -1163,7 +1163,7 @@ namespace «s.get(i)» {
 			«IF a.list.id != null»
 				s->write(«a.list.id», numberOf«a.list.name.toFirstUpper»);
 			«ELSE»
-				s->write(CRC32 < «generateCharList(new String("n" + a.list.name.toFirstUpper), 0)» >::RESULT,
+				s->write(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT + 1,
 				        numberOf«a.list.name.toFirstUpper»);
 			«ENDIF»
 		«ENDIF»
@@ -1199,7 +1199,7 @@ namespace «s.get(i)» {
 				«IF a.map.id != null»
 					s->write(«a.map.id», numberOf«a.map.name.toFirstUpper»);
 				«ELSE»
-					s->write(CRC32 < «generateCharList(new String("n" + a.map.name.toFirstUpper), 0)» >::RESULT,
+					s->write(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT + 1,
 					        numberOf«a.map.name.toFirstUpper»);
 				«ENDIF»
 			«ENDIF»
@@ -1290,7 +1290,7 @@ namespace «s.get(i)» {
 				d->read(«a.list.id»,
 				       numberOf«a.list.name.toFirstUpper»);
 			«ELSE»
-				d->read(CRC32 < «generateCharList(new String("n" + a.list.name.toFirstUpper), 0)» >::RESULT,
+				d->read(CRC32 < «generateCharList(a.list.name.toFirstUpper, 0)» >::RESULT + 1,
 				       numberOf«a.list.name.toFirstUpper»);
 			«ENDIF»
 		«ENDIF»
@@ -1332,7 +1332,7 @@ namespace «s.get(i)» {
 			«IF a.map.id != null»
 				d->read(«a.map.id», numberOf«a.map.name.toFirstUpper»);
 			«ELSE»
-				d->read(CRC32 < «generateCharList(new String("n" + a.map.name.toFirstUpper), 0)» >::RESULT,
+				d->read(CRC32 < «generateCharList(a.map.name.toFirstUpper, 0)» >::RESULT + 1,
 					   numberOf«a.map.name.toFirstUpper»);
 			«ENDIF»
 		«ENDIF»

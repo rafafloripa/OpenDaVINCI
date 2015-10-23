@@ -19,13 +19,13 @@
 
 	Test11MapInt32::Test11MapInt32() :
 	    SerializableData(), Visitable()
-		, m_mapOfMyInt32BoolMap()
-		, m_mapOfMyInt32CharMap()
-		, m_mapOfMyInt32Int32Map()
-		, m_mapOfMyInt32Uint32Map()
-		, m_mapOfMyInt32FloatMap()
-		, m_mapOfMyInt32DoubleMap()
-		, m_mapOfMyInt32StringMap()
+		, m_mapOfMap1()
+		, m_mapOfMap2()
+		, m_mapOfMap3()
+		, m_mapOfMap4()
+		, m_mapOfMap5()
+		, m_mapOfMap6()
+		, m_mapOfMap7()
 	{
 	}
 
@@ -39,25 +39,25 @@
 		const map<int32_t, std::string> &val6
 	) :
 	    SerializableData(), Visitable()
-		, m_mapOfMyInt32BoolMap(val0)
-		, m_mapOfMyInt32CharMap(val1)
-		, m_mapOfMyInt32Int32Map(val2)
-		, m_mapOfMyInt32Uint32Map(val3)
-		, m_mapOfMyInt32FloatMap(val4)
-		, m_mapOfMyInt32DoubleMap(val5)
-		, m_mapOfMyInt32StringMap(val6)
+		, m_mapOfMap1(val0)
+		, m_mapOfMap2(val1)
+		, m_mapOfMap3(val2)
+		, m_mapOfMap4(val3)
+		, m_mapOfMap5(val4)
+		, m_mapOfMap6(val5)
+		, m_mapOfMap7(val6)
 	{
 	}
 
 	Test11MapInt32::Test11MapInt32(const Test11MapInt32 &obj) :
 	    SerializableData(), Visitable()
-		, m_mapOfMyInt32BoolMap(obj.m_mapOfMyInt32BoolMap)
-		, m_mapOfMyInt32CharMap(obj.m_mapOfMyInt32CharMap)
-		, m_mapOfMyInt32Int32Map(obj.m_mapOfMyInt32Int32Map)
-		, m_mapOfMyInt32Uint32Map(obj.m_mapOfMyInt32Uint32Map)
-		, m_mapOfMyInt32FloatMap(obj.m_mapOfMyInt32FloatMap)
-		, m_mapOfMyInt32DoubleMap(obj.m_mapOfMyInt32DoubleMap)
-		, m_mapOfMyInt32StringMap(obj.m_mapOfMyInt32StringMap)
+		, m_mapOfMap1(obj.m_mapOfMap1)
+		, m_mapOfMap2(obj.m_mapOfMap2)
+		, m_mapOfMap3(obj.m_mapOfMap3)
+		, m_mapOfMap4(obj.m_mapOfMap4)
+		, m_mapOfMap5(obj.m_mapOfMap5)
+		, m_mapOfMap6(obj.m_mapOfMap6)
+		, m_mapOfMap7(obj.m_mapOfMap7)
 	{
 	}
 	
@@ -65,13 +65,13 @@
 	}
 
 	Test11MapInt32& Test11MapInt32::operator=(const Test11MapInt32 &obj) {
-		m_mapOfMyInt32BoolMap = obj.m_mapOfMyInt32BoolMap;
-		m_mapOfMyInt32CharMap = obj.m_mapOfMyInt32CharMap;
-		m_mapOfMyInt32Int32Map = obj.m_mapOfMyInt32Int32Map;
-		m_mapOfMyInt32Uint32Map = obj.m_mapOfMyInt32Uint32Map;
-		m_mapOfMyInt32FloatMap = obj.m_mapOfMyInt32FloatMap;
-		m_mapOfMyInt32DoubleMap = obj.m_mapOfMyInt32DoubleMap;
-		m_mapOfMyInt32StringMap = obj.m_mapOfMyInt32StringMap;
+		m_mapOfMap1 = obj.m_mapOfMap1;
+		m_mapOfMap2 = obj.m_mapOfMap2;
+		m_mapOfMap3 = obj.m_mapOfMap3;
+		m_mapOfMap4 = obj.m_mapOfMap4;
+		m_mapOfMap5 = obj.m_mapOfMap5;
+		m_mapOfMap6 = obj.m_mapOfMap6;
+		m_mapOfMap7 = obj.m_mapOfMap7;
 		return (*this);
 	}
 
@@ -87,250 +87,250 @@
 		return "Test11MapInt32";
 	}
 
-	std::map<int32_t, bool> Test11MapInt32::getMapOfMyInt32BoolMap() const {
-		return m_mapOfMyInt32BoolMap;
+	std::map<int32_t, bool> Test11MapInt32::getMapOfMap1() const {
+		return m_mapOfMap1;
 	}
 	
-	void Test11MapInt32::setMapOfMyInt32BoolMap(const std::map<int32_t, bool> &val) {
-		m_mapOfMyInt32BoolMap = val;
+	void Test11MapInt32::setMapOfMap1(const std::map<int32_t, bool> &val) {
+		m_mapOfMap1 = val;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32BoolMap() {
-		m_mapOfMyInt32BoolMap.clear();
+	void Test11MapInt32::clear_MapOfMap1() {
+		m_mapOfMap1.clear();
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32BoolMap() const {
-		return m_mapOfMyInt32BoolMap.size();
+	uint32_t Test11MapInt32::getSize_MapOfMap1() const {
+		return m_mapOfMap1.size();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32BoolMap() const {
-		return m_mapOfMyInt32BoolMap.empty();
+	bool Test11MapInt32::isEmpty_MapOfMap1() const {
+		return m_mapOfMap1.empty();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32BoolMap(const int32_t &key, const bool &val) {
-		m_mapOfMyInt32BoolMap[key] = val;
+	void Test11MapInt32::putTo_MapOfMap1(const int32_t &key, const bool &val) {
+		m_mapOfMap1[key] = val;
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32BoolMap(const int32_t &key) const {
-		return (m_mapOfMyInt32BoolMap.count(key) > 0);
+	bool Test11MapInt32::containsKey_MapOfMap1(const int32_t &key) const {
+		return (m_mapOfMap1.count(key) > 0);
 	}
 	
-	bool Test11MapInt32::getValueForKey_MapOfMyInt32BoolMap(const int32_t &key) {
-		return m_mapOfMyInt32BoolMap[key];
+	bool Test11MapInt32::getValueForKey_MapOfMap1(const int32_t &key) {
+		return m_mapOfMap1[key];
 	}
 	
-	std::pair<std::map<int32_t, bool>::iterator, std::map<int32_t, bool>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32BoolMap() {
-		return std::make_pair(m_mapOfMyInt32BoolMap.begin(), m_mapOfMyInt32BoolMap.end());
+	std::pair<std::map<int32_t, bool>::iterator, std::map<int32_t, bool>::iterator> Test11MapInt32::iteratorPair_MapOfMap1() {
+		return std::make_pair(m_mapOfMap1.begin(), m_mapOfMap1.end());
 	}
-	std::map<int32_t, char> Test11MapInt32::getMapOfMyInt32CharMap() const {
-		return m_mapOfMyInt32CharMap;
-	}
-	
-	void Test11MapInt32::setMapOfMyInt32CharMap(const std::map<int32_t, char> &val) {
-		m_mapOfMyInt32CharMap = val;
+	std::map<int32_t, char> Test11MapInt32::getMapOfMap2() const {
+		return m_mapOfMap2;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32CharMap() {
-		m_mapOfMyInt32CharMap.clear();
+	void Test11MapInt32::setMapOfMap2(const std::map<int32_t, char> &val) {
+		m_mapOfMap2 = val;
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32CharMap() const {
-		return m_mapOfMyInt32CharMap.size();
+	void Test11MapInt32::clear_MapOfMap2() {
+		m_mapOfMap2.clear();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32CharMap() const {
-		return m_mapOfMyInt32CharMap.empty();
+	uint32_t Test11MapInt32::getSize_MapOfMap2() const {
+		return m_mapOfMap2.size();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32CharMap(const int32_t &key, const char &val) {
-		m_mapOfMyInt32CharMap[key] = val;
+	bool Test11MapInt32::isEmpty_MapOfMap2() const {
+		return m_mapOfMap2.empty();
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32CharMap(const int32_t &key) const {
-		return (m_mapOfMyInt32CharMap.count(key) > 0);
+	void Test11MapInt32::putTo_MapOfMap2(const int32_t &key, const char &val) {
+		m_mapOfMap2[key] = val;
 	}
 	
-	char Test11MapInt32::getValueForKey_MapOfMyInt32CharMap(const int32_t &key) {
-		return m_mapOfMyInt32CharMap[key];
+	bool Test11MapInt32::containsKey_MapOfMap2(const int32_t &key) const {
+		return (m_mapOfMap2.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, char>::iterator, std::map<int32_t, char>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32CharMap() {
-		return std::make_pair(m_mapOfMyInt32CharMap.begin(), m_mapOfMyInt32CharMap.end());
-	}
-	std::map<int32_t, int32_t> Test11MapInt32::getMapOfMyInt32Int32Map() const {
-		return m_mapOfMyInt32Int32Map;
+	char Test11MapInt32::getValueForKey_MapOfMap2(const int32_t &key) {
+		return m_mapOfMap2[key];
 	}
 	
-	void Test11MapInt32::setMapOfMyInt32Int32Map(const std::map<int32_t, int32_t> &val) {
-		m_mapOfMyInt32Int32Map = val;
+	std::pair<std::map<int32_t, char>::iterator, std::map<int32_t, char>::iterator> Test11MapInt32::iteratorPair_MapOfMap2() {
+		return std::make_pair(m_mapOfMap2.begin(), m_mapOfMap2.end());
+	}
+	std::map<int32_t, int32_t> Test11MapInt32::getMapOfMap3() const {
+		return m_mapOfMap3;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32Int32Map() {
-		m_mapOfMyInt32Int32Map.clear();
+	void Test11MapInt32::setMapOfMap3(const std::map<int32_t, int32_t> &val) {
+		m_mapOfMap3 = val;
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32Int32Map() const {
-		return m_mapOfMyInt32Int32Map.size();
+	void Test11MapInt32::clear_MapOfMap3() {
+		m_mapOfMap3.clear();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32Int32Map() const {
-		return m_mapOfMyInt32Int32Map.empty();
+	uint32_t Test11MapInt32::getSize_MapOfMap3() const {
+		return m_mapOfMap3.size();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32Int32Map(const int32_t &key, const int32_t &val) {
-		m_mapOfMyInt32Int32Map[key] = val;
+	bool Test11MapInt32::isEmpty_MapOfMap3() const {
+		return m_mapOfMap3.empty();
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32Int32Map(const int32_t &key) const {
-		return (m_mapOfMyInt32Int32Map.count(key) > 0);
+	void Test11MapInt32::putTo_MapOfMap3(const int32_t &key, const int32_t &val) {
+		m_mapOfMap3[key] = val;
 	}
 	
-	int32_t Test11MapInt32::getValueForKey_MapOfMyInt32Int32Map(const int32_t &key) {
-		return m_mapOfMyInt32Int32Map[key];
+	bool Test11MapInt32::containsKey_MapOfMap3(const int32_t &key) const {
+		return (m_mapOfMap3.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, int32_t>::iterator, std::map<int32_t, int32_t>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32Int32Map() {
-		return std::make_pair(m_mapOfMyInt32Int32Map.begin(), m_mapOfMyInt32Int32Map.end());
-	}
-	std::map<int32_t, uint32_t> Test11MapInt32::getMapOfMyInt32Uint32Map() const {
-		return m_mapOfMyInt32Uint32Map;
+	int32_t Test11MapInt32::getValueForKey_MapOfMap3(const int32_t &key) {
+		return m_mapOfMap3[key];
 	}
 	
-	void Test11MapInt32::setMapOfMyInt32Uint32Map(const std::map<int32_t, uint32_t> &val) {
-		m_mapOfMyInt32Uint32Map = val;
+	std::pair<std::map<int32_t, int32_t>::iterator, std::map<int32_t, int32_t>::iterator> Test11MapInt32::iteratorPair_MapOfMap3() {
+		return std::make_pair(m_mapOfMap3.begin(), m_mapOfMap3.end());
+	}
+	std::map<int32_t, uint32_t> Test11MapInt32::getMapOfMap4() const {
+		return m_mapOfMap4;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32Uint32Map() {
-		m_mapOfMyInt32Uint32Map.clear();
+	void Test11MapInt32::setMapOfMap4(const std::map<int32_t, uint32_t> &val) {
+		m_mapOfMap4 = val;
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32Uint32Map() const {
-		return m_mapOfMyInt32Uint32Map.size();
+	void Test11MapInt32::clear_MapOfMap4() {
+		m_mapOfMap4.clear();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32Uint32Map() const {
-		return m_mapOfMyInt32Uint32Map.empty();
+	uint32_t Test11MapInt32::getSize_MapOfMap4() const {
+		return m_mapOfMap4.size();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32Uint32Map(const int32_t &key, const uint32_t &val) {
-		m_mapOfMyInt32Uint32Map[key] = val;
+	bool Test11MapInt32::isEmpty_MapOfMap4() const {
+		return m_mapOfMap4.empty();
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32Uint32Map(const int32_t &key) const {
-		return (m_mapOfMyInt32Uint32Map.count(key) > 0);
+	void Test11MapInt32::putTo_MapOfMap4(const int32_t &key, const uint32_t &val) {
+		m_mapOfMap4[key] = val;
 	}
 	
-	uint32_t Test11MapInt32::getValueForKey_MapOfMyInt32Uint32Map(const int32_t &key) {
-		return m_mapOfMyInt32Uint32Map[key];
+	bool Test11MapInt32::containsKey_MapOfMap4(const int32_t &key) const {
+		return (m_mapOfMap4.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, uint32_t>::iterator, std::map<int32_t, uint32_t>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32Uint32Map() {
-		return std::make_pair(m_mapOfMyInt32Uint32Map.begin(), m_mapOfMyInt32Uint32Map.end());
-	}
-	std::map<int32_t, float> Test11MapInt32::getMapOfMyInt32FloatMap() const {
-		return m_mapOfMyInt32FloatMap;
+	uint32_t Test11MapInt32::getValueForKey_MapOfMap4(const int32_t &key) {
+		return m_mapOfMap4[key];
 	}
 	
-	void Test11MapInt32::setMapOfMyInt32FloatMap(const std::map<int32_t, float> &val) {
-		m_mapOfMyInt32FloatMap = val;
+	std::pair<std::map<int32_t, uint32_t>::iterator, std::map<int32_t, uint32_t>::iterator> Test11MapInt32::iteratorPair_MapOfMap4() {
+		return std::make_pair(m_mapOfMap4.begin(), m_mapOfMap4.end());
+	}
+	std::map<int32_t, float> Test11MapInt32::getMapOfMap5() const {
+		return m_mapOfMap5;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32FloatMap() {
-		m_mapOfMyInt32FloatMap.clear();
+	void Test11MapInt32::setMapOfMap5(const std::map<int32_t, float> &val) {
+		m_mapOfMap5 = val;
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32FloatMap() const {
-		return m_mapOfMyInt32FloatMap.size();
+	void Test11MapInt32::clear_MapOfMap5() {
+		m_mapOfMap5.clear();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32FloatMap() const {
-		return m_mapOfMyInt32FloatMap.empty();
+	uint32_t Test11MapInt32::getSize_MapOfMap5() const {
+		return m_mapOfMap5.size();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32FloatMap(const int32_t &key, const float &val) {
-		m_mapOfMyInt32FloatMap[key] = val;
+	bool Test11MapInt32::isEmpty_MapOfMap5() const {
+		return m_mapOfMap5.empty();
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32FloatMap(const int32_t &key) const {
-		return (m_mapOfMyInt32FloatMap.count(key) > 0);
+	void Test11MapInt32::putTo_MapOfMap5(const int32_t &key, const float &val) {
+		m_mapOfMap5[key] = val;
 	}
 	
-	float Test11MapInt32::getValueForKey_MapOfMyInt32FloatMap(const int32_t &key) {
-		return m_mapOfMyInt32FloatMap[key];
+	bool Test11MapInt32::containsKey_MapOfMap5(const int32_t &key) const {
+		return (m_mapOfMap5.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, float>::iterator, std::map<int32_t, float>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32FloatMap() {
-		return std::make_pair(m_mapOfMyInt32FloatMap.begin(), m_mapOfMyInt32FloatMap.end());
-	}
-	std::map<int32_t, double> Test11MapInt32::getMapOfMyInt32DoubleMap() const {
-		return m_mapOfMyInt32DoubleMap;
+	float Test11MapInt32::getValueForKey_MapOfMap5(const int32_t &key) {
+		return m_mapOfMap5[key];
 	}
 	
-	void Test11MapInt32::setMapOfMyInt32DoubleMap(const std::map<int32_t, double> &val) {
-		m_mapOfMyInt32DoubleMap = val;
+	std::pair<std::map<int32_t, float>::iterator, std::map<int32_t, float>::iterator> Test11MapInt32::iteratorPair_MapOfMap5() {
+		return std::make_pair(m_mapOfMap5.begin(), m_mapOfMap5.end());
+	}
+	std::map<int32_t, double> Test11MapInt32::getMapOfMap6() const {
+		return m_mapOfMap6;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32DoubleMap() {
-		m_mapOfMyInt32DoubleMap.clear();
+	void Test11MapInt32::setMapOfMap6(const std::map<int32_t, double> &val) {
+		m_mapOfMap6 = val;
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32DoubleMap() const {
-		return m_mapOfMyInt32DoubleMap.size();
+	void Test11MapInt32::clear_MapOfMap6() {
+		m_mapOfMap6.clear();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32DoubleMap() const {
-		return m_mapOfMyInt32DoubleMap.empty();
+	uint32_t Test11MapInt32::getSize_MapOfMap6() const {
+		return m_mapOfMap6.size();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32DoubleMap(const int32_t &key, const double &val) {
-		m_mapOfMyInt32DoubleMap[key] = val;
+	bool Test11MapInt32::isEmpty_MapOfMap6() const {
+		return m_mapOfMap6.empty();
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32DoubleMap(const int32_t &key) const {
-		return (m_mapOfMyInt32DoubleMap.count(key) > 0);
+	void Test11MapInt32::putTo_MapOfMap6(const int32_t &key, const double &val) {
+		m_mapOfMap6[key] = val;
 	}
 	
-	double Test11MapInt32::getValueForKey_MapOfMyInt32DoubleMap(const int32_t &key) {
-		return m_mapOfMyInt32DoubleMap[key];
+	bool Test11MapInt32::containsKey_MapOfMap6(const int32_t &key) const {
+		return (m_mapOfMap6.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, double>::iterator, std::map<int32_t, double>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32DoubleMap() {
-		return std::make_pair(m_mapOfMyInt32DoubleMap.begin(), m_mapOfMyInt32DoubleMap.end());
-	}
-	std::map<int32_t, std::string> Test11MapInt32::getMapOfMyInt32StringMap() const {
-		return m_mapOfMyInt32StringMap;
+	double Test11MapInt32::getValueForKey_MapOfMap6(const int32_t &key) {
+		return m_mapOfMap6[key];
 	}
 	
-	void Test11MapInt32::setMapOfMyInt32StringMap(const std::map<int32_t, std::string> &val) {
-		m_mapOfMyInt32StringMap = val;
+	std::pair<std::map<int32_t, double>::iterator, std::map<int32_t, double>::iterator> Test11MapInt32::iteratorPair_MapOfMap6() {
+		return std::make_pair(m_mapOfMap6.begin(), m_mapOfMap6.end());
+	}
+	std::map<int32_t, std::string> Test11MapInt32::getMapOfMap7() const {
+		return m_mapOfMap7;
 	}
 	
-	void Test11MapInt32::clear_MapOfMyInt32StringMap() {
-		m_mapOfMyInt32StringMap.clear();
+	void Test11MapInt32::setMapOfMap7(const std::map<int32_t, std::string> &val) {
+		m_mapOfMap7 = val;
 	}
 	
-	uint32_t Test11MapInt32::getSize_MapOfMyInt32StringMap() const {
-		return m_mapOfMyInt32StringMap.size();
+	void Test11MapInt32::clear_MapOfMap7() {
+		m_mapOfMap7.clear();
 	}
 	
-	bool Test11MapInt32::isEmpty_MapOfMyInt32StringMap() const {
-		return m_mapOfMyInt32StringMap.empty();
+	uint32_t Test11MapInt32::getSize_MapOfMap7() const {
+		return m_mapOfMap7.size();
 	}
 	
-	void Test11MapInt32::putTo_MapOfMyInt32StringMap(const int32_t &key, const std::string &val) {
-		m_mapOfMyInt32StringMap[key] = val;
+	bool Test11MapInt32::isEmpty_MapOfMap7() const {
+		return m_mapOfMap7.empty();
 	}
 	
-	bool Test11MapInt32::containsKey_MapOfMyInt32StringMap(const int32_t &key) const {
-		return (m_mapOfMyInt32StringMap.count(key) > 0);
+	void Test11MapInt32::putTo_MapOfMap7(const int32_t &key, const std::string &val) {
+		m_mapOfMap7[key] = val;
 	}
 	
-	std::string Test11MapInt32::getValueForKey_MapOfMyInt32StringMap(const int32_t &key) {
-		return m_mapOfMyInt32StringMap[key];
+	bool Test11MapInt32::containsKey_MapOfMap7(const int32_t &key) const {
+		return (m_mapOfMap7.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, std::string>::iterator, std::map<int32_t, std::string>::iterator> Test11MapInt32::iteratorPair_MapOfMyInt32StringMap() {
-		return std::make_pair(m_mapOfMyInt32StringMap.begin(), m_mapOfMyInt32StringMap.end());
+	std::string Test11MapInt32::getValueForKey_MapOfMap7(const int32_t &key) {
+		return m_mapOfMap7[key];
+	}
+	
+	std::pair<std::map<int32_t, std::string>::iterator, std::map<int32_t, std::string>::iterator> Test11MapInt32::iteratorPair_MapOfMap7() {
+		return std::make_pair(m_mapOfMap7.begin(), m_mapOfMap7.end());
 	}
 
 	void Test11MapInt32::accept(core::base::Visitor &v) {
@@ -341,13 +341,13 @@
 		stringstream s;
 
 
-		s << "Number of elements in map of MyInt32BoolMap: " << getSize_MapOfMyInt32BoolMap() << " ";
-		s << "Number of elements in map of MyInt32CharMap: " << getSize_MapOfMyInt32CharMap() << " ";
-		s << "Number of elements in map of MyInt32Int32Map: " << getSize_MapOfMyInt32Int32Map() << " ";
-		s << "Number of elements in map of MyInt32Uint32Map: " << getSize_MapOfMyInt32Uint32Map() << " ";
-		s << "Number of elements in map of MyInt32FloatMap: " << getSize_MapOfMyInt32FloatMap() << " ";
-		s << "Number of elements in map of MyInt32DoubleMap: " << getSize_MapOfMyInt32DoubleMap() << " ";
-		s << "Number of elements in map of MyInt32StringMap: " << getSize_MapOfMyInt32StringMap() << " ";
+		s << "Number of elements in map of Map1: " << getSize_MapOfMap1() << " ";
+		s << "Number of elements in map of Map2: " << getSize_MapOfMap2() << " ";
+		s << "Number of elements in map of Map3: " << getSize_MapOfMap3() << " ";
+		s << "Number of elements in map of Map4: " << getSize_MapOfMap4() << " ";
+		s << "Number of elements in map of Map5: " << getSize_MapOfMap5() << " ";
+		s << "Number of elements in map of Map6: " << getSize_MapOfMap6() << " ";
+		s << "Number of elements in map of Map7: " << getSize_MapOfMap7() << " ";
 
 		return s.str();
 	}
@@ -359,143 +359,143 @@
 		core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
 		{
-			// Write number of elements in m_mapOfMyInt32BoolMap.
-			const uint32_t numberOfMyInt32BoolMap = static_cast<uint32_t>(m_mapOfMyInt32BoolMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32BoolMap);
+			// Write number of elements in m_mapOfMap1.
+			const uint32_t numberOfMap1 = static_cast<uint32_t>(m_mapOfMap1.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT + 1,
+			        numberOfMap1);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32BoolMap;
-			std::map<int32_t, bool>::const_iterator it = m_mapOfMyInt32BoolMap.begin();
-			while (it != m_mapOfMyInt32BoolMap.end()) {
-			    sstrOfMyInt32BoolMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap1;
+			std::map<int32_t, bool>::const_iterator it = m_mapOfMap1.begin();
+			while (it != m_mapOfMap1.end()) {
+			    sstrOfMap1 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32BoolMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32BoolMap.str());
+			if (numberOfMap1 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT,
+						sstrOfMap1.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyInt32CharMap.
-			const uint32_t numberOfMyInt32CharMap = static_cast<uint32_t>(m_mapOfMyInt32CharMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32CharMap);
+			// Write number of elements in m_mapOfMap2.
+			const uint32_t numberOfMap2 = static_cast<uint32_t>(m_mapOfMap2.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT + 1,
+			        numberOfMap2);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32CharMap;
-			std::map<int32_t, char>::const_iterator it = m_mapOfMyInt32CharMap.begin();
-			while (it != m_mapOfMyInt32CharMap.end()) {
-			    sstrOfMyInt32CharMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap2;
+			std::map<int32_t, char>::const_iterator it = m_mapOfMap2.begin();
+			while (it != m_mapOfMap2.end()) {
+			    sstrOfMap2 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32CharMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32CharMap.str());
+			if (numberOfMap2 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT,
+						sstrOfMap2.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyInt32Int32Map.
-			const uint32_t numberOfMyInt32Int32Map = static_cast<uint32_t>(m_mapOfMyInt32Int32Map.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32Int32Map);
+			// Write number of elements in m_mapOfMap3.
+			const uint32_t numberOfMap3 = static_cast<uint32_t>(m_mapOfMap3.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT + 1,
+			        numberOfMap3);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32Int32Map;
-			std::map<int32_t, int32_t>::const_iterator it = m_mapOfMyInt32Int32Map.begin();
-			while (it != m_mapOfMyInt32Int32Map.end()) {
-			    sstrOfMyInt32Int32Map << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap3;
+			std::map<int32_t, int32_t>::const_iterator it = m_mapOfMap3.begin();
+			while (it != m_mapOfMap3.end()) {
+			    sstrOfMap3 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32Int32Map > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32Int32Map.str());
+			if (numberOfMap3 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT,
+						sstrOfMap3.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyInt32Uint32Map.
-			const uint32_t numberOfMyInt32Uint32Map = static_cast<uint32_t>(m_mapOfMyInt32Uint32Map.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32Uint32Map);
+			// Write number of elements in m_mapOfMap4.
+			const uint32_t numberOfMap4 = static_cast<uint32_t>(m_mapOfMap4.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT + 1,
+			        numberOfMap4);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32Uint32Map;
-			std::map<int32_t, uint32_t>::const_iterator it = m_mapOfMyInt32Uint32Map.begin();
-			while (it != m_mapOfMyInt32Uint32Map.end()) {
-			    sstrOfMyInt32Uint32Map << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap4;
+			std::map<int32_t, uint32_t>::const_iterator it = m_mapOfMap4.begin();
+			while (it != m_mapOfMap4.end()) {
+			    sstrOfMap4 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32Uint32Map > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32Uint32Map.str());
+			if (numberOfMap4 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT,
+						sstrOfMap4.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyInt32FloatMap.
-			const uint32_t numberOfMyInt32FloatMap = static_cast<uint32_t>(m_mapOfMyInt32FloatMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32FloatMap);
+			// Write number of elements in m_mapOfMap5.
+			const uint32_t numberOfMap5 = static_cast<uint32_t>(m_mapOfMap5.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT + 1,
+			        numberOfMap5);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32FloatMap;
-			std::map<int32_t, float>::const_iterator it = m_mapOfMyInt32FloatMap.begin();
-			while (it != m_mapOfMyInt32FloatMap.end()) {
-			    sstrOfMyInt32FloatMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap5;
+			std::map<int32_t, float>::const_iterator it = m_mapOfMap5.begin();
+			while (it != m_mapOfMap5.end()) {
+			    sstrOfMap5 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32FloatMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32FloatMap.str());
+			if (numberOfMap5 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT,
+						sstrOfMap5.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyInt32DoubleMap.
-			const uint32_t numberOfMyInt32DoubleMap = static_cast<uint32_t>(m_mapOfMyInt32DoubleMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32DoubleMap);
+			// Write number of elements in m_mapOfMap6.
+			const uint32_t numberOfMap6 = static_cast<uint32_t>(m_mapOfMap6.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT + 1,
+			        numberOfMap6);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32DoubleMap;
-			std::map<int32_t, double>::const_iterator it = m_mapOfMyInt32DoubleMap.begin();
-			while (it != m_mapOfMyInt32DoubleMap.end()) {
-			    sstrOfMyInt32DoubleMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap6;
+			std::map<int32_t, double>::const_iterator it = m_mapOfMap6.begin();
+			while (it != m_mapOfMap6.end()) {
+			    sstrOfMap6 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32DoubleMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32DoubleMap.str());
+			if (numberOfMap6 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT,
+						sstrOfMap6.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyInt32StringMap.
-			const uint32_t numberOfMyInt32StringMap = static_cast<uint32_t>(m_mapOfMyInt32StringMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyInt32StringMap);
+			// Write number of elements in m_mapOfMap7.
+			const uint32_t numberOfMap7 = static_cast<uint32_t>(m_mapOfMap7.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT + 1,
+			        numberOfMap7);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyInt32StringMap;
-			std::map<int32_t, std::string>::const_iterator it = m_mapOfMyInt32StringMap.begin();
-			while (it != m_mapOfMyInt32StringMap.end()) {
-			    sstrOfMyInt32StringMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap7;
+			std::map<int32_t, std::string>::const_iterator it = m_mapOfMap7.begin();
+			while (it != m_mapOfMap7.end()) {
+			    sstrOfMap7 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyInt32StringMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyInt32StringMap.str());
+			if (numberOfMap7 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT,
+						sstrOfMap7.str());
 			}
 		}
 		return out;
@@ -507,18 +507,18 @@
 
 		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing map of MyInt32BoolMap.
-		m_mapOfMyInt32BoolMap.clear();
+		// Clean up the existing map of Map1.
+		m_mapOfMap1.clear();
 		
-		// Read number of elements in m_mapOfMyInt32BoolMap.
-		uint32_t numberOfMyInt32BoolMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32BoolMap);
+		// Read number of elements in m_mapOfMap1.
+		uint32_t numberOfMap1 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT + 1,
+			   numberOfMap1);
 		
-		if (numberOfMyInt32BoolMap > 0) {
+		if (numberOfMap1 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -555,21 +555,21 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32BoolMap(_key, _value);
+				putTo_MapOfMap1(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyInt32CharMap.
-		m_mapOfMyInt32CharMap.clear();
+		// Clean up the existing map of Map2.
+		m_mapOfMap2.clear();
 		
-		// Read number of elements in m_mapOfMyInt32CharMap.
-		uint32_t numberOfMyInt32CharMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32CharMap);
+		// Read number of elements in m_mapOfMap2.
+		uint32_t numberOfMap2 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT + 1,
+			   numberOfMap2);
 		
-		if (numberOfMyInt32CharMap > 0) {
+		if (numberOfMap2 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -606,21 +606,21 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32CharMap(_key, _value);
+				putTo_MapOfMap2(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyInt32Int32Map.
-		m_mapOfMyInt32Int32Map.clear();
+		// Clean up the existing map of Map3.
+		m_mapOfMap3.clear();
 		
-		// Read number of elements in m_mapOfMyInt32Int32Map.
-		uint32_t numberOfMyInt32Int32Map = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32Int32Map);
+		// Read number of elements in m_mapOfMap3.
+		uint32_t numberOfMap3 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT + 1,
+			   numberOfMap3);
 		
-		if (numberOfMyInt32Int32Map > 0) {
+		if (numberOfMap3 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -657,21 +657,21 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32Int32Map(_key, _value);
+				putTo_MapOfMap3(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyInt32Uint32Map.
-		m_mapOfMyInt32Uint32Map.clear();
+		// Clean up the existing map of Map4.
+		m_mapOfMap4.clear();
 		
-		// Read number of elements in m_mapOfMyInt32Uint32Map.
-		uint32_t numberOfMyInt32Uint32Map = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32Uint32Map);
+		// Read number of elements in m_mapOfMap4.
+		uint32_t numberOfMap4 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT + 1,
+			   numberOfMap4);
 		
-		if (numberOfMyInt32Uint32Map > 0) {
+		if (numberOfMap4 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -708,21 +708,21 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32Uint32Map(_key, _value);
+				putTo_MapOfMap4(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyInt32FloatMap.
-		m_mapOfMyInt32FloatMap.clear();
+		// Clean up the existing map of Map5.
+		m_mapOfMap5.clear();
 		
-		// Read number of elements in m_mapOfMyInt32FloatMap.
-		uint32_t numberOfMyInt32FloatMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32FloatMap);
+		// Read number of elements in m_mapOfMap5.
+		uint32_t numberOfMap5 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT + 1,
+			   numberOfMap5);
 		
-		if (numberOfMyInt32FloatMap > 0) {
+		if (numberOfMap5 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -759,21 +759,21 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32FloatMap(_key, _value);
+				putTo_MapOfMap5(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyInt32DoubleMap.
-		m_mapOfMyInt32DoubleMap.clear();
+		// Clean up the existing map of Map6.
+		m_mapOfMap6.clear();
 		
-		// Read number of elements in m_mapOfMyInt32DoubleMap.
-		uint32_t numberOfMyInt32DoubleMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32DoubleMap);
+		// Read number of elements in m_mapOfMap6.
+		uint32_t numberOfMap6 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT + 1,
+			   numberOfMap6);
 		
-		if (numberOfMyInt32DoubleMap > 0) {
+		if (numberOfMap6 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -810,21 +810,21 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32DoubleMap(_key, _value);
+				putTo_MapOfMap6(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyInt32StringMap.
-		m_mapOfMyInt32StringMap.clear();
+		// Clean up the existing map of Map7.
+		m_mapOfMap7.clear();
 		
-		// Read number of elements in m_mapOfMyInt32StringMap.
-		uint32_t numberOfMyInt32StringMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyInt32StringMap);
+		// Read number of elements in m_mapOfMap7.
+		uint32_t numberOfMap7 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT + 1,
+			   numberOfMap7);
 		
-		if (numberOfMyInt32StringMap > 0) {
+		if (numberOfMap7 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -861,7 +861,7 @@
 		        getline(sstrValue, _value);
 		
 				// Store key/value pair.
-				putTo_MapOfMyInt32StringMap(_key, _value);
+				putTo_MapOfMap7(_key, _value);
 			}
 		}
 		return in;

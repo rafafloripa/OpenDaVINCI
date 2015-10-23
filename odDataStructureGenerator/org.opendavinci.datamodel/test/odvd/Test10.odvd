@@ -4,8 +4,8 @@ message Test10Point [ id = 10 ] {
 }
 
 message Test10  [ id = 11 ]{
-	list<string> myStringList;
-	list<Test10Point> myPointList;
-	map<int32, string> myIntStringMap;
-	map<int32, Test10Point> myIntPointMap;
+	list<string> list1;
+	list<Test10Point> list2;
+	map<int32, string> map1;
+	map<int32, Test10Point> map2;
 }

@@ -22,10 +22,10 @@
 
 	Test10::Test10() :
 	    SerializableData(), Visitable()
-		, m_listOfMyStringList()
-		, m_listOfMyPointList()
-		, m_mapOfMyIntStringMap()
-		, m_mapOfMyIntPointMap()
+		, m_listOfList1()
+		, m_listOfList2()
+		, m_mapOfMap1()
+		, m_mapOfMap2()
 	{
 	}
 
@@ -36,19 +36,19 @@
 		const map<int32_t, Test10Point> &val3
 	) :
 	    SerializableData(), Visitable()
-		, m_listOfMyStringList(val0)
-		, m_listOfMyPointList(val1)
-		, m_mapOfMyIntStringMap(val2)
-		, m_mapOfMyIntPointMap(val3)
+		, m_listOfList1(val0)
+		, m_listOfList2(val1)
+		, m_mapOfMap1(val2)
+		, m_mapOfMap2(val3)
 	{
 	}
 
 	Test10::Test10(const Test10 &obj) :
 	    SerializableData(), Visitable()
-		, m_listOfMyStringList(obj.m_listOfMyStringList)
-		, m_listOfMyPointList(obj.m_listOfMyPointList)
-		, m_mapOfMyIntStringMap(obj.m_mapOfMyIntStringMap)
-		, m_mapOfMyIntPointMap(obj.m_mapOfMyIntPointMap)
+		, m_listOfList1(obj.m_listOfList1)
+		, m_listOfList2(obj.m_listOfList2)
+		, m_mapOfMap1(obj.m_mapOfMap1)
+		, m_mapOfMap2(obj.m_mapOfMap2)
 	{
 	}
 	
@@ -56,10 +56,10 @@
 	}
 
 	Test10& Test10::operator=(const Test10 &obj) {
-		m_listOfMyStringList = obj.m_listOfMyStringList;
-		m_listOfMyPointList = obj.m_listOfMyPointList;
-		m_mapOfMyIntStringMap = obj.m_mapOfMyIntStringMap;
-		m_mapOfMyIntPointMap = obj.m_mapOfMyIntPointMap;
+		m_listOfList1 = obj.m_listOfList1;
+		m_listOfList2 = obj.m_listOfList2;
+		m_mapOfMap1 = obj.m_mapOfMap1;
+		m_mapOfMap2 = obj.m_mapOfMap2;
 		return (*this);
 	}
 
@@ -75,151 +75,151 @@
 		return "Test10";
 	}
 
-	std::vector<std::string> Test10::getListOfMyStringList() const {
-		return m_listOfMyStringList;
+	std::vector<std::string> Test10::getListOfList1() const {
+		return m_listOfList1;
 	}
 	
-	void Test10::setListOfMyStringList(const std::vector<std::string> &val) {
-		m_listOfMyStringList = val;
+	void Test10::setListOfList1(const std::vector<std::string> &val) {
+		m_listOfList1 = val;
 	}
 	
-	void Test10::clear_ListOfMyStringList() {
-		m_listOfMyStringList.clear();
+	void Test10::clear_ListOfList1() {
+		m_listOfList1.clear();
 	}
 	
-	uint32_t Test10::getSize_ListOfMyStringList() const {
-		return m_listOfMyStringList.size();
+	uint32_t Test10::getSize_ListOfList1() const {
+		return m_listOfList1.size();
 	}
 	
-	bool Test10::isEmpty_ListOfMyStringList() const {
-		return m_listOfMyStringList.empty();
+	bool Test10::isEmpty_ListOfList1() const {
+		return m_listOfList1.empty();
 	}
 	
-	void Test10::addTo_ListOfMyStringList(const std::string &val) {
-		m_listOfMyStringList.push_back(val);
+	void Test10::addTo_ListOfList1(const std::string &val) {
+		m_listOfList1.push_back(val);
 	}
 	
-	void Test10::insertTo_ListOfMyStringList(const std::string &val) {
-		m_listOfMyStringList.insert(m_listOfMyStringList.begin(), val);
+	void Test10::insertTo_ListOfList1(const std::string &val) {
+		m_listOfList1.insert(m_listOfList1.begin(), val);
 	}
 	
-	bool Test10::contains_ListOfMyStringList(const std::string &val) const {
-		return std::find(m_listOfMyStringList.begin(), m_listOfMyStringList.end(), val) != m_listOfMyStringList.end();
+	bool Test10::contains_ListOfList1(const std::string &val) const {
+		return std::find(m_listOfList1.begin(), m_listOfList1.end(), val) != m_listOfList1.end();
 	}
 	
-	std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> Test10::iteratorPair_ListOfMyStringList() {
-		return std::make_pair(m_listOfMyStringList.begin(), m_listOfMyStringList.end());
+	std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> Test10::iteratorPair_ListOfList1() {
+		return std::make_pair(m_listOfList1.begin(), m_listOfList1.end());
 	}
-	std::vector<Test10Point> Test10::getListOfMyPointList() const {
-		return m_listOfMyPointList;
-	}
-	
-	void Test10::setListOfMyPointList(const std::vector<Test10Point> &val) {
-		m_listOfMyPointList = val;
+	std::vector<Test10Point> Test10::getListOfList2() const {
+		return m_listOfList2;
 	}
 	
-	void Test10::clear_ListOfMyPointList() {
-		m_listOfMyPointList.clear();
+	void Test10::setListOfList2(const std::vector<Test10Point> &val) {
+		m_listOfList2 = val;
 	}
 	
-	uint32_t Test10::getSize_ListOfMyPointList() const {
-		return m_listOfMyPointList.size();
+	void Test10::clear_ListOfList2() {
+		m_listOfList2.clear();
 	}
 	
-	bool Test10::isEmpty_ListOfMyPointList() const {
-		return m_listOfMyPointList.empty();
+	uint32_t Test10::getSize_ListOfList2() const {
+		return m_listOfList2.size();
 	}
 	
-	void Test10::addTo_ListOfMyPointList(const Test10Point &val) {
-		m_listOfMyPointList.push_back(val);
+	bool Test10::isEmpty_ListOfList2() const {
+		return m_listOfList2.empty();
 	}
 	
-	void Test10::insertTo_ListOfMyPointList(const Test10Point &val) {
-		m_listOfMyPointList.insert(m_listOfMyPointList.begin(), val);
+	void Test10::addTo_ListOfList2(const Test10Point &val) {
+		m_listOfList2.push_back(val);
 	}
 	
-	bool Test10::contains_ListOfMyPointList(const Test10Point &val) const {
+	void Test10::insertTo_ListOfList2(const Test10Point &val) {
+		m_listOfList2.insert(m_listOfList2.begin(), val);
+	}
+	
+	bool Test10::contains_ListOfList2(const Test10Point &val) const {
 		bool found = false;
-		std::vector<Test10Point>::const_iterator it = m_listOfMyPointList.begin();
-		while (it != m_listOfMyPointList.end() && !found) {
+		std::vector<Test10Point>::const_iterator it = m_listOfList2.begin();
+		while (it != m_listOfList2.end() && !found) {
 		    found |= (*it).toString() == val.toString();
 		    it++;
 		}
 		return found;
 	}
 	
-	std::pair<std::vector<Test10Point>::iterator, std::vector<Test10Point>::iterator> Test10::iteratorPair_ListOfMyPointList() {
-		return std::make_pair(m_listOfMyPointList.begin(), m_listOfMyPointList.end());
+	std::pair<std::vector<Test10Point>::iterator, std::vector<Test10Point>::iterator> Test10::iteratorPair_ListOfList2() {
+		return std::make_pair(m_listOfList2.begin(), m_listOfList2.end());
 	}
-	std::map<int32_t, std::string> Test10::getMapOfMyIntStringMap() const {
-		return m_mapOfMyIntStringMap;
-	}
-	
-	void Test10::setMapOfMyIntStringMap(const std::map<int32_t, std::string> &val) {
-		m_mapOfMyIntStringMap = val;
+	std::map<int32_t, std::string> Test10::getMapOfMap1() const {
+		return m_mapOfMap1;
 	}
 	
-	void Test10::clear_MapOfMyIntStringMap() {
-		m_mapOfMyIntStringMap.clear();
+	void Test10::setMapOfMap1(const std::map<int32_t, std::string> &val) {
+		m_mapOfMap1 = val;
 	}
 	
-	uint32_t Test10::getSize_MapOfMyIntStringMap() const {
-		return m_mapOfMyIntStringMap.size();
+	void Test10::clear_MapOfMap1() {
+		m_mapOfMap1.clear();
 	}
 	
-	bool Test10::isEmpty_MapOfMyIntStringMap() const {
-		return m_mapOfMyIntStringMap.empty();
+	uint32_t Test10::getSize_MapOfMap1() const {
+		return m_mapOfMap1.size();
 	}
 	
-	void Test10::putTo_MapOfMyIntStringMap(const int32_t &key, const std::string &val) {
-		m_mapOfMyIntStringMap[key] = val;
+	bool Test10::isEmpty_MapOfMap1() const {
+		return m_mapOfMap1.empty();
 	}
 	
-	bool Test10::containsKey_MapOfMyIntStringMap(const int32_t &key) const {
-		return (m_mapOfMyIntStringMap.count(key) > 0);
+	void Test10::putTo_MapOfMap1(const int32_t &key, const std::string &val) {
+		m_mapOfMap1[key] = val;
 	}
 	
-	std::string Test10::getValueForKey_MapOfMyIntStringMap(const int32_t &key) {
-		return m_mapOfMyIntStringMap[key];
+	bool Test10::containsKey_MapOfMap1(const int32_t &key) const {
+		return (m_mapOfMap1.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, std::string>::iterator, std::map<int32_t, std::string>::iterator> Test10::iteratorPair_MapOfMyIntStringMap() {
-		return std::make_pair(m_mapOfMyIntStringMap.begin(), m_mapOfMyIntStringMap.end());
-	}
-	std::map<int32_t, Test10Point> Test10::getMapOfMyIntPointMap() const {
-		return m_mapOfMyIntPointMap;
+	std::string Test10::getValueForKey_MapOfMap1(const int32_t &key) {
+		return m_mapOfMap1[key];
 	}
 	
-	void Test10::setMapOfMyIntPointMap(const std::map<int32_t, Test10Point> &val) {
-		m_mapOfMyIntPointMap = val;
+	std::pair<std::map<int32_t, std::string>::iterator, std::map<int32_t, std::string>::iterator> Test10::iteratorPair_MapOfMap1() {
+		return std::make_pair(m_mapOfMap1.begin(), m_mapOfMap1.end());
+	}
+	std::map<int32_t, Test10Point> Test10::getMapOfMap2() const {
+		return m_mapOfMap2;
 	}
 	
-	void Test10::clear_MapOfMyIntPointMap() {
-		m_mapOfMyIntPointMap.clear();
+	void Test10::setMapOfMap2(const std::map<int32_t, Test10Point> &val) {
+		m_mapOfMap2 = val;
 	}
 	
-	uint32_t Test10::getSize_MapOfMyIntPointMap() const {
-		return m_mapOfMyIntPointMap.size();
+	void Test10::clear_MapOfMap2() {
+		m_mapOfMap2.clear();
 	}
 	
-	bool Test10::isEmpty_MapOfMyIntPointMap() const {
-		return m_mapOfMyIntPointMap.empty();
+	uint32_t Test10::getSize_MapOfMap2() const {
+		return m_mapOfMap2.size();
 	}
 	
-	void Test10::putTo_MapOfMyIntPointMap(const int32_t &key, const Test10Point &val) {
-		m_mapOfMyIntPointMap[key] = val;
+	bool Test10::isEmpty_MapOfMap2() const {
+		return m_mapOfMap2.empty();
 	}
 	
-	bool Test10::containsKey_MapOfMyIntPointMap(const int32_t &key) const {
-		return (m_mapOfMyIntPointMap.count(key) > 0);
+	void Test10::putTo_MapOfMap2(const int32_t &key, const Test10Point &val) {
+		m_mapOfMap2[key] = val;
 	}
 	
-	Test10Point Test10::getValueForKey_MapOfMyIntPointMap(const int32_t &key) {
-		return m_mapOfMyIntPointMap[key];
+	bool Test10::containsKey_MapOfMap2(const int32_t &key) const {
+		return (m_mapOfMap2.count(key) > 0);
 	}
 	
-	std::pair<std::map<int32_t, Test10Point>::iterator, std::map<int32_t, Test10Point>::iterator> Test10::iteratorPair_MapOfMyIntPointMap() {
-		return std::make_pair(m_mapOfMyIntPointMap.begin(), m_mapOfMyIntPointMap.end());
+	Test10Point Test10::getValueForKey_MapOfMap2(const int32_t &key) {
+		return m_mapOfMap2[key];
+	}
+	
+	std::pair<std::map<int32_t, Test10Point>::iterator, std::map<int32_t, Test10Point>::iterator> Test10::iteratorPair_MapOfMap2() {
+		return std::make_pair(m_mapOfMap2.begin(), m_mapOfMap2.end());
 	}
 
 	void Test10::accept(core::base::Visitor &v) {
@@ -230,10 +230,10 @@
 		stringstream s;
 
 
-		s << "Number of elements in list of MyStringList: " << getSize_ListOfMyStringList() << " ";
-		s << "Number of elements in list of MyPointList: " << getSize_ListOfMyPointList() << " ";
-		s << "Number of elements in map of MyIntStringMap: " << getSize_MapOfMyIntStringMap() << " ";
-		s << "Number of elements in map of MyIntPointMap: " << getSize_MapOfMyIntPointMap() << " ";
+		s << "Number of elements in list of List1: " << getSize_ListOfList1() << " ";
+		s << "Number of elements in list of List2: " << getSize_ListOfList2() << " ";
+		s << "Number of elements in map of Map1: " << getSize_MapOfMap1() << " ";
+		s << "Number of elements in map of Map2: " << getSize_MapOfMap2() << " ";
 
 		return s.str();
 	}
@@ -244,76 +244,76 @@
 
 		core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
-		// Write number of elements in m_listOfMyStringList.
-		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyStringList);
+		// Write number of elements in m_listOfList1.
+		const uint32_t numberOfList1 = static_cast<uint32_t>(m_listOfList1.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT + 1,
+		        numberOfList1);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyStringList;
-		for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		    sstrOfMyStringList << m_listOfMyStringList.at(i) << endl;
+		std::stringstream sstrOfList1;
+		for (uint32_t i = 0; i < numberOfList1; i++) {
+		    sstrOfList1 << m_listOfList1.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyStringList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyStringList.str());
+		if (numberOfList1 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT,
+			        sstrOfList1.str());
 		}
-		// Write number of elements in m_listOfMyPointList.
-		const uint32_t numberOfMyPointList = static_cast<uint32_t>(m_listOfMyPointList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-		        numberOfMyPointList);
+		// Write number of elements in m_listOfList2.
+		const uint32_t numberOfList2 = static_cast<uint32_t>(m_listOfList2.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT + 1,
+		        numberOfList2);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyPointList;
-		for (uint32_t i = 0; i < numberOfMyPointList; i++) {
-		    sstrOfMyPointList << m_listOfMyPointList.at(i);
+		std::stringstream sstrOfList2;
+		for (uint32_t i = 0; i < numberOfList2; i++) {
+		    sstrOfList2 << m_listOfList2.at(i);
 		}
 		
 		// Write string of elements.
-		if (numberOfMyPointList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyPointList.str());
+		if (numberOfList2 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT,
+			        sstrOfList2.str());
 		}
 		{
-			// Write number of elements in m_mapOfMyIntStringMap.
-			const uint32_t numberOfMyIntStringMap = static_cast<uint32_t>(m_mapOfMyIntStringMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyIntStringMap);
+			// Write number of elements in m_mapOfMap1.
+			const uint32_t numberOfMap1 = static_cast<uint32_t>(m_mapOfMap1.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT + 1,
+			        numberOfMap1);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyIntStringMap;
-			std::map<int32_t, std::string>::const_iterator it = m_mapOfMyIntStringMap.begin();
-			while (it != m_mapOfMyIntStringMap.end()) {
-			    sstrOfMyIntStringMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap1;
+			std::map<int32_t, std::string>::const_iterator it = m_mapOfMap1.begin();
+			while (it != m_mapOfMap1.end()) {
+			    sstrOfMap1 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyIntStringMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyIntStringMap.str());
+			if (numberOfMap1 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT,
+						sstrOfMap1.str());
 			}
 		}
 		{
-			// Write number of elements in m_mapOfMyIntPointMap.
-			const uint32_t numberOfMyIntPointMap = static_cast<uint32_t>(m_mapOfMyIntPointMap.size());
-			s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-			        numberOfMyIntPointMap);
+			// Write number of elements in m_mapOfMap2.
+			const uint32_t numberOfMap2 = static_cast<uint32_t>(m_mapOfMap2.size());
+			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT + 1,
+			        numberOfMap2);
 		
 			// Write actual elements into a stringstream.
-			std::stringstream sstrOfMyIntPointMap;
-			std::map<int32_t, Test10Point>::const_iterator it = m_mapOfMyIntPointMap.begin();
-			while (it != m_mapOfMyIntPointMap.end()) {
-			    sstrOfMyIntPointMap << it->first << "=" << it->second << endl;
+			std::stringstream sstrOfMap2;
+			std::map<int32_t, Test10Point>::const_iterator it = m_mapOfMap2.begin();
+			while (it != m_mapOfMap2.end()) {
+			    sstrOfMap2 << it->first << "=" << it->second << endl;
 			    it++;
 			}
 			
 			// Write string of elements.
-			if (numberOfMyIntPointMap > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > >  >::RESULT,
-						sstrOfMyIntPointMap.str());
+			if (numberOfMap2 > 0) {
+				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT,
+						sstrOfMap2.str());
 			}
 		}
 		return out;
@@ -325,64 +325,64 @@
 
 		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing list of MyStringList.
-		m_listOfMyStringList.clear();
+		// Clean up the existing list of List1.
+		m_listOfList1.clear();
 		
-		// Read number of elements in m_listOfMyStringList.
-		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyStringList);
+		// Read number of elements in m_listOfList1.
+		uint32_t numberOfList1 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT + 1,
+		       numberOfList1);
 		
-		if (numberOfMyStringList > 0) {
+		if (numberOfList1 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyStringList; i++) {
+		    for (uint32_t i = 0; i < numberOfList1; i++) {
 		        std::string element;
 		        getline(sstr, element);
-		        m_listOfMyStringList.push_back(element);
+		        m_listOfList1.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyPointList.
-		m_listOfMyPointList.clear();
+		// Clean up the existing list of List2.
+		m_listOfList2.clear();
 		
-		// Read number of elements in m_listOfMyPointList.
-		uint32_t numberOfMyPointList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-		       numberOfMyPointList);
+		// Read number of elements in m_listOfList2.
+		uint32_t numberOfList2 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT + 1,
+		       numberOfList2);
 		
-		if (numberOfMyPointList > 0) {
+		if (numberOfList2 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyPointList; i++) {
+		    for (uint32_t i = 0; i < numberOfList2; i++) {
 		        Test10Point element;
 		        sstr >> element;
-		        m_listOfMyPointList.push_back(element);
+		        m_listOfList2.push_back(element);
 		    }
 		}
-		// Clean up the existing map of MyIntStringMap.
-		m_mapOfMyIntStringMap.clear();
+		// Clean up the existing map of Map1.
+		m_mapOfMap1.clear();
 		
-		// Read number of elements in m_mapOfMyIntStringMap.
-		uint32_t numberOfMyIntStringMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyIntStringMap);
+		// Read number of elements in m_mapOfMap1.
+		uint32_t numberOfMap1 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT + 1,
+			   numberOfMap1);
 		
-		if (numberOfMyIntStringMap > 0) {
+		if (numberOfMap1 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -419,21 +419,21 @@
 		        getline(sstrValue, _value);
 		
 				// Store key/value pair.
-				putTo_MapOfMyIntStringMap(_key, _value);
+				putTo_MapOfMap1(_key, _value);
 			}
 		}
-		// Clean up the existing map of MyIntPointMap.
-		m_mapOfMyIntPointMap.clear();
+		// Clean up the existing map of Map2.
+		m_mapOfMap2.clear();
 		
-		// Read number of elements in m_mapOfMyIntPointMap.
-		uint32_t numberOfMyIntPointMap = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > > >  >::RESULT,
-			   numberOfMyIntPointMap);
+		// Read number of elements in m_mapOfMap2.
+		uint32_t numberOfMap2 = 0;
+		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT + 1,
+			   numberOfMap2);
 		
-		if (numberOfMyIntPointMap > 0) {
+		if (numberOfMap2 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'P', CharList<'o', CharList<'i', CharList<'n', CharList<'t', CharList<'M', CharList<'a', CharList<'p', NullType> > > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT,
 			       elements);
 		
 			stringstream sstr(elements);
@@ -470,7 +470,7 @@
 		        sstrValue >> _value;
 		
 				// Store key/value pair.
-				putTo_MapOfMyIntPointMap(_key, _value);
+				putTo_MapOfMap2(_key, _value);
 			}
 		}
 		return in;

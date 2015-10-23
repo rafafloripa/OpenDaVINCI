@@ -51,375 +51,375 @@ class Test11MapBool : public core::data::SerializableData, public core::base::Vi
 
 	public:
 		/**
-		 * @return myBoolBoolMap.
+		 * @return map1.
 		 */
-		std::map<bool, bool> getMapOfMyBoolBoolMap() const;
+		std::map<bool, bool> getMapOfMap1() const;
 	
 		/**
-		 * This method sets myBoolBoolMap.
+		 * This method sets map1.
 		 *
-		 * @param val Value for myBoolBoolMap.
+		 * @param val Value for map1.
 		 */
-		void setMapOfMyBoolBoolMap(const std::map<bool, bool> &val);
+		void setMapOfMap1(const std::map<bool, bool> &val);
 	
 		/**
-		 * This method clears the map of myBoolBoolMap.
+		 * This method clears the map of map1.
 		 */
-		void clear_MapOfMyBoolBoolMap();
+		void clear_MapOfMap1();
 	
 		/**
-		 * @return the size of the map of myBoolBoolMap.
+		 * @return the size of the map of map1.
 		 */
-		uint32_t getSize_MapOfMyBoolBoolMap() const;
+		uint32_t getSize_MapOfMap1() const;
 	
 		/**
-		 * @return true if the map of myBoolBoolMap is empty.
+		 * @return true if the map of map1 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolBoolMap() const;
+		bool isEmpty_MapOfMap1() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolBoolMap.
+		 * This method adds an element to the map of map1.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolBoolMap.
-		 * @param val Value of the key/value pair to be added to the map of myBoolBoolMap.
+		 * @param key Key of the key/value pair to be added to the map of map1.
+		 * @param val Value of the key/value pair to be added to the map of map1.
 		 */
-		void putTo_MapOfMyBoolBoolMap(const bool &key, const bool &val);
+		void putTo_MapOfMap1(const bool &key, const bool &val);
 	
 		/**
-		 * @return true if the map of myBoolBoolMap is contains the given key.
+		 * @return true if the map of map1 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolBoolMap(const bool &key) const;
+		bool containsKey_MapOfMap1(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolBoolMap.
-		 * @return Value to given key from the map of myBoolBoolMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map1.
+		 * @return Value to given key from the map of map1 is contains the given key.
 		 */
-		bool getValueForKey_MapOfMyBoolBoolMap(const bool &key);
+		bool getValueForKey_MapOfMap1(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolBoolMap.
+		 * @return Pair of iterators for the begin and end of the map of map1.
 		 */
-		std::pair<std::map<bool, bool>::iterator, std::map<bool, bool>::iterator> iteratorPair_MapOfMyBoolBoolMap();
+		std::pair<std::map<bool, bool>::iterator, std::map<bool, bool>::iterator> iteratorPair_MapOfMap1();
 	public:
 		/**
-		 * @return myBoolCharMap.
+		 * @return map2.
 		 */
-		std::map<bool, char> getMapOfMyBoolCharMap() const;
+		std::map<bool, char> getMapOfMap2() const;
 	
 		/**
-		 * This method sets myBoolCharMap.
+		 * This method sets map2.
 		 *
-		 * @param val Value for myBoolCharMap.
+		 * @param val Value for map2.
 		 */
-		void setMapOfMyBoolCharMap(const std::map<bool, char> &val);
+		void setMapOfMap2(const std::map<bool, char> &val);
 	
 		/**
-		 * This method clears the map of myBoolCharMap.
+		 * This method clears the map of map2.
 		 */
-		void clear_MapOfMyBoolCharMap();
+		void clear_MapOfMap2();
 	
 		/**
-		 * @return the size of the map of myBoolCharMap.
+		 * @return the size of the map of map2.
 		 */
-		uint32_t getSize_MapOfMyBoolCharMap() const;
+		uint32_t getSize_MapOfMap2() const;
 	
 		/**
-		 * @return true if the map of myBoolCharMap is empty.
+		 * @return true if the map of map2 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolCharMap() const;
+		bool isEmpty_MapOfMap2() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolCharMap.
+		 * This method adds an element to the map of map2.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolCharMap.
-		 * @param val Value of the key/value pair to be added to the map of myBoolCharMap.
+		 * @param key Key of the key/value pair to be added to the map of map2.
+		 * @param val Value of the key/value pair to be added to the map of map2.
 		 */
-		void putTo_MapOfMyBoolCharMap(const bool &key, const char &val);
+		void putTo_MapOfMap2(const bool &key, const char &val);
 	
 		/**
-		 * @return true if the map of myBoolCharMap is contains the given key.
+		 * @return true if the map of map2 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolCharMap(const bool &key) const;
+		bool containsKey_MapOfMap2(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolCharMap.
-		 * @return Value to given key from the map of myBoolCharMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map2.
+		 * @return Value to given key from the map of map2 is contains the given key.
 		 */
-		char getValueForKey_MapOfMyBoolCharMap(const bool &key);
+		char getValueForKey_MapOfMap2(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolCharMap.
+		 * @return Pair of iterators for the begin and end of the map of map2.
 		 */
-		std::pair<std::map<bool, char>::iterator, std::map<bool, char>::iterator> iteratorPair_MapOfMyBoolCharMap();
+		std::pair<std::map<bool, char>::iterator, std::map<bool, char>::iterator> iteratorPair_MapOfMap2();
 	public:
 		/**
-		 * @return myBoolInt32Map.
+		 * @return map3.
 		 */
-		std::map<bool, int32_t> getMapOfMyBoolInt32Map() const;
+		std::map<bool, int32_t> getMapOfMap3() const;
 	
 		/**
-		 * This method sets myBoolInt32Map.
+		 * This method sets map3.
 		 *
-		 * @param val Value for myBoolInt32Map.
+		 * @param val Value for map3.
 		 */
-		void setMapOfMyBoolInt32Map(const std::map<bool, int32_t> &val);
+		void setMapOfMap3(const std::map<bool, int32_t> &val);
 	
 		/**
-		 * This method clears the map of myBoolInt32Map.
+		 * This method clears the map of map3.
 		 */
-		void clear_MapOfMyBoolInt32Map();
+		void clear_MapOfMap3();
 	
 		/**
-		 * @return the size of the map of myBoolInt32Map.
+		 * @return the size of the map of map3.
 		 */
-		uint32_t getSize_MapOfMyBoolInt32Map() const;
+		uint32_t getSize_MapOfMap3() const;
 	
 		/**
-		 * @return true if the map of myBoolInt32Map is empty.
+		 * @return true if the map of map3 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolInt32Map() const;
+		bool isEmpty_MapOfMap3() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolInt32Map.
+		 * This method adds an element to the map of map3.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolInt32Map.
-		 * @param val Value of the key/value pair to be added to the map of myBoolInt32Map.
+		 * @param key Key of the key/value pair to be added to the map of map3.
+		 * @param val Value of the key/value pair to be added to the map of map3.
 		 */
-		void putTo_MapOfMyBoolInt32Map(const bool &key, const int32_t &val);
+		void putTo_MapOfMap3(const bool &key, const int32_t &val);
 	
 		/**
-		 * @return true if the map of myBoolInt32Map is contains the given key.
+		 * @return true if the map of map3 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolInt32Map(const bool &key) const;
+		bool containsKey_MapOfMap3(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolInt32Map.
-		 * @return Value to given key from the map of myBoolInt32Map is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map3.
+		 * @return Value to given key from the map of map3 is contains the given key.
 		 */
-		int32_t getValueForKey_MapOfMyBoolInt32Map(const bool &key);
+		int32_t getValueForKey_MapOfMap3(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolInt32Map.
+		 * @return Pair of iterators for the begin and end of the map of map3.
 		 */
-		std::pair<std::map<bool, int32_t>::iterator, std::map<bool, int32_t>::iterator> iteratorPair_MapOfMyBoolInt32Map();
+		std::pair<std::map<bool, int32_t>::iterator, std::map<bool, int32_t>::iterator> iteratorPair_MapOfMap3();
 	public:
 		/**
-		 * @return myBoolUint32Map.
+		 * @return map4.
 		 */
-		std::map<bool, uint32_t> getMapOfMyBoolUint32Map() const;
+		std::map<bool, uint32_t> getMapOfMap4() const;
 	
 		/**
-		 * This method sets myBoolUint32Map.
+		 * This method sets map4.
 		 *
-		 * @param val Value for myBoolUint32Map.
+		 * @param val Value for map4.
 		 */
-		void setMapOfMyBoolUint32Map(const std::map<bool, uint32_t> &val);
+		void setMapOfMap4(const std::map<bool, uint32_t> &val);
 	
 		/**
-		 * This method clears the map of myBoolUint32Map.
+		 * This method clears the map of map4.
 		 */
-		void clear_MapOfMyBoolUint32Map();
+		void clear_MapOfMap4();
 	
 		/**
-		 * @return the size of the map of myBoolUint32Map.
+		 * @return the size of the map of map4.
 		 */
-		uint32_t getSize_MapOfMyBoolUint32Map() const;
+		uint32_t getSize_MapOfMap4() const;
 	
 		/**
-		 * @return true if the map of myBoolUint32Map is empty.
+		 * @return true if the map of map4 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolUint32Map() const;
+		bool isEmpty_MapOfMap4() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolUint32Map.
+		 * This method adds an element to the map of map4.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolUint32Map.
-		 * @param val Value of the key/value pair to be added to the map of myBoolUint32Map.
+		 * @param key Key of the key/value pair to be added to the map of map4.
+		 * @param val Value of the key/value pair to be added to the map of map4.
 		 */
-		void putTo_MapOfMyBoolUint32Map(const bool &key, const uint32_t &val);
+		void putTo_MapOfMap4(const bool &key, const uint32_t &val);
 	
 		/**
-		 * @return true if the map of myBoolUint32Map is contains the given key.
+		 * @return true if the map of map4 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolUint32Map(const bool &key) const;
+		bool containsKey_MapOfMap4(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolUint32Map.
-		 * @return Value to given key from the map of myBoolUint32Map is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map4.
+		 * @return Value to given key from the map of map4 is contains the given key.
 		 */
-		uint32_t getValueForKey_MapOfMyBoolUint32Map(const bool &key);
+		uint32_t getValueForKey_MapOfMap4(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolUint32Map.
+		 * @return Pair of iterators for the begin and end of the map of map4.
 		 */
-		std::pair<std::map<bool, uint32_t>::iterator, std::map<bool, uint32_t>::iterator> iteratorPair_MapOfMyBoolUint32Map();
+		std::pair<std::map<bool, uint32_t>::iterator, std::map<bool, uint32_t>::iterator> iteratorPair_MapOfMap4();
 	public:
 		/**
-		 * @return myBoolFloatMap.
+		 * @return map5.
 		 */
-		std::map<bool, float> getMapOfMyBoolFloatMap() const;
+		std::map<bool, float> getMapOfMap5() const;
 	
 		/**
-		 * This method sets myBoolFloatMap.
+		 * This method sets map5.
 		 *
-		 * @param val Value for myBoolFloatMap.
+		 * @param val Value for map5.
 		 */
-		void setMapOfMyBoolFloatMap(const std::map<bool, float> &val);
+		void setMapOfMap5(const std::map<bool, float> &val);
 	
 		/**
-		 * This method clears the map of myBoolFloatMap.
+		 * This method clears the map of map5.
 		 */
-		void clear_MapOfMyBoolFloatMap();
+		void clear_MapOfMap5();
 	
 		/**
-		 * @return the size of the map of myBoolFloatMap.
+		 * @return the size of the map of map5.
 		 */
-		uint32_t getSize_MapOfMyBoolFloatMap() const;
+		uint32_t getSize_MapOfMap5() const;
 	
 		/**
-		 * @return true if the map of myBoolFloatMap is empty.
+		 * @return true if the map of map5 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolFloatMap() const;
+		bool isEmpty_MapOfMap5() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolFloatMap.
+		 * This method adds an element to the map of map5.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolFloatMap.
-		 * @param val Value of the key/value pair to be added to the map of myBoolFloatMap.
+		 * @param key Key of the key/value pair to be added to the map of map5.
+		 * @param val Value of the key/value pair to be added to the map of map5.
 		 */
-		void putTo_MapOfMyBoolFloatMap(const bool &key, const float &val);
+		void putTo_MapOfMap5(const bool &key, const float &val);
 	
 		/**
-		 * @return true if the map of myBoolFloatMap is contains the given key.
+		 * @return true if the map of map5 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolFloatMap(const bool &key) const;
+		bool containsKey_MapOfMap5(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolFloatMap.
-		 * @return Value to given key from the map of myBoolFloatMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map5.
+		 * @return Value to given key from the map of map5 is contains the given key.
 		 */
-		float getValueForKey_MapOfMyBoolFloatMap(const bool &key);
+		float getValueForKey_MapOfMap5(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolFloatMap.
+		 * @return Pair of iterators for the begin and end of the map of map5.
 		 */
-		std::pair<std::map<bool, float>::iterator, std::map<bool, float>::iterator> iteratorPair_MapOfMyBoolFloatMap();
+		std::pair<std::map<bool, float>::iterator, std::map<bool, float>::iterator> iteratorPair_MapOfMap5();
 	public:
 		/**
-		 * @return myBoolDoubleMap.
+		 * @return map6.
 		 */
-		std::map<bool, double> getMapOfMyBoolDoubleMap() const;
+		std::map<bool, double> getMapOfMap6() const;
 	
 		/**
-		 * This method sets myBoolDoubleMap.
+		 * This method sets map6.
 		 *
-		 * @param val Value for myBoolDoubleMap.
+		 * @param val Value for map6.
 		 */
-		void setMapOfMyBoolDoubleMap(const std::map<bool, double> &val);
+		void setMapOfMap6(const std::map<bool, double> &val);
 	
 		/**
-		 * This method clears the map of myBoolDoubleMap.
+		 * This method clears the map of map6.
 		 */
-		void clear_MapOfMyBoolDoubleMap();
+		void clear_MapOfMap6();
 	
 		/**
-		 * @return the size of the map of myBoolDoubleMap.
+		 * @return the size of the map of map6.
 		 */
-		uint32_t getSize_MapOfMyBoolDoubleMap() const;
+		uint32_t getSize_MapOfMap6() const;
 	
 		/**
-		 * @return true if the map of myBoolDoubleMap is empty.
+		 * @return true if the map of map6 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolDoubleMap() const;
+		bool isEmpty_MapOfMap6() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolDoubleMap.
+		 * This method adds an element to the map of map6.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolDoubleMap.
-		 * @param val Value of the key/value pair to be added to the map of myBoolDoubleMap.
+		 * @param key Key of the key/value pair to be added to the map of map6.
+		 * @param val Value of the key/value pair to be added to the map of map6.
 		 */
-		void putTo_MapOfMyBoolDoubleMap(const bool &key, const double &val);
+		void putTo_MapOfMap6(const bool &key, const double &val);
 	
 		/**
-		 * @return true if the map of myBoolDoubleMap is contains the given key.
+		 * @return true if the map of map6 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolDoubleMap(const bool &key) const;
+		bool containsKey_MapOfMap6(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolDoubleMap.
-		 * @return Value to given key from the map of myBoolDoubleMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map6.
+		 * @return Value to given key from the map of map6 is contains the given key.
 		 */
-		double getValueForKey_MapOfMyBoolDoubleMap(const bool &key);
+		double getValueForKey_MapOfMap6(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolDoubleMap.
+		 * @return Pair of iterators for the begin and end of the map of map6.
 		 */
-		std::pair<std::map<bool, double>::iterator, std::map<bool, double>::iterator> iteratorPair_MapOfMyBoolDoubleMap();
+		std::pair<std::map<bool, double>::iterator, std::map<bool, double>::iterator> iteratorPair_MapOfMap6();
 	public:
 		/**
-		 * @return myBoolStringMap.
+		 * @return map7.
 		 */
-		std::map<bool, std::string> getMapOfMyBoolStringMap() const;
+		std::map<bool, std::string> getMapOfMap7() const;
 	
 		/**
-		 * This method sets myBoolStringMap.
+		 * This method sets map7.
 		 *
-		 * @param val Value for myBoolStringMap.
+		 * @param val Value for map7.
 		 */
-		void setMapOfMyBoolStringMap(const std::map<bool, std::string> &val);
+		void setMapOfMap7(const std::map<bool, std::string> &val);
 	
 		/**
-		 * This method clears the map of myBoolStringMap.
+		 * This method clears the map of map7.
 		 */
-		void clear_MapOfMyBoolStringMap();
+		void clear_MapOfMap7();
 	
 		/**
-		 * @return the size of the map of myBoolStringMap.
+		 * @return the size of the map of map7.
 		 */
-		uint32_t getSize_MapOfMyBoolStringMap() const;
+		uint32_t getSize_MapOfMap7() const;
 	
 		/**
-		 * @return true if the map of myBoolStringMap is empty.
+		 * @return true if the map of map7 is empty.
 		 */
-		bool isEmpty_MapOfMyBoolStringMap() const;
+		bool isEmpty_MapOfMap7() const;
 	
 		/**
-		 * This method adds an element to the map of myBoolStringMap.
+		 * This method adds an element to the map of map7.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myBoolStringMap.
-		 * @param val Value of the key/value pair to be added to the map of myBoolStringMap.
+		 * @param key Key of the key/value pair to be added to the map of map7.
+		 * @param val Value of the key/value pair to be added to the map of map7.
 		 */
-		void putTo_MapOfMyBoolStringMap(const bool &key, const std::string &val);
+		void putTo_MapOfMap7(const bool &key, const std::string &val);
 	
 		/**
-		 * @return true if the map of myBoolStringMap is contains the given key.
+		 * @return true if the map of map7 is contains the given key.
 		 */
-		bool containsKey_MapOfMyBoolStringMap(const bool &key) const;
+		bool containsKey_MapOfMap7(const bool &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myBoolStringMap.
-		 * @return Value to given key from the map of myBoolStringMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map7.
+		 * @return Value to given key from the map of map7 is contains the given key.
 		 */
-		std::string getValueForKey_MapOfMyBoolStringMap(const bool &key);
+		std::string getValueForKey_MapOfMap7(const bool &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myBoolStringMap.
+		 * @return Pair of iterators for the begin and end of the map of map7.
 		 */
-		std::pair<std::map<bool, std::string>::iterator, std::map<bool, std::string>::iterator> iteratorPair_MapOfMyBoolStringMap();
+		std::pair<std::map<bool, std::string>::iterator, std::map<bool, std::string>::iterator> iteratorPair_MapOfMap7();
 
 	public:
 		/**
@@ -452,19 +452,19 @@ class Test11MapBool : public core::data::SerializableData, public core::base::Vi
 		virtual const string toString() const;
 
 	private:
-		std::map<bool, bool> m_mapOfMyBoolBoolMap;
+		std::map<bool, bool> m_mapOfMap1;
 	private:
-		std::map<bool, char> m_mapOfMyBoolCharMap;
+		std::map<bool, char> m_mapOfMap2;
 	private:
-		std::map<bool, int32_t> m_mapOfMyBoolInt32Map;
+		std::map<bool, int32_t> m_mapOfMap3;
 	private:
-		std::map<bool, uint32_t> m_mapOfMyBoolUint32Map;
+		std::map<bool, uint32_t> m_mapOfMap4;
 	private:
-		std::map<bool, float> m_mapOfMyBoolFloatMap;
+		std::map<bool, float> m_mapOfMap5;
 	private:
-		std::map<bool, double> m_mapOfMyBoolDoubleMap;
+		std::map<bool, double> m_mapOfMap6;
 	private:
-		std::map<bool, std::string> m_mapOfMyBoolStringMap;
+		std::map<bool, std::string> m_mapOfMap7;
 
 };
 

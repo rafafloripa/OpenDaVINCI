@@ -22,13 +22,13 @@
 
 	Test11Lists::Test11Lists() :
 	    SerializableData(), Visitable()
-		, m_listOfMyBoolList()
-		, m_listOfMyCharList()
-		, m_listOfMyInt32List()
-		, m_listOfMyUint32List()
-		, m_listOfMyFloatList()
-		, m_listOfMyDoubleList()
-		, m_listOfMyStringList()
+		, m_listOfList1()
+		, m_listOfList2()
+		, m_listOfList3()
+		, m_listOfList4()
+		, m_listOfList5()
+		, m_listOfList6()
+		, m_listOfList7()
 	{
 	}
 
@@ -42,25 +42,25 @@
 		const vector<std::string> &val6
 	) :
 	    SerializableData(), Visitable()
-		, m_listOfMyBoolList(val0)
-		, m_listOfMyCharList(val1)
-		, m_listOfMyInt32List(val2)
-		, m_listOfMyUint32List(val3)
-		, m_listOfMyFloatList(val4)
-		, m_listOfMyDoubleList(val5)
-		, m_listOfMyStringList(val6)
+		, m_listOfList1(val0)
+		, m_listOfList2(val1)
+		, m_listOfList3(val2)
+		, m_listOfList4(val3)
+		, m_listOfList5(val4)
+		, m_listOfList6(val5)
+		, m_listOfList7(val6)
 	{
 	}
 
 	Test11Lists::Test11Lists(const Test11Lists &obj) :
 	    SerializableData(), Visitable()
-		, m_listOfMyBoolList(obj.m_listOfMyBoolList)
-		, m_listOfMyCharList(obj.m_listOfMyCharList)
-		, m_listOfMyInt32List(obj.m_listOfMyInt32List)
-		, m_listOfMyUint32List(obj.m_listOfMyUint32List)
-		, m_listOfMyFloatList(obj.m_listOfMyFloatList)
-		, m_listOfMyDoubleList(obj.m_listOfMyDoubleList)
-		, m_listOfMyStringList(obj.m_listOfMyStringList)
+		, m_listOfList1(obj.m_listOfList1)
+		, m_listOfList2(obj.m_listOfList2)
+		, m_listOfList3(obj.m_listOfList3)
+		, m_listOfList4(obj.m_listOfList4)
+		, m_listOfList5(obj.m_listOfList5)
+		, m_listOfList6(obj.m_listOfList6)
+		, m_listOfList7(obj.m_listOfList7)
 	{
 	}
 	
@@ -68,13 +68,13 @@
 	}
 
 	Test11Lists& Test11Lists::operator=(const Test11Lists &obj) {
-		m_listOfMyBoolList = obj.m_listOfMyBoolList;
-		m_listOfMyCharList = obj.m_listOfMyCharList;
-		m_listOfMyInt32List = obj.m_listOfMyInt32List;
-		m_listOfMyUint32List = obj.m_listOfMyUint32List;
-		m_listOfMyFloatList = obj.m_listOfMyFloatList;
-		m_listOfMyDoubleList = obj.m_listOfMyDoubleList;
-		m_listOfMyStringList = obj.m_listOfMyStringList;
+		m_listOfList1 = obj.m_listOfList1;
+		m_listOfList2 = obj.m_listOfList2;
+		m_listOfList3 = obj.m_listOfList3;
+		m_listOfList4 = obj.m_listOfList4;
+		m_listOfList5 = obj.m_listOfList5;
+		m_listOfList6 = obj.m_listOfList6;
+		m_listOfList7 = obj.m_listOfList7;
 		return (*this);
 	}
 
@@ -90,250 +90,250 @@
 		return "Test11Lists";
 	}
 
-	std::vector<bool> Test11Lists::getListOfMyBoolList() const {
-		return m_listOfMyBoolList;
+	std::vector<bool> Test11Lists::getListOfList1() const {
+		return m_listOfList1;
 	}
 	
-	void Test11Lists::setListOfMyBoolList(const std::vector<bool> &val) {
-		m_listOfMyBoolList = val;
+	void Test11Lists::setListOfList1(const std::vector<bool> &val) {
+		m_listOfList1 = val;
 	}
 	
-	void Test11Lists::clear_ListOfMyBoolList() {
-		m_listOfMyBoolList.clear();
+	void Test11Lists::clear_ListOfList1() {
+		m_listOfList1.clear();
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyBoolList() const {
-		return m_listOfMyBoolList.size();
+	uint32_t Test11Lists::getSize_ListOfList1() const {
+		return m_listOfList1.size();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyBoolList() const {
-		return m_listOfMyBoolList.empty();
+	bool Test11Lists::isEmpty_ListOfList1() const {
+		return m_listOfList1.empty();
 	}
 	
-	void Test11Lists::addTo_ListOfMyBoolList(const bool &val) {
-		m_listOfMyBoolList.push_back(val);
+	void Test11Lists::addTo_ListOfList1(const bool &val) {
+		m_listOfList1.push_back(val);
 	}
 	
-	void Test11Lists::insertTo_ListOfMyBoolList(const bool &val) {
-		m_listOfMyBoolList.insert(m_listOfMyBoolList.begin(), val);
+	void Test11Lists::insertTo_ListOfList1(const bool &val) {
+		m_listOfList1.insert(m_listOfList1.begin(), val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyBoolList(const bool &val) const {
-		return std::find(m_listOfMyBoolList.begin(), m_listOfMyBoolList.end(), val) != m_listOfMyBoolList.end();
+	bool Test11Lists::contains_ListOfList1(const bool &val) const {
+		return std::find(m_listOfList1.begin(), m_listOfList1.end(), val) != m_listOfList1.end();
 	}
 	
-	std::pair<std::vector<bool>::iterator, std::vector<bool>::iterator> Test11Lists::iteratorPair_ListOfMyBoolList() {
-		return std::make_pair(m_listOfMyBoolList.begin(), m_listOfMyBoolList.end());
+	std::pair<std::vector<bool>::iterator, std::vector<bool>::iterator> Test11Lists::iteratorPair_ListOfList1() {
+		return std::make_pair(m_listOfList1.begin(), m_listOfList1.end());
 	}
-	std::vector<char> Test11Lists::getListOfMyCharList() const {
-		return m_listOfMyCharList;
-	}
-	
-	void Test11Lists::setListOfMyCharList(const std::vector<char> &val) {
-		m_listOfMyCharList = val;
+	std::vector<char> Test11Lists::getListOfList2() const {
+		return m_listOfList2;
 	}
 	
-	void Test11Lists::clear_ListOfMyCharList() {
-		m_listOfMyCharList.clear();
+	void Test11Lists::setListOfList2(const std::vector<char> &val) {
+		m_listOfList2 = val;
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyCharList() const {
-		return m_listOfMyCharList.size();
+	void Test11Lists::clear_ListOfList2() {
+		m_listOfList2.clear();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyCharList() const {
-		return m_listOfMyCharList.empty();
+	uint32_t Test11Lists::getSize_ListOfList2() const {
+		return m_listOfList2.size();
 	}
 	
-	void Test11Lists::addTo_ListOfMyCharList(const char &val) {
-		m_listOfMyCharList.push_back(val);
+	bool Test11Lists::isEmpty_ListOfList2() const {
+		return m_listOfList2.empty();
 	}
 	
-	void Test11Lists::insertTo_ListOfMyCharList(const char &val) {
-		m_listOfMyCharList.insert(m_listOfMyCharList.begin(), val);
+	void Test11Lists::addTo_ListOfList2(const char &val) {
+		m_listOfList2.push_back(val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyCharList(const char &val) const {
-		return std::find(m_listOfMyCharList.begin(), m_listOfMyCharList.end(), val) != m_listOfMyCharList.end();
+	void Test11Lists::insertTo_ListOfList2(const char &val) {
+		m_listOfList2.insert(m_listOfList2.begin(), val);
 	}
 	
-	std::pair<std::vector<char>::iterator, std::vector<char>::iterator> Test11Lists::iteratorPair_ListOfMyCharList() {
-		return std::make_pair(m_listOfMyCharList.begin(), m_listOfMyCharList.end());
-	}
-	std::vector<int32_t> Test11Lists::getListOfMyInt32List() const {
-		return m_listOfMyInt32List;
+	bool Test11Lists::contains_ListOfList2(const char &val) const {
+		return std::find(m_listOfList2.begin(), m_listOfList2.end(), val) != m_listOfList2.end();
 	}
 	
-	void Test11Lists::setListOfMyInt32List(const std::vector<int32_t> &val) {
-		m_listOfMyInt32List = val;
+	std::pair<std::vector<char>::iterator, std::vector<char>::iterator> Test11Lists::iteratorPair_ListOfList2() {
+		return std::make_pair(m_listOfList2.begin(), m_listOfList2.end());
+	}
+	std::vector<int32_t> Test11Lists::getListOfList3() const {
+		return m_listOfList3;
 	}
 	
-	void Test11Lists::clear_ListOfMyInt32List() {
-		m_listOfMyInt32List.clear();
+	void Test11Lists::setListOfList3(const std::vector<int32_t> &val) {
+		m_listOfList3 = val;
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyInt32List() const {
-		return m_listOfMyInt32List.size();
+	void Test11Lists::clear_ListOfList3() {
+		m_listOfList3.clear();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyInt32List() const {
-		return m_listOfMyInt32List.empty();
+	uint32_t Test11Lists::getSize_ListOfList3() const {
+		return m_listOfList3.size();
 	}
 	
-	void Test11Lists::addTo_ListOfMyInt32List(const int32_t &val) {
-		m_listOfMyInt32List.push_back(val);
+	bool Test11Lists::isEmpty_ListOfList3() const {
+		return m_listOfList3.empty();
 	}
 	
-	void Test11Lists::insertTo_ListOfMyInt32List(const int32_t &val) {
-		m_listOfMyInt32List.insert(m_listOfMyInt32List.begin(), val);
+	void Test11Lists::addTo_ListOfList3(const int32_t &val) {
+		m_listOfList3.push_back(val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyInt32List(const int32_t &val) const {
-		return std::find(m_listOfMyInt32List.begin(), m_listOfMyInt32List.end(), val) != m_listOfMyInt32List.end();
+	void Test11Lists::insertTo_ListOfList3(const int32_t &val) {
+		m_listOfList3.insert(m_listOfList3.begin(), val);
 	}
 	
-	std::pair<std::vector<int32_t>::iterator, std::vector<int32_t>::iterator> Test11Lists::iteratorPair_ListOfMyInt32List() {
-		return std::make_pair(m_listOfMyInt32List.begin(), m_listOfMyInt32List.end());
-	}
-	std::vector<uint32_t> Test11Lists::getListOfMyUint32List() const {
-		return m_listOfMyUint32List;
+	bool Test11Lists::contains_ListOfList3(const int32_t &val) const {
+		return std::find(m_listOfList3.begin(), m_listOfList3.end(), val) != m_listOfList3.end();
 	}
 	
-	void Test11Lists::setListOfMyUint32List(const std::vector<uint32_t> &val) {
-		m_listOfMyUint32List = val;
+	std::pair<std::vector<int32_t>::iterator, std::vector<int32_t>::iterator> Test11Lists::iteratorPair_ListOfList3() {
+		return std::make_pair(m_listOfList3.begin(), m_listOfList3.end());
+	}
+	std::vector<uint32_t> Test11Lists::getListOfList4() const {
+		return m_listOfList4;
 	}
 	
-	void Test11Lists::clear_ListOfMyUint32List() {
-		m_listOfMyUint32List.clear();
+	void Test11Lists::setListOfList4(const std::vector<uint32_t> &val) {
+		m_listOfList4 = val;
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyUint32List() const {
-		return m_listOfMyUint32List.size();
+	void Test11Lists::clear_ListOfList4() {
+		m_listOfList4.clear();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyUint32List() const {
-		return m_listOfMyUint32List.empty();
+	uint32_t Test11Lists::getSize_ListOfList4() const {
+		return m_listOfList4.size();
 	}
 	
-	void Test11Lists::addTo_ListOfMyUint32List(const uint32_t &val) {
-		m_listOfMyUint32List.push_back(val);
+	bool Test11Lists::isEmpty_ListOfList4() const {
+		return m_listOfList4.empty();
 	}
 	
-	void Test11Lists::insertTo_ListOfMyUint32List(const uint32_t &val) {
-		m_listOfMyUint32List.insert(m_listOfMyUint32List.begin(), val);
+	void Test11Lists::addTo_ListOfList4(const uint32_t &val) {
+		m_listOfList4.push_back(val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyUint32List(const uint32_t &val) const {
-		return std::find(m_listOfMyUint32List.begin(), m_listOfMyUint32List.end(), val) != m_listOfMyUint32List.end();
+	void Test11Lists::insertTo_ListOfList4(const uint32_t &val) {
+		m_listOfList4.insert(m_listOfList4.begin(), val);
 	}
 	
-	std::pair<std::vector<uint32_t>::iterator, std::vector<uint32_t>::iterator> Test11Lists::iteratorPair_ListOfMyUint32List() {
-		return std::make_pair(m_listOfMyUint32List.begin(), m_listOfMyUint32List.end());
-	}
-	std::vector<float> Test11Lists::getListOfMyFloatList() const {
-		return m_listOfMyFloatList;
+	bool Test11Lists::contains_ListOfList4(const uint32_t &val) const {
+		return std::find(m_listOfList4.begin(), m_listOfList4.end(), val) != m_listOfList4.end();
 	}
 	
-	void Test11Lists::setListOfMyFloatList(const std::vector<float> &val) {
-		m_listOfMyFloatList = val;
+	std::pair<std::vector<uint32_t>::iterator, std::vector<uint32_t>::iterator> Test11Lists::iteratorPair_ListOfList4() {
+		return std::make_pair(m_listOfList4.begin(), m_listOfList4.end());
+	}
+	std::vector<float> Test11Lists::getListOfList5() const {
+		return m_listOfList5;
 	}
 	
-	void Test11Lists::clear_ListOfMyFloatList() {
-		m_listOfMyFloatList.clear();
+	void Test11Lists::setListOfList5(const std::vector<float> &val) {
+		m_listOfList5 = val;
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyFloatList() const {
-		return m_listOfMyFloatList.size();
+	void Test11Lists::clear_ListOfList5() {
+		m_listOfList5.clear();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyFloatList() const {
-		return m_listOfMyFloatList.empty();
+	uint32_t Test11Lists::getSize_ListOfList5() const {
+		return m_listOfList5.size();
 	}
 	
-	void Test11Lists::addTo_ListOfMyFloatList(const float &val) {
-		m_listOfMyFloatList.push_back(val);
+	bool Test11Lists::isEmpty_ListOfList5() const {
+		return m_listOfList5.empty();
 	}
 	
-	void Test11Lists::insertTo_ListOfMyFloatList(const float &val) {
-		m_listOfMyFloatList.insert(m_listOfMyFloatList.begin(), val);
+	void Test11Lists::addTo_ListOfList5(const float &val) {
+		m_listOfList5.push_back(val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyFloatList(const float &val) const {
-		return std::find(m_listOfMyFloatList.begin(), m_listOfMyFloatList.end(), val) != m_listOfMyFloatList.end();
+	void Test11Lists::insertTo_ListOfList5(const float &val) {
+		m_listOfList5.insert(m_listOfList5.begin(), val);
 	}
 	
-	std::pair<std::vector<float>::iterator, std::vector<float>::iterator> Test11Lists::iteratorPair_ListOfMyFloatList() {
-		return std::make_pair(m_listOfMyFloatList.begin(), m_listOfMyFloatList.end());
-	}
-	std::vector<double> Test11Lists::getListOfMyDoubleList() const {
-		return m_listOfMyDoubleList;
+	bool Test11Lists::contains_ListOfList5(const float &val) const {
+		return std::find(m_listOfList5.begin(), m_listOfList5.end(), val) != m_listOfList5.end();
 	}
 	
-	void Test11Lists::setListOfMyDoubleList(const std::vector<double> &val) {
-		m_listOfMyDoubleList = val;
+	std::pair<std::vector<float>::iterator, std::vector<float>::iterator> Test11Lists::iteratorPair_ListOfList5() {
+		return std::make_pair(m_listOfList5.begin(), m_listOfList5.end());
+	}
+	std::vector<double> Test11Lists::getListOfList6() const {
+		return m_listOfList6;
 	}
 	
-	void Test11Lists::clear_ListOfMyDoubleList() {
-		m_listOfMyDoubleList.clear();
+	void Test11Lists::setListOfList6(const std::vector<double> &val) {
+		m_listOfList6 = val;
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyDoubleList() const {
-		return m_listOfMyDoubleList.size();
+	void Test11Lists::clear_ListOfList6() {
+		m_listOfList6.clear();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyDoubleList() const {
-		return m_listOfMyDoubleList.empty();
+	uint32_t Test11Lists::getSize_ListOfList6() const {
+		return m_listOfList6.size();
 	}
 	
-	void Test11Lists::addTo_ListOfMyDoubleList(const double &val) {
-		m_listOfMyDoubleList.push_back(val);
+	bool Test11Lists::isEmpty_ListOfList6() const {
+		return m_listOfList6.empty();
 	}
 	
-	void Test11Lists::insertTo_ListOfMyDoubleList(const double &val) {
-		m_listOfMyDoubleList.insert(m_listOfMyDoubleList.begin(), val);
+	void Test11Lists::addTo_ListOfList6(const double &val) {
+		m_listOfList6.push_back(val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyDoubleList(const double &val) const {
-		return std::find(m_listOfMyDoubleList.begin(), m_listOfMyDoubleList.end(), val) != m_listOfMyDoubleList.end();
+	void Test11Lists::insertTo_ListOfList6(const double &val) {
+		m_listOfList6.insert(m_listOfList6.begin(), val);
 	}
 	
-	std::pair<std::vector<double>::iterator, std::vector<double>::iterator> Test11Lists::iteratorPair_ListOfMyDoubleList() {
-		return std::make_pair(m_listOfMyDoubleList.begin(), m_listOfMyDoubleList.end());
-	}
-	std::vector<std::string> Test11Lists::getListOfMyStringList() const {
-		return m_listOfMyStringList;
+	bool Test11Lists::contains_ListOfList6(const double &val) const {
+		return std::find(m_listOfList6.begin(), m_listOfList6.end(), val) != m_listOfList6.end();
 	}
 	
-	void Test11Lists::setListOfMyStringList(const std::vector<std::string> &val) {
-		m_listOfMyStringList = val;
+	std::pair<std::vector<double>::iterator, std::vector<double>::iterator> Test11Lists::iteratorPair_ListOfList6() {
+		return std::make_pair(m_listOfList6.begin(), m_listOfList6.end());
+	}
+	std::vector<std::string> Test11Lists::getListOfList7() const {
+		return m_listOfList7;
 	}
 	
-	void Test11Lists::clear_ListOfMyStringList() {
-		m_listOfMyStringList.clear();
+	void Test11Lists::setListOfList7(const std::vector<std::string> &val) {
+		m_listOfList7 = val;
 	}
 	
-	uint32_t Test11Lists::getSize_ListOfMyStringList() const {
-		return m_listOfMyStringList.size();
+	void Test11Lists::clear_ListOfList7() {
+		m_listOfList7.clear();
 	}
 	
-	bool Test11Lists::isEmpty_ListOfMyStringList() const {
-		return m_listOfMyStringList.empty();
+	uint32_t Test11Lists::getSize_ListOfList7() const {
+		return m_listOfList7.size();
 	}
 	
-	void Test11Lists::addTo_ListOfMyStringList(const std::string &val) {
-		m_listOfMyStringList.push_back(val);
+	bool Test11Lists::isEmpty_ListOfList7() const {
+		return m_listOfList7.empty();
 	}
 	
-	void Test11Lists::insertTo_ListOfMyStringList(const std::string &val) {
-		m_listOfMyStringList.insert(m_listOfMyStringList.begin(), val);
+	void Test11Lists::addTo_ListOfList7(const std::string &val) {
+		m_listOfList7.push_back(val);
 	}
 	
-	bool Test11Lists::contains_ListOfMyStringList(const std::string &val) const {
-		return std::find(m_listOfMyStringList.begin(), m_listOfMyStringList.end(), val) != m_listOfMyStringList.end();
+	void Test11Lists::insertTo_ListOfList7(const std::string &val) {
+		m_listOfList7.insert(m_listOfList7.begin(), val);
 	}
 	
-	std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> Test11Lists::iteratorPair_ListOfMyStringList() {
-		return std::make_pair(m_listOfMyStringList.begin(), m_listOfMyStringList.end());
+	bool Test11Lists::contains_ListOfList7(const std::string &val) const {
+		return std::find(m_listOfList7.begin(), m_listOfList7.end(), val) != m_listOfList7.end();
+	}
+	
+	std::pair<std::vector<std::string>::iterator, std::vector<std::string>::iterator> Test11Lists::iteratorPair_ListOfList7() {
+		return std::make_pair(m_listOfList7.begin(), m_listOfList7.end());
 	}
 
 	void Test11Lists::accept(core::base::Visitor &v) {
@@ -344,13 +344,13 @@
 		stringstream s;
 
 
-		s << "Number of elements in list of MyBoolList: " << getSize_ListOfMyBoolList() << " ";
-		s << "Number of elements in list of MyCharList: " << getSize_ListOfMyCharList() << " ";
-		s << "Number of elements in list of MyInt32List: " << getSize_ListOfMyInt32List() << " ";
-		s << "Number of elements in list of MyUint32List: " << getSize_ListOfMyUint32List() << " ";
-		s << "Number of elements in list of MyFloatList: " << getSize_ListOfMyFloatList() << " ";
-		s << "Number of elements in list of MyDoubleList: " << getSize_ListOfMyDoubleList() << " ";
-		s << "Number of elements in list of MyStringList: " << getSize_ListOfMyStringList() << " ";
+		s << "Number of elements in list of List1: " << getSize_ListOfList1() << " ";
+		s << "Number of elements in list of List2: " << getSize_ListOfList2() << " ";
+		s << "Number of elements in list of List3: " << getSize_ListOfList3() << " ";
+		s << "Number of elements in list of List4: " << getSize_ListOfList4() << " ";
+		s << "Number of elements in list of List5: " << getSize_ListOfList5() << " ";
+		s << "Number of elements in list of List6: " << getSize_ListOfList6() << " ";
+		s << "Number of elements in list of List7: " << getSize_ListOfList7() << " ";
 
 		return s.str();
 	}
@@ -361,117 +361,117 @@
 
 		core::SharedPointer<Serializer> s = sf.getSerializer(out);
 
-		// Write number of elements in m_listOfMyBoolList.
-		const uint32_t numberOfMyBoolList = static_cast<uint32_t>(m_listOfMyBoolList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-		        numberOfMyBoolList);
+		// Write number of elements in m_listOfList1.
+		const uint32_t numberOfList1 = static_cast<uint32_t>(m_listOfList1.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT + 1,
+		        numberOfList1);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyBoolList;
-		for (uint32_t i = 0; i < numberOfMyBoolList; i++) {
-		    sstrOfMyBoolList << m_listOfMyBoolList.at(i) << endl;
+		std::stringstream sstrOfList1;
+		for (uint32_t i = 0; i < numberOfList1; i++) {
+		    sstrOfList1 << m_listOfList1.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyBoolList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-			        sstrOfMyBoolList.str());
+		if (numberOfList1 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT,
+			        sstrOfList1.str());
 		}
-		// Write number of elements in m_listOfMyCharList.
-		const uint32_t numberOfMyCharList = static_cast<uint32_t>(m_listOfMyCharList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-		        numberOfMyCharList);
+		// Write number of elements in m_listOfList2.
+		const uint32_t numberOfList2 = static_cast<uint32_t>(m_listOfList2.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT + 1,
+		        numberOfList2);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyCharList;
-		for (uint32_t i = 0; i < numberOfMyCharList; i++) {
-		    sstrOfMyCharList << m_listOfMyCharList.at(i) << endl;
+		std::stringstream sstrOfList2;
+		for (uint32_t i = 0; i < numberOfList2; i++) {
+		    sstrOfList2 << m_listOfList2.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyCharList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
-			        sstrOfMyCharList.str());
+		if (numberOfList2 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT,
+			        sstrOfList2.str());
 		}
-		// Write number of elements in m_listOfMyInt32List.
-		const uint32_t numberOfMyInt32List = static_cast<uint32_t>(m_listOfMyInt32List.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-		        numberOfMyInt32List);
+		// Write number of elements in m_listOfList3.
+		const uint32_t numberOfList3 = static_cast<uint32_t>(m_listOfList3.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT + 1,
+		        numberOfList3);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyInt32List;
-		for (uint32_t i = 0; i < numberOfMyInt32List; i++) {
-		    sstrOfMyInt32List << m_listOfMyInt32List.at(i) << endl;
+		std::stringstream sstrOfList3;
+		for (uint32_t i = 0; i < numberOfList3; i++) {
+		    sstrOfList3 << m_listOfList3.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyInt32List > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyInt32List.str());
+		if (numberOfList3 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT,
+			        sstrOfList3.str());
 		}
-		// Write number of elements in m_listOfMyUint32List.
-		const uint32_t numberOfMyUint32List = static_cast<uint32_t>(m_listOfMyUint32List.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyUint32List);
+		// Write number of elements in m_listOfList4.
+		const uint32_t numberOfList4 = static_cast<uint32_t>(m_listOfList4.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT + 1,
+		        numberOfList4);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyUint32List;
-		for (uint32_t i = 0; i < numberOfMyUint32List; i++) {
-		    sstrOfMyUint32List << m_listOfMyUint32List.at(i) << endl;
+		std::stringstream sstrOfList4;
+		for (uint32_t i = 0; i < numberOfList4; i++) {
+		    sstrOfList4 << m_listOfList4.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyUint32List > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyUint32List.str());
+		if (numberOfList4 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT,
+			        sstrOfList4.str());
 		}
-		// Write number of elements in m_listOfMyFloatList.
-		const uint32_t numberOfMyFloatList = static_cast<uint32_t>(m_listOfMyFloatList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-		        numberOfMyFloatList);
+		// Write number of elements in m_listOfList5.
+		const uint32_t numberOfList5 = static_cast<uint32_t>(m_listOfList5.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT + 1,
+		        numberOfList5);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyFloatList;
-		for (uint32_t i = 0; i < numberOfMyFloatList; i++) {
-		    sstrOfMyFloatList << m_listOfMyFloatList.at(i) << endl;
+		std::stringstream sstrOfList5;
+		for (uint32_t i = 0; i < numberOfList5; i++) {
+		    sstrOfList5 << m_listOfList5.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyFloatList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-			        sstrOfMyFloatList.str());
+		if (numberOfList5 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT,
+			        sstrOfList5.str());
 		}
-		// Write number of elements in m_listOfMyDoubleList.
-		const uint32_t numberOfMyDoubleList = static_cast<uint32_t>(m_listOfMyDoubleList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyDoubleList);
+		// Write number of elements in m_listOfList6.
+		const uint32_t numberOfList6 = static_cast<uint32_t>(m_listOfList6.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT + 1,
+		        numberOfList6);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyDoubleList;
-		for (uint32_t i = 0; i < numberOfMyDoubleList; i++) {
-		    sstrOfMyDoubleList << m_listOfMyDoubleList.at(i) << endl;
+		std::stringstream sstrOfList6;
+		for (uint32_t i = 0; i < numberOfList6; i++) {
+		    sstrOfList6 << m_listOfList6.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyDoubleList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyDoubleList.str());
+		if (numberOfList6 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT,
+			        sstrOfList6.str());
 		}
-		// Write number of elements in m_listOfMyStringList.
-		const uint32_t numberOfMyStringList = static_cast<uint32_t>(m_listOfMyStringList.size());
-		s->write(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		        numberOfMyStringList);
+		// Write number of elements in m_listOfList7.
+		const uint32_t numberOfList7 = static_cast<uint32_t>(m_listOfList7.size());
+		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT + 1,
+		        numberOfList7);
 		
 		// Write actual elements into a stringstream.
-		std::stringstream sstrOfMyStringList;
-		for (uint32_t i = 0; i < numberOfMyStringList; i++) {
-		    sstrOfMyStringList << m_listOfMyStringList.at(i) << endl;
+		std::stringstream sstrOfList7;
+		for (uint32_t i = 0; i < numberOfList7; i++) {
+		    sstrOfList7 << m_listOfList7.at(i) << endl;
 		}
 		
 		// Write string of elements.
-		if (numberOfMyStringList > 0) {
-			s->write(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-			        sstrOfMyStringList.str());
+		if (numberOfList7 > 0) {
+			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT,
+			        sstrOfList7.str());
 		}
 		return out;
 	}
@@ -482,165 +482,165 @@
 
 		core::SharedPointer<Deserializer> d = sf.getDeserializer(in);
 
-		// Clean up the existing list of MyBoolList.
-		m_listOfMyBoolList.clear();
+		// Clean up the existing list of List1.
+		m_listOfList1.clear();
 		
-		// Read number of elements in m_listOfMyBoolList.
-		uint32_t numberOfMyBoolList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-		       numberOfMyBoolList);
+		// Read number of elements in m_listOfList1.
+		uint32_t numberOfList1 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT + 1,
+		       numberOfList1);
 		
-		if (numberOfMyBoolList > 0) {
+		if (numberOfList1 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'B', CharList<'o', CharList<'o', CharList<'l', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyBoolList; i++) {
+		    for (uint32_t i = 0; i < numberOfList1; i++) {
 		        bool element;
 		        sstr >> element;
-		        m_listOfMyBoolList.push_back(element);
+		        m_listOfList1.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyCharList.
-		m_listOfMyCharList.clear();
+		// Clean up the existing list of List2.
+		m_listOfList2.clear();
 		
-		// Read number of elements in m_listOfMyCharList.
-		uint32_t numberOfMyCharList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
-		       numberOfMyCharList);
+		// Read number of elements in m_listOfList2.
+		uint32_t numberOfList2 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT + 1,
+		       numberOfList2);
 		
-		if (numberOfMyCharList > 0) {
+		if (numberOfList2 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'C', CharList<'h', CharList<'a', CharList<'r', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyCharList; i++) {
+		    for (uint32_t i = 0; i < numberOfList2; i++) {
 		        char element;
 		        sstr >> element;
-		        m_listOfMyCharList.push_back(element);
+		        m_listOfList2.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyInt32List.
-		m_listOfMyInt32List.clear();
+		// Clean up the existing list of List3.
+		m_listOfList3.clear();
 		
-		// Read number of elements in m_listOfMyInt32List.
-		uint32_t numberOfMyInt32List = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-		       numberOfMyInt32List);
+		// Read number of elements in m_listOfList3.
+		uint32_t numberOfList3 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT + 1,
+		       numberOfList3);
 		
-		if (numberOfMyInt32List > 0) {
+		if (numberOfList3 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'I', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyInt32List; i++) {
+		    for (uint32_t i = 0; i < numberOfList3; i++) {
 		        int32_t element;
 		        sstr >> element;
-		        m_listOfMyInt32List.push_back(element);
+		        m_listOfList3.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyUint32List.
-		m_listOfMyUint32List.clear();
+		// Clean up the existing list of List4.
+		m_listOfList4.clear();
 		
-		// Read number of elements in m_listOfMyUint32List.
-		uint32_t numberOfMyUint32List = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyUint32List);
+		// Read number of elements in m_listOfList4.
+		uint32_t numberOfList4 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT + 1,
+		       numberOfList4);
 		
-		if (numberOfMyUint32List > 0) {
+		if (numberOfList4 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'U', CharList<'i', CharList<'n', CharList<'t', CharList<'3', CharList<'2', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyUint32List; i++) {
+		    for (uint32_t i = 0; i < numberOfList4; i++) {
 		        uint32_t element;
 		        sstr >> element;
-		        m_listOfMyUint32List.push_back(element);
+		        m_listOfList4.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyFloatList.
-		m_listOfMyFloatList.clear();
+		// Clean up the existing list of List5.
+		m_listOfList5.clear();
 		
-		// Read number of elements in m_listOfMyFloatList.
-		uint32_t numberOfMyFloatList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
-		       numberOfMyFloatList);
+		// Read number of elements in m_listOfList5.
+		uint32_t numberOfList5 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT + 1,
+		       numberOfList5);
 		
-		if (numberOfMyFloatList > 0) {
+		if (numberOfList5 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'F', CharList<'l', CharList<'o', CharList<'a', CharList<'t', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyFloatList; i++) {
+		    for (uint32_t i = 0; i < numberOfList5; i++) {
 		        float element;
 		        sstr >> element;
-		        m_listOfMyFloatList.push_back(element);
+		        m_listOfList5.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyDoubleList.
-		m_listOfMyDoubleList.clear();
+		// Clean up the existing list of List6.
+		m_listOfList6.clear();
 		
-		// Read number of elements in m_listOfMyDoubleList.
-		uint32_t numberOfMyDoubleList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyDoubleList);
+		// Read number of elements in m_listOfList6.
+		uint32_t numberOfList6 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT + 1,
+		       numberOfList6);
 		
-		if (numberOfMyDoubleList > 0) {
+		if (numberOfList6 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'D', CharList<'o', CharList<'u', CharList<'b', CharList<'l', CharList<'e', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyDoubleList; i++) {
+		    for (uint32_t i = 0; i < numberOfList6; i++) {
 		        double element;
 		        sstr >> element;
-		        m_listOfMyDoubleList.push_back(element);
+		        m_listOfList6.push_back(element);
 		    }
 		}
-		// Clean up the existing list of MyStringList.
-		m_listOfMyStringList.clear();
+		// Clean up the existing list of List7.
+		m_listOfList7.clear();
 		
-		// Read number of elements in m_listOfMyStringList.
-		uint32_t numberOfMyStringList = 0;
-		d->read(CRC32 < CharList<'n', CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > > >  >::RESULT,
-		       numberOfMyStringList);
+		// Read number of elements in m_listOfList7.
+		uint32_t numberOfList7 = 0;
+		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT + 1,
+		       numberOfList7);
 		
-		if (numberOfMyStringList > 0) {
+		if (numberOfList7 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'y', CharList<'S', CharList<'t', CharList<'r', CharList<'i', CharList<'n', CharList<'g', CharList<'L', CharList<'i', CharList<'s', CharList<'t', NullType> > > > > > > > > > > >  >::RESULT,
+			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT,
 			   elements);
 		
 		    stringstream sstr(elements);
 		
 		    // Read actual elements from stringstream.
-		    for (uint32_t i = 0; i < numberOfMyStringList; i++) {
+		    for (uint32_t i = 0; i < numberOfList7; i++) {
 		        std::string element;
 		        getline(sstr, element);
-		        m_listOfMyStringList.push_back(element);
+		        m_listOfList7.push_back(element);
 		    }
 		}
 		return in;

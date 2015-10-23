@@ -51,375 +51,375 @@ class Test11MapFloat : public core::data::SerializableData, public core::base::V
 
 	public:
 		/**
-		 * @return myFloatBoolMap.
+		 * @return map1.
 		 */
-		std::map<float, bool> getMapOfMyFloatBoolMap() const;
+		std::map<float, bool> getMapOfMap1() const;
 	
 		/**
-		 * This method sets myFloatBoolMap.
+		 * This method sets map1.
 		 *
-		 * @param val Value for myFloatBoolMap.
+		 * @param val Value for map1.
 		 */
-		void setMapOfMyFloatBoolMap(const std::map<float, bool> &val);
+		void setMapOfMap1(const std::map<float, bool> &val);
 	
 		/**
-		 * This method clears the map of myFloatBoolMap.
+		 * This method clears the map of map1.
 		 */
-		void clear_MapOfMyFloatBoolMap();
+		void clear_MapOfMap1();
 	
 		/**
-		 * @return the size of the map of myFloatBoolMap.
+		 * @return the size of the map of map1.
 		 */
-		uint32_t getSize_MapOfMyFloatBoolMap() const;
+		uint32_t getSize_MapOfMap1() const;
 	
 		/**
-		 * @return true if the map of myFloatBoolMap is empty.
+		 * @return true if the map of map1 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatBoolMap() const;
+		bool isEmpty_MapOfMap1() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatBoolMap.
+		 * This method adds an element to the map of map1.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatBoolMap.
-		 * @param val Value of the key/value pair to be added to the map of myFloatBoolMap.
+		 * @param key Key of the key/value pair to be added to the map of map1.
+		 * @param val Value of the key/value pair to be added to the map of map1.
 		 */
-		void putTo_MapOfMyFloatBoolMap(const float &key, const bool &val);
+		void putTo_MapOfMap1(const float &key, const bool &val);
 	
 		/**
-		 * @return true if the map of myFloatBoolMap is contains the given key.
+		 * @return true if the map of map1 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatBoolMap(const float &key) const;
+		bool containsKey_MapOfMap1(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatBoolMap.
-		 * @return Value to given key from the map of myFloatBoolMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map1.
+		 * @return Value to given key from the map of map1 is contains the given key.
 		 */
-		bool getValueForKey_MapOfMyFloatBoolMap(const float &key);
+		bool getValueForKey_MapOfMap1(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatBoolMap.
+		 * @return Pair of iterators for the begin and end of the map of map1.
 		 */
-		std::pair<std::map<float, bool>::iterator, std::map<float, bool>::iterator> iteratorPair_MapOfMyFloatBoolMap();
+		std::pair<std::map<float, bool>::iterator, std::map<float, bool>::iterator> iteratorPair_MapOfMap1();
 	public:
 		/**
-		 * @return myFloatCharMap.
+		 * @return map2.
 		 */
-		std::map<float, char> getMapOfMyFloatCharMap() const;
+		std::map<float, char> getMapOfMap2() const;
 	
 		/**
-		 * This method sets myFloatCharMap.
+		 * This method sets map2.
 		 *
-		 * @param val Value for myFloatCharMap.
+		 * @param val Value for map2.
 		 */
-		void setMapOfMyFloatCharMap(const std::map<float, char> &val);
+		void setMapOfMap2(const std::map<float, char> &val);
 	
 		/**
-		 * This method clears the map of myFloatCharMap.
+		 * This method clears the map of map2.
 		 */
-		void clear_MapOfMyFloatCharMap();
+		void clear_MapOfMap2();
 	
 		/**
-		 * @return the size of the map of myFloatCharMap.
+		 * @return the size of the map of map2.
 		 */
-		uint32_t getSize_MapOfMyFloatCharMap() const;
+		uint32_t getSize_MapOfMap2() const;
 	
 		/**
-		 * @return true if the map of myFloatCharMap is empty.
+		 * @return true if the map of map2 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatCharMap() const;
+		bool isEmpty_MapOfMap2() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatCharMap.
+		 * This method adds an element to the map of map2.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatCharMap.
-		 * @param val Value of the key/value pair to be added to the map of myFloatCharMap.
+		 * @param key Key of the key/value pair to be added to the map of map2.
+		 * @param val Value of the key/value pair to be added to the map of map2.
 		 */
-		void putTo_MapOfMyFloatCharMap(const float &key, const char &val);
+		void putTo_MapOfMap2(const float &key, const char &val);
 	
 		/**
-		 * @return true if the map of myFloatCharMap is contains the given key.
+		 * @return true if the map of map2 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatCharMap(const float &key) const;
+		bool containsKey_MapOfMap2(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatCharMap.
-		 * @return Value to given key from the map of myFloatCharMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map2.
+		 * @return Value to given key from the map of map2 is contains the given key.
 		 */
-		char getValueForKey_MapOfMyFloatCharMap(const float &key);
+		char getValueForKey_MapOfMap2(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatCharMap.
+		 * @return Pair of iterators for the begin and end of the map of map2.
 		 */
-		std::pair<std::map<float, char>::iterator, std::map<float, char>::iterator> iteratorPair_MapOfMyFloatCharMap();
+		std::pair<std::map<float, char>::iterator, std::map<float, char>::iterator> iteratorPair_MapOfMap2();
 	public:
 		/**
-		 * @return myFloatInt32Map.
+		 * @return map3.
 		 */
-		std::map<float, int32_t> getMapOfMyFloatInt32Map() const;
+		std::map<float, int32_t> getMapOfMap3() const;
 	
 		/**
-		 * This method sets myFloatInt32Map.
+		 * This method sets map3.
 		 *
-		 * @param val Value for myFloatInt32Map.
+		 * @param val Value for map3.
 		 */
-		void setMapOfMyFloatInt32Map(const std::map<float, int32_t> &val);
+		void setMapOfMap3(const std::map<float, int32_t> &val);
 	
 		/**
-		 * This method clears the map of myFloatInt32Map.
+		 * This method clears the map of map3.
 		 */
-		void clear_MapOfMyFloatInt32Map();
+		void clear_MapOfMap3();
 	
 		/**
-		 * @return the size of the map of myFloatInt32Map.
+		 * @return the size of the map of map3.
 		 */
-		uint32_t getSize_MapOfMyFloatInt32Map() const;
+		uint32_t getSize_MapOfMap3() const;
 	
 		/**
-		 * @return true if the map of myFloatInt32Map is empty.
+		 * @return true if the map of map3 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatInt32Map() const;
+		bool isEmpty_MapOfMap3() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatInt32Map.
+		 * This method adds an element to the map of map3.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatInt32Map.
-		 * @param val Value of the key/value pair to be added to the map of myFloatInt32Map.
+		 * @param key Key of the key/value pair to be added to the map of map3.
+		 * @param val Value of the key/value pair to be added to the map of map3.
 		 */
-		void putTo_MapOfMyFloatInt32Map(const float &key, const int32_t &val);
+		void putTo_MapOfMap3(const float &key, const int32_t &val);
 	
 		/**
-		 * @return true if the map of myFloatInt32Map is contains the given key.
+		 * @return true if the map of map3 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatInt32Map(const float &key) const;
+		bool containsKey_MapOfMap3(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatInt32Map.
-		 * @return Value to given key from the map of myFloatInt32Map is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map3.
+		 * @return Value to given key from the map of map3 is contains the given key.
 		 */
-		int32_t getValueForKey_MapOfMyFloatInt32Map(const float &key);
+		int32_t getValueForKey_MapOfMap3(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatInt32Map.
+		 * @return Pair of iterators for the begin and end of the map of map3.
 		 */
-		std::pair<std::map<float, int32_t>::iterator, std::map<float, int32_t>::iterator> iteratorPair_MapOfMyFloatInt32Map();
+		std::pair<std::map<float, int32_t>::iterator, std::map<float, int32_t>::iterator> iteratorPair_MapOfMap3();
 	public:
 		/**
-		 * @return myFloatUint32Map.
+		 * @return map4.
 		 */
-		std::map<float, uint32_t> getMapOfMyFloatUint32Map() const;
+		std::map<float, uint32_t> getMapOfMap4() const;
 	
 		/**
-		 * This method sets myFloatUint32Map.
+		 * This method sets map4.
 		 *
-		 * @param val Value for myFloatUint32Map.
+		 * @param val Value for map4.
 		 */
-		void setMapOfMyFloatUint32Map(const std::map<float, uint32_t> &val);
+		void setMapOfMap4(const std::map<float, uint32_t> &val);
 	
 		/**
-		 * This method clears the map of myFloatUint32Map.
+		 * This method clears the map of map4.
 		 */
-		void clear_MapOfMyFloatUint32Map();
+		void clear_MapOfMap4();
 	
 		/**
-		 * @return the size of the map of myFloatUint32Map.
+		 * @return the size of the map of map4.
 		 */
-		uint32_t getSize_MapOfMyFloatUint32Map() const;
+		uint32_t getSize_MapOfMap4() const;
 	
 		/**
-		 * @return true if the map of myFloatUint32Map is empty.
+		 * @return true if the map of map4 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatUint32Map() const;
+		bool isEmpty_MapOfMap4() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatUint32Map.
+		 * This method adds an element to the map of map4.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatUint32Map.
-		 * @param val Value of the key/value pair to be added to the map of myFloatUint32Map.
+		 * @param key Key of the key/value pair to be added to the map of map4.
+		 * @param val Value of the key/value pair to be added to the map of map4.
 		 */
-		void putTo_MapOfMyFloatUint32Map(const float &key, const uint32_t &val);
+		void putTo_MapOfMap4(const float &key, const uint32_t &val);
 	
 		/**
-		 * @return true if the map of myFloatUint32Map is contains the given key.
+		 * @return true if the map of map4 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatUint32Map(const float &key) const;
+		bool containsKey_MapOfMap4(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatUint32Map.
-		 * @return Value to given key from the map of myFloatUint32Map is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map4.
+		 * @return Value to given key from the map of map4 is contains the given key.
 		 */
-		uint32_t getValueForKey_MapOfMyFloatUint32Map(const float &key);
+		uint32_t getValueForKey_MapOfMap4(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatUint32Map.
+		 * @return Pair of iterators for the begin and end of the map of map4.
 		 */
-		std::pair<std::map<float, uint32_t>::iterator, std::map<float, uint32_t>::iterator> iteratorPair_MapOfMyFloatUint32Map();
+		std::pair<std::map<float, uint32_t>::iterator, std::map<float, uint32_t>::iterator> iteratorPair_MapOfMap4();
 	public:
 		/**
-		 * @return myFloatFloatMap.
+		 * @return map5.
 		 */
-		std::map<float, float> getMapOfMyFloatFloatMap() const;
+		std::map<float, float> getMapOfMap5() const;
 	
 		/**
-		 * This method sets myFloatFloatMap.
+		 * This method sets map5.
 		 *
-		 * @param val Value for myFloatFloatMap.
+		 * @param val Value for map5.
 		 */
-		void setMapOfMyFloatFloatMap(const std::map<float, float> &val);
+		void setMapOfMap5(const std::map<float, float> &val);
 	
 		/**
-		 * This method clears the map of myFloatFloatMap.
+		 * This method clears the map of map5.
 		 */
-		void clear_MapOfMyFloatFloatMap();
+		void clear_MapOfMap5();
 	
 		/**
-		 * @return the size of the map of myFloatFloatMap.
+		 * @return the size of the map of map5.
 		 */
-		uint32_t getSize_MapOfMyFloatFloatMap() const;
+		uint32_t getSize_MapOfMap5() const;
 	
 		/**
-		 * @return true if the map of myFloatFloatMap is empty.
+		 * @return true if the map of map5 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatFloatMap() const;
+		bool isEmpty_MapOfMap5() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatFloatMap.
+		 * This method adds an element to the map of map5.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatFloatMap.
-		 * @param val Value of the key/value pair to be added to the map of myFloatFloatMap.
+		 * @param key Key of the key/value pair to be added to the map of map5.
+		 * @param val Value of the key/value pair to be added to the map of map5.
 		 */
-		void putTo_MapOfMyFloatFloatMap(const float &key, const float &val);
+		void putTo_MapOfMap5(const float &key, const float &val);
 	
 		/**
-		 * @return true if the map of myFloatFloatMap is contains the given key.
+		 * @return true if the map of map5 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatFloatMap(const float &key) const;
+		bool containsKey_MapOfMap5(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatFloatMap.
-		 * @return Value to given key from the map of myFloatFloatMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map5.
+		 * @return Value to given key from the map of map5 is contains the given key.
 		 */
-		float getValueForKey_MapOfMyFloatFloatMap(const float &key);
+		float getValueForKey_MapOfMap5(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatFloatMap.
+		 * @return Pair of iterators for the begin and end of the map of map5.
 		 */
-		std::pair<std::map<float, float>::iterator, std::map<float, float>::iterator> iteratorPair_MapOfMyFloatFloatMap();
+		std::pair<std::map<float, float>::iterator, std::map<float, float>::iterator> iteratorPair_MapOfMap5();
 	public:
 		/**
-		 * @return myFloatDoubleMap.
+		 * @return map6.
 		 */
-		std::map<float, double> getMapOfMyFloatDoubleMap() const;
+		std::map<float, double> getMapOfMap6() const;
 	
 		/**
-		 * This method sets myFloatDoubleMap.
+		 * This method sets map6.
 		 *
-		 * @param val Value for myFloatDoubleMap.
+		 * @param val Value for map6.
 		 */
-		void setMapOfMyFloatDoubleMap(const std::map<float, double> &val);
+		void setMapOfMap6(const std::map<float, double> &val);
 	
 		/**
-		 * This method clears the map of myFloatDoubleMap.
+		 * This method clears the map of map6.
 		 */
-		void clear_MapOfMyFloatDoubleMap();
+		void clear_MapOfMap6();
 	
 		/**
-		 * @return the size of the map of myFloatDoubleMap.
+		 * @return the size of the map of map6.
 		 */
-		uint32_t getSize_MapOfMyFloatDoubleMap() const;
+		uint32_t getSize_MapOfMap6() const;
 	
 		/**
-		 * @return true if the map of myFloatDoubleMap is empty.
+		 * @return true if the map of map6 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatDoubleMap() const;
+		bool isEmpty_MapOfMap6() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatDoubleMap.
+		 * This method adds an element to the map of map6.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatDoubleMap.
-		 * @param val Value of the key/value pair to be added to the map of myFloatDoubleMap.
+		 * @param key Key of the key/value pair to be added to the map of map6.
+		 * @param val Value of the key/value pair to be added to the map of map6.
 		 */
-		void putTo_MapOfMyFloatDoubleMap(const float &key, const double &val);
+		void putTo_MapOfMap6(const float &key, const double &val);
 	
 		/**
-		 * @return true if the map of myFloatDoubleMap is contains the given key.
+		 * @return true if the map of map6 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatDoubleMap(const float &key) const;
+		bool containsKey_MapOfMap6(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatDoubleMap.
-		 * @return Value to given key from the map of myFloatDoubleMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map6.
+		 * @return Value to given key from the map of map6 is contains the given key.
 		 */
-		double getValueForKey_MapOfMyFloatDoubleMap(const float &key);
+		double getValueForKey_MapOfMap6(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatDoubleMap.
+		 * @return Pair of iterators for the begin and end of the map of map6.
 		 */
-		std::pair<std::map<float, double>::iterator, std::map<float, double>::iterator> iteratorPair_MapOfMyFloatDoubleMap();
+		std::pair<std::map<float, double>::iterator, std::map<float, double>::iterator> iteratorPair_MapOfMap6();
 	public:
 		/**
-		 * @return myFloatStringMap.
+		 * @return map7.
 		 */
-		std::map<float, std::string> getMapOfMyFloatStringMap() const;
+		std::map<float, std::string> getMapOfMap7() const;
 	
 		/**
-		 * This method sets myFloatStringMap.
+		 * This method sets map7.
 		 *
-		 * @param val Value for myFloatStringMap.
+		 * @param val Value for map7.
 		 */
-		void setMapOfMyFloatStringMap(const std::map<float, std::string> &val);
+		void setMapOfMap7(const std::map<float, std::string> &val);
 	
 		/**
-		 * This method clears the map of myFloatStringMap.
+		 * This method clears the map of map7.
 		 */
-		void clear_MapOfMyFloatStringMap();
+		void clear_MapOfMap7();
 	
 		/**
-		 * @return the size of the map of myFloatStringMap.
+		 * @return the size of the map of map7.
 		 */
-		uint32_t getSize_MapOfMyFloatStringMap() const;
+		uint32_t getSize_MapOfMap7() const;
 	
 		/**
-		 * @return true if the map of myFloatStringMap is empty.
+		 * @return true if the map of map7 is empty.
 		 */
-		bool isEmpty_MapOfMyFloatStringMap() const;
+		bool isEmpty_MapOfMap7() const;
 	
 		/**
-		 * This method adds an element to the map of myFloatStringMap.
+		 * This method adds an element to the map of map7.
 		 *
-		 * @param key Key of the key/value pair to be added to the map of myFloatStringMap.
-		 * @param val Value of the key/value pair to be added to the map of myFloatStringMap.
+		 * @param key Key of the key/value pair to be added to the map of map7.
+		 * @param val Value of the key/value pair to be added to the map of map7.
 		 */
-		void putTo_MapOfMyFloatStringMap(const float &key, const std::string &val);
+		void putTo_MapOfMap7(const float &key, const std::string &val);
 	
 		/**
-		 * @return true if the map of myFloatStringMap is contains the given key.
+		 * @return true if the map of map7 is contains the given key.
 		 */
-		bool containsKey_MapOfMyFloatStringMap(const float &key) const;
+		bool containsKey_MapOfMap7(const float &key) const;
 	
 		/**
 		 * This method returns the value to the given key. Make sure to check if the given key exists otherwise a new key/value pair will be added (cf. C++ standard).
 		 *
-		 * @param key Key for which the value should be returned from the map of myFloatStringMap.
-		 * @return Value to given key from the map of myFloatStringMap is contains the given key.
+		 * @param key Key for which the value should be returned from the map of map7.
+		 * @return Value to given key from the map of map7 is contains the given key.
 		 */
-		std::string getValueForKey_MapOfMyFloatStringMap(const float &key);
+		std::string getValueForKey_MapOfMap7(const float &key);
 	
 		/**
-		 * @return Pair of iterators for the begin and end of the map of myFloatStringMap.
+		 * @return Pair of iterators for the begin and end of the map of map7.
 		 */
-		std::pair<std::map<float, std::string>::iterator, std::map<float, std::string>::iterator> iteratorPair_MapOfMyFloatStringMap();
+		std::pair<std::map<float, std::string>::iterator, std::map<float, std::string>::iterator> iteratorPair_MapOfMap7();
 
 	public:
 		/**
@@ -452,19 +452,19 @@ class Test11MapFloat : public core::data::SerializableData, public core::base::V
 		virtual const string toString() const;
 
 	private:
-		std::map<float, bool> m_mapOfMyFloatBoolMap;
+		std::map<float, bool> m_mapOfMap1;
 	private:
-		std::map<float, char> m_mapOfMyFloatCharMap;
+		std::map<float, char> m_mapOfMap2;
 	private:
-		std::map<float, int32_t> m_mapOfMyFloatInt32Map;
+		std::map<float, int32_t> m_mapOfMap3;
 	private:
-		std::map<float, uint32_t> m_mapOfMyFloatUint32Map;
+		std::map<float, uint32_t> m_mapOfMap4;
 	private:
-		std::map<float, float> m_mapOfMyFloatFloatMap;
+		std::map<float, float> m_mapOfMap5;
 	private:
-		std::map<float, double> m_mapOfMyFloatDoubleMap;
+		std::map<float, double> m_mapOfMap6;
 	private:
-		std::map<float, std::string> m_mapOfMyFloatStringMap;
+		std::map<float, std::string> m_mapOfMap7;
 
 };
 

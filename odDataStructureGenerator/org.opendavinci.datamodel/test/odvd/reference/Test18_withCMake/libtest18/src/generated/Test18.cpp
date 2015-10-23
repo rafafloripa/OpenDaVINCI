@@ -135,7 +135,7 @@
 	void Test18::accept(core::base::Visitor &v) {
 		v.visit(CRC32 < CharList<'m', CharList<'y', CharList<'A', CharList<'t', CharList<'t', CharList<'1', NullType> > > > > >  >::RESULT, 5, "Test18.myAtt1", "myAtt1", m_myAtt1);
 		v.visit(0x12345678, 0, "Test18.myAtt2", "myAtt2", m_myAtt2);
-		v.visit(0xAaBbCcDd, 0, "Test18.myAtt3", "myAtt3", m_myAtt3);
+		v.visit(0x12345670, 0, "Test18.myAtt3", "myAtt3", m_myAtt3);
 	}
 
 	const string Test18::toString() const {
@@ -172,7 +172,7 @@
 		s->write(5,
 				m_myAtt1);
 		s->write(0x12345678, m_myAtt2);
-		s->write(0xAaBbCcDd, m_myAtt3);
+		s->write(0x12345670, m_myAtt3);
 		return out;
 	}
 
@@ -189,6 +189,6 @@
 		d->read(5,
 				m_myAtt1);
 		d->read(0x12345678, m_myAtt2);
-		d->read(0xAaBbCcDd, m_myAtt3);
+		d->read(0x12345670, m_myAtt3);
 		return in;
 	}
