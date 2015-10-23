@@ -43,7 +43,7 @@ namespace core {
                                      LENGTH_DELIMITED = 2, 
                                      FOUR_BYTES       = 5, 
                                      BOOLEAN_FALSE    = 6,
-                                     BOOLEAN_TRUE     = 7,
+                                     BOOLEAN_TRUE     = 7, // Rename to USE_TYPE_FOR_VALUE
                                      OTHER            = 255 };
 
             private:

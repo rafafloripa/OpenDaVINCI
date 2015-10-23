@@ -117,7 +117,7 @@ namespace cockpit {
             void LiveFeedWidget::transformContainerToTree(Container &container) {
                 // Containers are visitable.
                 if (dynamic_cast<Visitable*>(&container) != NULL) {
-                    addMessageToTree("Container", container, c);
+                    addMessageToTree("Container", container, container);
                 }
 
                 switch (container.getDataType()) {
@@ -125,7 +125,7 @@ namespace cockpit {
                     {
                         core::data::TimeStamp tmp = container.getData<core::data::TimeStamp>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
+                            addMessageToTree("core.data.TimeStamp", container, tmp);
                         }
                         break;
                     }
@@ -133,7 +133,7 @@ namespace cockpit {
                     {
                         core::data::image::CompressedImage tmp = container.getData<core::data::image::CompressedImage>();
                         if (dynamic_cast<Visitable*>(&tmp) != NULL) {
-                            addMessageToTree(tmp.LongName(), container, tmp);
+                            addMessageToTree("core.data.CompressedImage", container, tmp);
                         }
                         break;
                     }
