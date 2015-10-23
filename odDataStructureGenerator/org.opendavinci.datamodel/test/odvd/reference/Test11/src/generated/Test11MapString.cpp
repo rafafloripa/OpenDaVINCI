@@ -361,8 +361,7 @@
 		{
 			// Write number of elements in m_mapOfMap1.
 			const uint32_t numberOfMap1 = static_cast<uint32_t>(m_mapOfMap1.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT + 1,
-			        numberOfMap1);
+			s->write(1, numberOfMap1);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap1;
@@ -374,15 +373,14 @@
 			
 			// Write string of elements.
 			if (numberOfMap1 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT,
+				s->write(1 + 7,
 						sstrOfMap1.str());
 			}
 		}
 		{
 			// Write number of elements in m_mapOfMap2.
 			const uint32_t numberOfMap2 = static_cast<uint32_t>(m_mapOfMap2.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT + 1,
-			        numberOfMap2);
+			s->write(2, numberOfMap2);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap2;
@@ -394,15 +392,14 @@
 			
 			// Write string of elements.
 			if (numberOfMap2 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT,
+				s->write(2 + 7,
 						sstrOfMap2.str());
 			}
 		}
 		{
 			// Write number of elements in m_mapOfMap3.
 			const uint32_t numberOfMap3 = static_cast<uint32_t>(m_mapOfMap3.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT + 1,
-			        numberOfMap3);
+			s->write(3, numberOfMap3);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap3;
@@ -414,15 +411,14 @@
 			
 			// Write string of elements.
 			if (numberOfMap3 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT,
+				s->write(3 + 7,
 						sstrOfMap3.str());
 			}
 		}
 		{
 			// Write number of elements in m_mapOfMap4.
 			const uint32_t numberOfMap4 = static_cast<uint32_t>(m_mapOfMap4.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT + 1,
-			        numberOfMap4);
+			s->write(4, numberOfMap4);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap4;
@@ -434,15 +430,14 @@
 			
 			// Write string of elements.
 			if (numberOfMap4 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT,
+				s->write(4 + 7,
 						sstrOfMap4.str());
 			}
 		}
 		{
 			// Write number of elements in m_mapOfMap5.
 			const uint32_t numberOfMap5 = static_cast<uint32_t>(m_mapOfMap5.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT + 1,
-			        numberOfMap5);
+			s->write(5, numberOfMap5);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap5;
@@ -454,15 +449,14 @@
 			
 			// Write string of elements.
 			if (numberOfMap5 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT,
+				s->write(5 + 7,
 						sstrOfMap5.str());
 			}
 		}
 		{
 			// Write number of elements in m_mapOfMap6.
 			const uint32_t numberOfMap6 = static_cast<uint32_t>(m_mapOfMap6.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT + 1,
-			        numberOfMap6);
+			s->write(6, numberOfMap6);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap6;
@@ -474,15 +468,14 @@
 			
 			// Write string of elements.
 			if (numberOfMap6 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT,
+				s->write(6 + 7,
 						sstrOfMap6.str());
 			}
 		}
 		{
 			// Write number of elements in m_mapOfMap7.
 			const uint32_t numberOfMap7 = static_cast<uint32_t>(m_mapOfMap7.size());
-			s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT + 1,
-			        numberOfMap7);
+			s->write(7, numberOfMap7);
 		
 			// Write actual elements into a stringstream.
 			std::stringstream sstrOfMap7;
@@ -494,7 +487,7 @@
 			
 			// Write string of elements.
 			if (numberOfMap7 > 0) {
-				s->write(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT,
+				s->write(7 + 7,
 						sstrOfMap7.str());
 			}
 		}
@@ -512,14 +505,13 @@
 		
 		// Read number of elements in m_mapOfMap1.
 		uint32_t numberOfMap1 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT + 1,
-			   numberOfMap1);
+		d->read(1, numberOfMap1);
 		
 		if (numberOfMap1 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'1', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(1 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		
@@ -563,14 +555,13 @@
 		
 		// Read number of elements in m_mapOfMap2.
 		uint32_t numberOfMap2 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT + 1,
-			   numberOfMap2);
+		d->read(2, numberOfMap2);
 		
 		if (numberOfMap2 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'2', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(2 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		
@@ -614,14 +605,13 @@
 		
 		// Read number of elements in m_mapOfMap3.
 		uint32_t numberOfMap3 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT + 1,
-			   numberOfMap3);
+		d->read(3, numberOfMap3);
 		
 		if (numberOfMap3 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'3', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(3 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		
@@ -665,14 +655,13 @@
 		
 		// Read number of elements in m_mapOfMap4.
 		uint32_t numberOfMap4 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT + 1,
-			   numberOfMap4);
+		d->read(4, numberOfMap4);
 		
 		if (numberOfMap4 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'4', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(4 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		
@@ -716,14 +705,13 @@
 		
 		// Read number of elements in m_mapOfMap5.
 		uint32_t numberOfMap5 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT + 1,
-			   numberOfMap5);
+		d->read(5, numberOfMap5);
 		
 		if (numberOfMap5 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'5', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(5 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		
@@ -767,14 +755,13 @@
 		
 		// Read number of elements in m_mapOfMap6.
 		uint32_t numberOfMap6 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT + 1,
-			   numberOfMap6);
+		d->read(6, numberOfMap6);
 		
 		if (numberOfMap6 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'6', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(6 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		
@@ -818,14 +805,13 @@
 		
 		// Read number of elements in m_mapOfMap7.
 		uint32_t numberOfMap7 = 0;
-		d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT + 1,
-			   numberOfMap7);
+		d->read(7, numberOfMap7);
 		
 		if (numberOfMap7 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'M', CharList<'a', CharList<'p', CharList<'7', NullType> > > >  >::RESULT,
-			       elements);
+			d->read(7 + 7,
+					elements);
 		
 			stringstream sstr(elements);
 		

@@ -4,81 +4,81 @@ message Test11Simple [ id = 11 ] {
 }
 
 message Test11Lists [ id = 12 ] {
-	list<bool> list1;
-	list<char> list2;
-	list<int32> list3;
-	list<uint32> list4;
-	list<float> list5;
-	list<double> list6;
-	list<string> list7;
+	list<bool> list1 [id = 1];
+	list<char> list2 [id = 2];
+	list<int32> list3 [id = 3];
+	list<uint32> list4 [id = 4];
+	list<float> list5 [id = 5];
+	list<double> list6 [id = 6];
+	list<string> list7 [id = 7];
 }
 
 message Test11MapBool [ id = 13 ] {
-	map<bool, bool> map1;
-	map<bool, char> map2;
-	map<bool, int32> map3;
-	map<bool, uint32> map4;
-	map<bool, float> map5;
-	map<bool, double> map6;
-	map<bool, string> map7;
+	map<bool, bool> map1 [id = 1];
+	map<bool, char> map2 [id = 2];
+	map<bool, int32> map3 [id = 3];
+	map<bool, uint32> map4 [id = 4];
+	map<bool, float> map5 [id = 5];
+	map<bool, double> map6 [id = 6];
+	map<bool, string> map7 [id = 7];
 }
 
 message Test11MapChar [ id = 14 ] {
-	map<char, bool> map1;
-	map<char, char> map2;
-	map<char, int32> map3;
-	map<char, uint32> map4;
-	map<char, float> map5;
-	map<char, double> map6;
-	map<char, string> map7;
+	map<char, bool> map1 [id = 1];
+	map<char, char> map2 [id = 2];
+	map<char, int32> map3 [id = 3];
+	map<char, uint32> map4 [id = 4];
+	map<char, float> map5 [id = 5];
+	map<char, double> map6 [id = 6];
+	map<char, string> map7 [id = 7];
 }
 
 message Test11MapInt32 [ id = 15 ] {
-	map<int32, bool> map1;
-	map<int32, char> map2;
-	map<int32, int32> map3;
-	map<int32, uint32> map4;
-	map<int32, float> map5;
-	map<int32, double> map6;
-	map<int32, string> map7;
+	map<int32, bool> map1 [id = 1];
+	map<int32, char> map2 [id = 2];
+	map<int32, int32> map3 [id = 3];
+	map<int32, uint32> map4 [id = 4];
+	map<int32, float> map5 [id = 5];
+	map<int32, double> map6 [id = 6];
+	map<int32, string> map7 [id = 7];
 }
 
 message Test11MapUint32 [ id = 16 ] {
-	map<uint32, bool> map1;
-	map<uint32, char> map2;
-	map<uint32, int32> map3;
-	map<uint32, uint32> map4;
-	map<uint32, float> map5;
-	map<uint32, double> map6;
-	map<uint32, string> map7;
+	map<uint32, bool> map1 [id = 1];
+	map<uint32, char> map2 [id = 2];
+	map<uint32, int32> map3 [id = 3];
+	map<uint32, uint32> map4 [id = 4];
+	map<uint32, float> map5 [id = 5];
+	map<uint32, double> map6 [id = 6];
+	map<uint32, string> map7 [id = 7];
 }
 
 message Test11MapFloat [ id = 17 ] {
-	map<float, bool> map1;
-	map<float, char> map2;
-	map<float, int32> map3;
-	map<float, uint32> map4;
-	map<float, float> map5;
-	map<float, double> map6;
-	map<float, string> map7;
+	map<float, bool> map1 [id = 1];
+	map<float, char> map2 [id = 2];
+	map<float, int32> map3 [id = 3];
+	map<float, uint32> map4 [id = 4];
+	map<float, float> map5 [id = 5];
+	map<float, double> map6 [id = 6];
+	map<float, string> map7 [id = 7];
 }
 
 message Test11MapDouble [ id = 18 ] {
-	map<double, bool> map1;
-	map<double, char> map2;
-	map<double, int32> map3;
-	map<double, uint32> map4;
-	map<double, float> map5;
-	map<double, double> map6;
-	map<double, string> map7;
+	map<double, bool> map1 [id = 1];
+	map<double, char> map2 [id = 2];
+	map<double, int32> map3 [id = 3];
+	map<double, uint32> map4 [id = 4];
+	map<double, float> map5 [id = 5];
+	map<double, double> map6 [id = 6];
+	map<double, string> map7 [id = 7];
 }
 
 message Test11MapString [ id = 19 ] {
-	map<string, bool> map1;
-	map<string, char> map2;
-	map<string, int32> map3;
-	map<string, uint32> map4;
-	map<string, float> map5;
-	map<string, double> map6;
-	map<string, string> map7;
+	map<string, bool> map1 [id = 1];
+	map<string, char> map2 [id = 2];
+	map<string, int32> map3 [id = 3];
+	map<string, uint32> map4 [id = 4];
+	map<string, float> map5 [id = 5];
+	map<string, double> map6 [id = 6];
+	map<string, string> map7 [id = 7];
 }

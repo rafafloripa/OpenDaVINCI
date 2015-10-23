@@ -363,8 +363,7 @@
 
 		// Write number of elements in m_listOfList1.
 		const uint32_t numberOfList1 = static_cast<uint32_t>(m_listOfList1.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT + 1,
-		        numberOfList1);
+		s->write(1, numberOfList1);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList1;
@@ -374,13 +373,12 @@
 		
 		// Write string of elements.
 		if (numberOfList1 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT,
+			s->write(1 + 7,
 			        sstrOfList1.str());
 		}
 		// Write number of elements in m_listOfList2.
 		const uint32_t numberOfList2 = static_cast<uint32_t>(m_listOfList2.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT + 1,
-		        numberOfList2);
+		s->write(2, numberOfList2);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList2;
@@ -390,13 +388,12 @@
 		
 		// Write string of elements.
 		if (numberOfList2 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT,
+			s->write(2 + 7,
 			        sstrOfList2.str());
 		}
 		// Write number of elements in m_listOfList3.
 		const uint32_t numberOfList3 = static_cast<uint32_t>(m_listOfList3.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT + 1,
-		        numberOfList3);
+		s->write(3, numberOfList3);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList3;
@@ -406,13 +403,12 @@
 		
 		// Write string of elements.
 		if (numberOfList3 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT,
+			s->write(3 + 7,
 			        sstrOfList3.str());
 		}
 		// Write number of elements in m_listOfList4.
 		const uint32_t numberOfList4 = static_cast<uint32_t>(m_listOfList4.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT + 1,
-		        numberOfList4);
+		s->write(4, numberOfList4);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList4;
@@ -422,13 +418,12 @@
 		
 		// Write string of elements.
 		if (numberOfList4 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT,
+			s->write(4 + 7,
 			        sstrOfList4.str());
 		}
 		// Write number of elements in m_listOfList5.
 		const uint32_t numberOfList5 = static_cast<uint32_t>(m_listOfList5.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT + 1,
-		        numberOfList5);
+		s->write(5, numberOfList5);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList5;
@@ -438,13 +433,12 @@
 		
 		// Write string of elements.
 		if (numberOfList5 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT,
+			s->write(5 + 7,
 			        sstrOfList5.str());
 		}
 		// Write number of elements in m_listOfList6.
 		const uint32_t numberOfList6 = static_cast<uint32_t>(m_listOfList6.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT + 1,
-		        numberOfList6);
+		s->write(6, numberOfList6);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList6;
@@ -454,13 +448,12 @@
 		
 		// Write string of elements.
 		if (numberOfList6 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT,
+			s->write(6 + 7,
 			        sstrOfList6.str());
 		}
 		// Write number of elements in m_listOfList7.
 		const uint32_t numberOfList7 = static_cast<uint32_t>(m_listOfList7.size());
-		s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT + 1,
-		        numberOfList7);
+		s->write(7, numberOfList7);
 		
 		// Write actual elements into a stringstream.
 		std::stringstream sstrOfList7;
@@ -470,7 +463,7 @@
 		
 		// Write string of elements.
 		if (numberOfList7 > 0) {
-			s->write(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT,
+			s->write(7 + 7,
 			        sstrOfList7.str());
 		}
 		return out;
@@ -487,13 +480,13 @@
 		
 		// Read number of elements in m_listOfList1.
 		uint32_t numberOfList1 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT + 1,
+		d->read(1,
 		       numberOfList1);
 		
 		if (numberOfList1 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'1', NullType> > > > >  >::RESULT,
+			d->read(1 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
@@ -510,13 +503,13 @@
 		
 		// Read number of elements in m_listOfList2.
 		uint32_t numberOfList2 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT + 1,
+		d->read(2,
 		       numberOfList2);
 		
 		if (numberOfList2 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'2', NullType> > > > >  >::RESULT,
+			d->read(2 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
@@ -533,13 +526,13 @@
 		
 		// Read number of elements in m_listOfList3.
 		uint32_t numberOfList3 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT + 1,
+		d->read(3,
 		       numberOfList3);
 		
 		if (numberOfList3 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'3', NullType> > > > >  >::RESULT,
+			d->read(3 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
@@ -556,13 +549,13 @@
 		
 		// Read number of elements in m_listOfList4.
 		uint32_t numberOfList4 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT + 1,
+		d->read(4,
 		       numberOfList4);
 		
 		if (numberOfList4 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'4', NullType> > > > >  >::RESULT,
+			d->read(4 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
@@ -579,13 +572,13 @@
 		
 		// Read number of elements in m_listOfList5.
 		uint32_t numberOfList5 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT + 1,
+		d->read(5,
 		       numberOfList5);
 		
 		if (numberOfList5 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'5', NullType> > > > >  >::RESULT,
+			d->read(5 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
@@ -602,13 +595,13 @@
 		
 		// Read number of elements in m_listOfList6.
 		uint32_t numberOfList6 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT + 1,
+		d->read(6,
 		       numberOfList6);
 		
 		if (numberOfList6 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'6', NullType> > > > >  >::RESULT,
+			d->read(6 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
@@ -625,13 +618,13 @@
 		
 		// Read number of elements in m_listOfList7.
 		uint32_t numberOfList7 = 0;
-		d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT + 1,
+		d->read(7,
 		       numberOfList7);
 		
 		if (numberOfList7 > 0) {
 		    // Read string of elements.
 		    string elements;
-			d->read(CRC32 < CharList<'L', CharList<'i', CharList<'s', CharList<'t', CharList<'7', NullType> > > > >  >::RESULT,
+			d->read(7 + 7,
 			   elements);
 		
 		    stringstream sstr(elements);
