@@ -17,10 +17,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "core/base/module/AbstractCIDModule.h"
-#include "core/base/QueryableNetstringsSerializerABCF.h"
+#include <iostream>
+
 #include "core/base/QueryableNetstringsDeserializerABCF.h"
 #include "core/base/Serializable.h"
+#include "core/base/module/AbstractCIDModule.h"
+#include "core/opendavinci.h"
 
 namespace core {
     namespace base {
@@ -60,7 +62,8 @@ namespace core {
             value = 0;
             uint8_t size = 0;
             while (in.good()) {
-                char c = in.get();
+                char c = 0;
+                in.read(&c, sizeof(char));
                 value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
                 if ( !(c & 0x80) ) break;
             }
@@ -96,43 +99,43 @@ namespace core {
 
             // Checking for magic number.
             uint16_t magicNumber = 0;
-            in.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));
-            magicNumber = ntohs(magicNumber);
-            if (magicNumber != 0xABCF) {
-                if (in.good()) {
+            if (in.good()) {
+                in.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));
+                magicNumber = ntohs(magicNumber);
+                if (magicNumber != 0xABCF) {
                     // Stream is good but still no magic number?
                     CLOG2 << "Stream corrupt: magic number not found." << endl;
+                    return;
                 }
-                return;
-            }
 
-            // Decoding length of the payload written as varint.
-            uint64_t length = 0;
-            decodeVarUInt(in, length);
+                // Decoding length of the payload written as varint.
+                uint64_t length = 0;
+                decodeVarUInt(in, length);
 
-            // Decode payload consisting of: *(ID SIZE PAYLOAD).
-            char c = 0;
-            uint64_t tokenIdentifier = 0;
-            uint64_t lengthOfPayload = 0;
-            uint64_t IDandType = 0;
-            ProtoSerializerVisitor::PROTOBUF_TYPE tokenType = ProtoSerializerVisitor::VARINT;
+                // Decode payload consisting of: *(ID SIZE PAYLOAD).
+                char c = 0;
+                uint64_t tokenIdentifier = 0;
+                uint64_t lengthOfPayload = 0;
+                uint64_t IDandType = 0;
+                ProtoSerializerVisitor::PROTOBUF_TYPE tokenType = ProtoSerializerVisitor::VARINT;
 
-            // Buffer to store payload "en bloc"; length is identical to UDP payload.
-            const uint32_t MAX_SIZE_PAYLOAD = 65535;
-            char buffer[MAX_SIZE_PAYLOAD];
+                // Buffer to store payload "en bloc"; length is identical to UDP payload.
+                const uint32_t MAX_SIZE_PAYLOAD = 65535;
+                char buffer[MAX_SIZE_PAYLOAD];
 
-            while (in.good() && (length > 0)) {
-                // Read ID and type.
-                length -= decodeVarUInt(in, IDandType);
+                while (in.good() && (length > 0)) {
+                    // Read ID and type.
+                    length -= decodeVarUInt(in, IDandType);
 
-                // Extract ID for next token.
-                tokenIdentifier = getID(IDandType);
-                tokenType = getType(IDandType);
+                    // Extract ID for next token.
+                    tokenIdentifier = getID(IDandType);
+                    tokenType = getType(IDandType);
 
-                // Only if the payload is not of type boolean we need to store
-                // bytes for later decoding.
-                if ( (tokenType != ProtoSerializerVisitor::BOOLEAN_FALSE) &&
-                     (tokenType != ProtoSerializerVisitor::BOOLEAN_TRUE) ) {
+                    // Only if the payload is not of type boolean we need to store
+                    // bytes for later decoding.
+                    if ( (tokenType != ProtoSerializerVisitor::BOOLEAN_FALSE) &&
+                         (tokenType != ProtoSerializerVisitor::BOOLEAN_TRUE) ) {
+
                     // Read length of payload and adjust loop.
                     lengthOfPayload = 0;
                     length -= decodeVarUInt(in, lengthOfPayload);
@@ -154,16 +157,79 @@ namespace core {
                     // Otherwise, we simply store the encoded value extracted from the type.
                     m_values.insert(make_pair(tokenIdentifier, (tokenType == ProtoSerializerVisitor::BOOLEAN_TRUE ? 1 : 0) ));
                 }
-            }
 
-            // Check for trailing ','
-            in.get(c);
-            if (c != ',') {
-                CLOG2 << "Stream corrupt: trailing ',' missing,  found: '" << c << "'" << endl;
+                // Check for trailing ','
+                in.read(&c, sizeof(char));
+                if (c != ',') {
+                    CLOG2 << "Stream corrupt: trailing ',' missing,  found: '" << c << "'" << endl;
+                }
             }
         }
 
         QueryableNetstringsDeserializerABCF::~QueryableNetstringsDeserializerABCF() {}
+
+        uint32_t QueryableNetstringsDeserializerABCF::fillBuffer(istream& in, stringstream& buffer) {
+            char _c = 0;
+            uint32_t bytesRead = 0;
+
+            // Peek Container's header: 2 bytes (0xABCF) followed by maximum 8 bytes (uint64_t) length of payload information.
+            uint32_t bytesToRead = sizeof(uint16_t) + sizeof(uint64_t);
+
+            // Read Container header + size of payload.
+            while (in.good() && (bytesToRead > 0)) {
+                // Read next byte.
+                in.read(&_c, sizeof(char));
+                bytesToRead--; bytesRead++;
+
+                // Add new byte at the end of the buffer.
+                buffer.write(&_c, sizeof(char));
+            }
+
+            // Decode Container's magic number.
+            uint16_t magicNumber = 0;
+            buffer.read(reinterpret_cast<char*>(&magicNumber), sizeof(uint16_t));
+            magicNumber = ntohs(magicNumber);
+
+            if (magicNumber == 0xABCF) {
+                // Decode size of payload (encoded as varint).
+                uint64_t value = 0;
+                uint8_t size = 0;
+                {
+                    while (buffer.good()) {
+                        char c = 0;
+                        buffer.read(&c, sizeof(char));
+                        value |= static_cast<unsigned int>( (c & 0x7f) << (0x7 * size++) );
+                        if ( !(c & 0x80) ) break;
+                    }
+                    // Decode as little endian like in Protobuf's case.
+                    value = le64toh(value);
+                }
+
+                bytesToRead = (value // This is the length of the payload.
+                               - (sizeof(uint64_t) // We have already read this amount of bytes while peeking the header.
+                                  - size) // This amount of bytes was consumed to encode the length of the payload in the varint field.
+                                 )
+                               + 1; // And we need to consume the final ','.
+
+                // Add the data at the end of the buffer.
+                buffer.seekg(0, ios_base::end);
+
+                // Read remainder of the container.
+                while (in.good() && (bytesToRead > 0)) {
+                    // Read next byte.
+                    in.read(&_c, sizeof(char));
+                    bytesToRead--; bytesRead++;
+
+                    // Add new byte at the end of the buffer.
+                    buffer.write(&_c, sizeof(char));
+                }
+
+                // Move read pointer to the beginning to read container.
+                buffer.seekg(0, ios_base::beg);
+            }
+
+            return bytesRead;
+        }
 
         void QueryableNetstringsDeserializerABCF::read(const uint32_t &id, Serializable &v) {
             read(id, 0, "", "", v);
@@ -377,12 +443,20 @@ namespace core {
                 uint64_t stringLength = 0;
                 decodeVarUInt(m_buffer, stringLength);
 
+#ifdef WIN32
                 char *str = new char[stringLength+1];
                 m_buffer.read(str, stringLength);
                 str[stringLength] = '\0';
                 // It is absolutely necessary to specify the size of the serialized string, otherwise, s contains only data until the first '\0' is read.
                 v = string(str, stringLength);
                 OPENDAVINCI_CORE_DELETE_ARRAY(str);
+#else
+                string data(stringLength, '\0');
+                char* begin = &(*data.begin());
+                m_buffer.read(begin, stringLength);
+
+                v = data;
+#endif
             }
         }
 
