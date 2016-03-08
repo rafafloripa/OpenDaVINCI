@@ -127,6 +127,11 @@ namespace cockpit {
                 if (container.getDataType() == automotive::VehicleData::ID()) {
                    return container.getData<automotive::VehicleData>().toString();
                 }
+                
+                if (container.getDataType() == automotive::GenericCANMessage::ID()) {
+                   return container.getData<automotive::GenericCANMessage>().toString();
+                }
+                
                 return "";
 /*
                 switch (container.getDataType()) {
