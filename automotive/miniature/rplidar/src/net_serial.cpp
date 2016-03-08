@@ -249,7 +249,7 @@ std::cerr<<"x"<<std::endl;
 
 
             if ( ioctl(serial_fd, FIONREAD, returned_size) == -1) return ANS_DEV_ERR;
-//std::cerr<<"rs "<<(long)*returned_size<<" dc "<<(long)data_count<<std::endl;
+std::cerr<<"rs "<<(long)*returned_size<<" dc "<<(long)data_count<<std::endl;
             if (*returned_size >= data_count)
             {
 std::cerr<<"ret size ok"<<std::endl;

@@ -17,22 +17,27 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <ctype.h>
-#include <cstring>
-#include <cmath>
-#include <iostream>
-
-#include "opendavinci/odcore/base/KeyValueConfiguration.h"
-#include "opendavinci/odcore/data/Container.h"
-#include "opendavinci/odcore/data/TimeStamp.h"
+#include <opendavinci/odcore/wrapper/SerialPort.h>
+#include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
 #include "RPLidarGrabber.h"
+//#include "RPLidarSerialInterface.cpp"
 #include "rplidar_reader.cpp"
 
 namespace automotive {
     namespace miniature {
 
+        using namespace odcore;
         using namespace odcore::data;
+        using namespace odcore::wrapper;
+
+
+        class RPLidarSerialInterface : public odcore::io::StringListener {
+            void nextString(const std::string &s)
+            {
+                cout << "Received " << s.length() << " bytes containing '" << s << "'" << endl;
+            }
+        };
 
         RPLidarGrabber::RPLidarGrabber(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "RPLidarGrabber")
@@ -54,10 +59,39 @@ namespace automotive {
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode RPLidarGrabber::body() {
+            
+            const string SERIAL_PORT = "/dev/ttyUSB0";
+            const uint32_t BAUD_RATE = 115200;
+            
+            try {
+                std::shared_ptr<SerialPort> serial_port(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
+
+                char cmd=0x52;
+                std::string str=cmd+"";
+                
+                // This instance will handle any bytes that are received from our serial port.
+                RPLidarSerialInterface handler;
+                serial_port->setStringListener(&handler);
+
+                // Start receiving bytes.
+                serial_port->start(); // WHEN THE PROGRAM REACHES THIS POINT, THE LIDAR STOPS.
+                //serial_port->send(str);//0x52
+
+                const uint32_t ONE_SECOND = 1000 * 1000;
+                odcore::base::Thread::usleepFor(10 * ONE_SECOND);
+
+                // Stop receiving bytes and unregister our handler.
+                serial_port->stop();
+                serial_port->setStringListener(NULL);
+            }
+            catch(string &exception) {
+                cerr << "Serial port could not be created: " << exception << endl;
+            }
+
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
                 
                 cout << "RPLidarGrabber::body" << endl;
-                rplidar_read_once();
+                //rplidar_read_once();
 //                Container c(s);
 //                // Time stamp data before storing.
 //                c.setReceivedTimeStamp(TimeStamp());
