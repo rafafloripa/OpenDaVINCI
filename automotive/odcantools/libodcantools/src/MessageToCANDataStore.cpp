@@ -28,15 +28,19 @@ namespace automotive {
 
         using namespace odcore::data;
 
-        MessageToCANDataStore::MessageToCANDataStore(shared_ptr<CANDevice> canDevice) :
+        MessageToCANDataStore::MessageToCANDataStore(CANDevice &canDevice) :
             m_canDevice(canDevice) {}
 
         MessageToCANDataStore::~MessageToCANDataStore() {}
 
         void MessageToCANDataStore::add(const odcore::data::Container &container) {
-            if (container.getDataType() == automotive::GenericCANMessage::ID()) {
-                GenericCANMessage gcm = const_cast<odcore::data::Container &>(container).getData<GenericCANMessage>();
-                m_canDevice->write(gcm);
+            // TODO: Here, we need to check for which Containers we have specified a mapping to CAN messages.
+            if (container.getDataType() == automotive::VehicleControl::ID()) {
+                // TODO: Use the Visitor-pattern to transform a Container into the CAN message.
+                // The visitor would have to transform the container into a set of GenericCANMessages
+                // that are subsequently written via the CAN device.
+                GenericCANMessage gcm;
+                m_canDevice.write(gcm);
             }
         }
 
