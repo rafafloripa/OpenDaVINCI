@@ -57,6 +57,7 @@ ID;TYPE;legacy OR message;library;comment
 84;automotive.miniature.UserButtonData;CaroloCup;AutomotiveData.odvd;;
 87;automotive.carolocup.Sensors;CaroloCup;AutomotiveData.odvd;;
 88;automotive.carolocup.Control;CaroloCup;AutomotiveData.odvd;;
+99;example.TestMessage01;legacy;OpenDaVINCI.odvd;internal use;
 100;odcore.data.LogMessage;legacy;OpenDaVINCI.odvd;;
 101;odcore.data.dmcp.PulseMessage;legacy;OpenDaVINCI.odvd;internal use;
 102;odcore.data.dmcp.PulseAckMessage;legacy;OpenDaVINCI.odvd;internal use;
@@ -86,6 +87,15 @@ ID;TYPE;legacy OR message;library;comment
 167;OPENDLV_GCDC_MSG17;Revere/GCDC;Revere.odvd;;
 168;OPENDLV_GCDC_MSG18;Revere/GCDC;Revere.odvd;;
 169;OPENDLV_GCDC_MSG19;Revere/GCDC;Revere.odvd;;
+191;OPENDLV_GCDC_MSG41;Revere/GCDC;Revere.odvd;;
+192;OPENDLV_GCDC_MSG42;Revere/GCDC;Revere.odvd;;
+193;OPENDLV_GCDC_MSG43;Revere/GCDC;Revere.odvd;;
+194;OPENDLV_GCDC_MSG44;Revere/GCDC;Revere.odvd;;
+195;OPENDLV_GCDC_MSG45;Revere/GCDC;Revere.odvd;;
+196;OPENDLV_GCDC_MSG46;Revere/GCDC;Revere.odvd;;
+197;OPENDLV_GCDC_MSG47;Revere/GCDC;Revere.odvd;;
+198;OPENDLV_GCDC_MSG48;Revere/GCDC;Revere.odvd;;
+199;OPENDLV_GCDC_MSG49;Revere/GCDC;Revere.odvd;;
 301;fxe.KeyPoint;simulation;AutomotiveData.odvd;;
 302;fxe.Noise;simulation;AutomotiveData.odvd;;
 303;fxe.Recording;simulation;AutomotiveData.odvd;;

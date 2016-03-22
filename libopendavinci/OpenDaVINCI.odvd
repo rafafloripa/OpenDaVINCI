@@ -226,6 +226,12 @@ message odcore.data.recorder.RecorderCommand [id = 11] {
     Command command [id = 1, fourbyteid = 0x1304776F];
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Test messages for serialization/deserialization.
+message example.TestMessage01 [id = 99] {
+//    list<uint8> field1 [id = 1]; // Sending value 12 would not work.
+    list<uint16> field1 [id = 1];
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Shared BLOB messages.
