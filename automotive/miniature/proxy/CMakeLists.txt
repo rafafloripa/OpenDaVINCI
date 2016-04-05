@@ -90,8 +90,8 @@ INCLUDE_DIRECTORIES(include)
 # Build this project.
 FILE(GLOB_RECURSE thisproject-sources "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 ADD_LIBRARY (${PROJECT_NAME}lib-static STATIC ${thisproject-sources})
-ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp")
-TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES}) 
+ADD_EXECUTABLE (${PROJECT_NAME} "${CMAKE_CURRENT_SOURCE_DIR}/apps/${PROJECT_NAME}.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/src/SerialReceiveBytes.cpp")
+TARGET_LINK_LIBRARIES (${PROJECT_NAME} ${PROJECT_NAME}lib-static ${LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR} ${OPENDAVINCI_LIBRARIES}) 
 
 ###########################################################################
 # Enable CxxTest for all available testsuites.

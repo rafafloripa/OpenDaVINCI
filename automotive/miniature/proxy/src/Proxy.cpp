@@ -17,15 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+//MKDIR
+#include <sys/stat.h>
+
 #include <ctype.h>
 #include <cstring>
 #include <cmath>
 #include <iostream>
-
+#include "SerialReceiveBytes.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
-
 #include "OpenCVCamera.h"
 
 #ifdef HAVE_UEYE
@@ -45,13 +47,19 @@ namespace automotive {
         Proxy::Proxy(const int32_t &argc, char **argv) :
             TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
             m_recorder(),
-            m_camera()
+            m_camera(),
+            arduino()
         {}
 
         Proxy::~Proxy() {
         }
 
         void Proxy::setUp() {
+            const string serial_port = getKeyValueConfiguration().getValue<string>("proxy.Sensor.SerialPort");
+            const uint32_t baud_rate = getKeyValueConfiguration().getValue<uint32_t>("proxy.Sensor.SerialSpeed");
+            arduino = unique_ptr<SerialReceiveBytes>(new SerialReceiveBytes(serial_port, baud_rate));
+            arduino->setUp();
+
             // This method will be call automatically _before_ running body().
             if (getFrequency() < 20) {
                 cerr << endl << endl << "Proxy: WARNING! Running proxy with a LOW frequency (consequence: data updates are too seldom and will influence your algorithms in a negative manner!) --> suggestions: --freq=20 or higher! Current frequency: " << getFrequency() << " Hz." << endl << endl << endl;
@@ -64,8 +72,12 @@ namespace automotive {
             const bool useRecorder = kv.getValue<uint32_t>("proxy.useRecorder") == 1;
             if (useRecorder) {
                 // URL for storing containers.
+                stringstream specialURL;
+                specialURL << getKeyValueConfiguration().getValue<string>("proxy.recorder.output") << TimeStamp().getYYYYMMDD_HHMMSS() << "/";
+                const char* temp = specialURL.str().c_str();
+                mkdir(temp, ACCESSPERMS);
                 stringstream recordingURL;
-                recordingURL << "file://" << "proxy_" << TimeStamp().getYYYYMMDD_HHMMSS() << ".rec";
+                recordingURL << "file://" << specialURL.str() << "recording.rec";
                 // Size of memory segments.
                 const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
                 // Number of memory segments.
@@ -102,6 +114,7 @@ namespace automotive {
         }
 
         void Proxy::tearDown() {
+           arduino->tearDown();
             // This method will be call automatically _after_ return from body().
         }
 
@@ -129,8 +142,24 @@ namespace automotive {
                     distribute(c);
                     captureCounter++;
                 }
+                if (arduino.get() != NULL) {
 
-                // Get sensor data from IR/US.
+                    // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
+                    // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
+                    string data = arduino->getData();
+                    cout << "Received proxy " << data.length() << " bytes containing '" << data << "'" << endl;
+                    std::map<uint32_t, double> myMap;
+                    myMap[0] = 10;
+                    myMap[1] = 20;
+                    myMap[2] = 30;
+                    myMap[3] = 20;
+                    myMap[4] = 10;
+                    SensorBoardData obj;;
+                    obj.setNumberOfSensors(5);
+                    obj.setMapOfDistances(myMap);
+                    Container sensors(obj);
+                    distribute(sensors);
+                }
             }
 
             cout << "Proxy: Captured " << captureCounter << " frames." << endl;

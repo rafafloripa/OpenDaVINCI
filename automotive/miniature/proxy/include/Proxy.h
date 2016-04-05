@@ -26,6 +26,8 @@
 #include "opendavinci/odcore/base/module/TimeTriggeredConferenceClientModule.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
+#include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
+#include "SerialReceiveBytes.h"
 
 #include "Camera.h"
 
@@ -81,6 +83,7 @@ namespace automotive {
             private:
                 unique_ptr<odtools::recorder::Recorder> m_recorder;
                 unique_ptr<Camera> m_camera;
+                unique_ptr<SerialReceiveBytes> arduino;
         };
 
     }

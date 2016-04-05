@@ -54,7 +54,7 @@ namespace automotive {
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SidewaysParker::body() {
-            const double ULTRASONIC_FRONT_RIGHT = 0;
+            const double ULTRASONIC_FRONT_RIGHT = 4;
             double distanceOld = 0;
             double absPathStart = 0;
             double absPathEnd = 0;
