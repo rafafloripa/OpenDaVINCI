@@ -7,6 +7,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/se-research/OpenDaVINCI/blob/master/odlogo/Logo.png" alt="OpenDaVINCI Logo" width=140 height=140>
 # OpenDaVINCI
+# TEAM 3
 
 OpenDaVINCI is a compact middleware OpenDaVINCI written entirely in standard C++.
 It runs on a variety of POSIX-compatible OS. And Windows.
