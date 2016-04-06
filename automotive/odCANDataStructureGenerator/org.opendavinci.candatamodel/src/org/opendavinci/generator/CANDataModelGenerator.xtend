@@ -376,6 +376,9 @@ namespace canmapping {
         	std::map<uint64_t,uint64_t> m_payloads;
         	std::vector<uint64_t> m_neededCanMessages;
         	uint64_t m_index;
+        	
+        	::«mapping.mappingName.replaceAll("\\.", "::")» «"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»;
+        	
     }; // end of class "«className»"
     
 	'''
@@ -462,7 +465,8 @@ namespace canmapping {
 		«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
-		m_index(0)
+		m_index(0),
+		«"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»()
 	{
 		«FOR id : canIDs»
 		m_neededCanMessages.push_back(«id»);
@@ -495,7 +499,8 @@ namespace canmapping {
 		«FOR initialization:initializations»«initialization+","+'\n'»«ENDFOR»
 		m_payloads(),
 		m_neededCanMessages(),
-		m_index(0)
+		m_index(0),
+		«"m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»()
 	{
 		«FOR id : canIDs»
 		m_neededCanMessages.push_back(«id»);
@@ -633,16 +638,16 @@ namespace canmapping {
 	::automotive::GenericCANMessage «className»::encode(odcore::data::Container &c) {
 	    «IF canIDs.size>0»
 
-	    «IF canIDs.size>1»
-		cerr<<"Warning: Mapping '«className»' is defined over more than one concrete CAN messages. Only one of those CAN messages will be returned."<<endl;
+		«IF canIDs.size>1»
+			cerr<<"Warning: Mapping '«className»' is defined over more than one concrete CAN messages. Only one of those CAN messages will be returned."<<endl;
 	    «ENDIF»
 
-    «var String gcmPrefix="GCM_"»
-    «var String gcmPayloadPrefix="GCMPayload_"»
-	    «FOR id:canIDs»
-    ::automotive::GenericCANMessage «gcmPrefix+id»;
-	«gcmPrefix+id».setIdentifier(«id»);
-	uint64_t «gcmPayloadPrefix+id»=0x0;
+	    «var String gcmPrefix="GCM_"»
+	    «var String gcmPayloadPrefix="GCMPayload_"»
+		«FOR id:canIDs»
+			::automotive::GenericCANMessage «gcmPrefix+id»;
+			«gcmPrefix+id».setIdentifier(«id»);
+			uint64_t «gcmPayloadPrefix+id»=0x0;
    		«ENDFOR»
 		
     	«var String varName»
@@ -681,9 +686,12 @@ namespace canmapping {
 					if(«rawVarName»>«canSignal.m_rangeEnd»)
 						«rawVarName»=«canSignal.m_rangeEnd»;
 					«var String transformedVarName="transformed"+varName»
-					double «transformedVarName»=(«rawVarName» - «canSignal.m_add») / (double)«canSignal.m_multiplyBy»;
 					
-					// length      : «canSignal.m_length»
+					const double SCALE = «canSignal.m_add» ;
+					const double OFFSET = «canSignal.m_multiplyBy» ;
+					
+					double «transformedVarName»=static_cast<double>((«rawVarName» - SCALE) / (double) OFFSET);
+					
 					«var String transformedType»
 					«IF Integer.parseInt(canSignal.m_length) <= 8»
 						«{transformedType="uint8_t";""}»
@@ -695,31 +703,43 @@ namespace canmapping {
 						«{transformedType="uint64_t";""}»
 					«ENDIF»
 					
-					// the value will be casted to «transformedType»«{
+					// signal length is «canSignal.m_length» so the value will be casted to «transformedType»«{
 						finalVarName=finalPrefix+varName;
 						payloadLengthInBits+=Integer.parseInt(canSignal.m_length);""
 					}»
 					«transformedType» «finalVarName»=static_cast<«transformedType»>(round(«transformedVarName»)); // avoid truncation errors
-					
-					// endian      : «canSignal.m_endian»
+
 					«IF canSignal.m_endian.compareTo("big")==0»
-					«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
-						«finalVarName»=htons(final«varName»);
-					«ELSEIF Integer.parseInt(canSignal.m_length) <= 32»
-						«finalVarName»=htonl(final«varName»);
-					«ELSEIF Integer.parseInt(canSignal.m_length) <= 64»
-						«finalVarName»=htonll(final«varName»);
-					«ENDIF»
+					// endian      : «canSignal.m_endian»
+						«IF Integer.parseInt(canSignal.m_length) > 8 && Integer.parseInt(canSignal.m_length) <= 16»
+							«finalVarName»=htons(final«varName»);
+						«ELSEIF Integer.parseInt(canSignal.m_length) > 16 && Integer.parseInt(canSignal.m_length) <= 32»
+							«finalVarName»=htonl(final«varName»);
+						«ELSEIF Integer.parseInt(canSignal.m_length) > 32 && Integer.parseInt(canSignal.m_length) <= 64»
+							«finalVarName»=htonll(final«varName»);
+						«ENDIF»
 					«ELSE»
-						// 4.2 Endianness doesn't need fixing, skipping this step.
+						// Endianness doesn't need fixing, skipping this step.
 					«ENDIF»
 					
-					// startBit    : «canSignal.m_startBit»
-					
+					«var int displacement=0»
+					«var int canLengthBit=0»
+					«{
+						for(sig:mapping.mappings) {
+							if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(currentSignalInMapping.cansignalname).m_CANID) // signals in the same CAN message
+							{
+								canLengthBit+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+								if(canSignals.get(sig.cansignalname).m_startBit>canSignals.get(currentSignalInMapping.cansignalname).m_startBit) // signals to the right-hand side in the bitfield
+								{
+									displacement+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+								}
+							}
+						}
+					;""}»
 					«var String tempPLVarName="tempPL"+varName»
 					uint64_t «tempPLVarName»=0x0;
 					«tempPLVarName»=static_cast<uint64_t>(«finalVarName»);
-					«tempPLVarName»=«tempPLVarName»<<(64-«canSignal.m_length»-«canSignal.m_startBit»);
+					«tempPLVarName»=«tempPLVarName»<<(«displacement»);
 					«gcmPayloadPrefix+canSignal.m_CANID»=«gcmPayloadPrefix+canSignal.m_CANID» | «tempPLVarName»;
 				}
 				else {
@@ -741,7 +761,7 @@ namespace canmapping {
 			«FOR id:canIDs»
 			// set payload of GenericCANMessage and return
 			«IF (8-Math.ceil(payloadLengthInBits/8.0))>0»
-			«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>((8-«Math.ceil(payloadLengthInBits/8.0)»)*8);
+			//«gcmPayloadPrefix+id»=«gcmPayloadPrefix+id»>>static_cast<uint8_t>((8-«Math.ceil(payloadLengthInBits/8.0)»)*8);
 			«ENDIF»
 			«gcmPrefix+id».setData(«gcmPayloadPrefix+id»);
 			«gcmPrefix+id».setLength(static_cast<uint8_t>(«Math.ceil(payloadLengthInBits/8.0)»));
@@ -763,6 +783,7 @@ namespace canmapping {
 		odcore::data::Container c;
     «IF canIDs.size>0»
 		«IF mapping.unordered==null || mapping.unordered.compareTo("unordered")!=0»
+
 		bool reset=false;
 		«ENDIF»
 		switch(gcm.getIdentifier())
@@ -770,9 +791,11 @@ namespace canmapping {
 	    	«FOR id : canIDs»
 	    		case «id» : 
 	    	«IF mapping.unordered!=null && mapping.unordered.compareTo("unordered")==0»
+
 		    	// since the order doesn't matter, store the payload in a map for future use replacing the current content held there
 		    	m_payloads[gcm.getIdentifier()] = gcm.getData();
 	    	«ELSE»
+
 		    	// since the order matters:
 		    	if(m_neededCanMessages.at(m_index) == «id») // if we got the expected message
 		    	{
@@ -785,11 +808,12 @@ namespace canmapping {
 		    		reset=true;
 	    	«ENDIF»
 	    		break;
-	    	
+
 	        «ENDFOR»
 	        	default : return c; // valid id not found
 	    	}
 	    «IF mapping.unordered==null || mapping.unordered.compareTo("unordered")!=0»
+
 		if(reset)
 		{		
 			// reset the payloads map
@@ -803,7 +827,7 @@ namespace canmapping {
 		if(m_payloads.size()!=m_neededCanMessages.size())
 			return c;
 
-		// 1. Create a generic message.
+		// Create a generic message.
 		odcore::reflection::Message message;
 	
 	«FOR currentSignalInMapping : mapping.mappings»
@@ -811,11 +835,8 @@ namespace canmapping {
 		«IF canSignals.get(signalName)!=null /*if the signal exists*/»
 			// addressing signal «signalName»
 			{
-				// 2. Get the raw payload.
+				// Get the raw payload.
 				uint64_t data = m_payloads[«canSignals.get(signalName).m_CANID»];
-		
-				// 3. Map uin64_t value to 8 byte uint8_t array.
-				//uint8_t payload[8]=reinterpret_cast<uint8_t*>(&data);
 		
 				«var String tempVarType=""»
 				«var String tempVarName="raw_"+signalName.replaceAll("\\.", "_")»
@@ -828,18 +849,36 @@ namespace canmapping {
 				}»
 				«var String memberVarName="m_"+capitalizedName.toFirstLower»
 				
-				// 4.1 Get raw value from attribute.
+				// Get raw value from attribute.
 				«tempVarType="uint64_t"» «tempVarName»=0x0000000000000000;
 				«tempVarName»=data;
-				
-				// reset left-hand side of bit field
-				«tempVarName»=«tempVarName» << «Integer.parseInt(canSignals.get(signalName).m_startBit)»;
+
+				«var int displacement=0»
+				«var int canLengthBit=0»
+				«{
+					for(sig:mapping.mappings) {
+						if(canSignals.get(sig.cansignalname).m_CANID==canSignals.get(signalName).m_CANID) // signals in the same CAN message
+						{
+							canLengthBit+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+							if(canSignals.get(sig.cansignalname).m_startBit>canSignals.get(signalName).m_startBit) // signals to the right-hand side in the bitfield
+							{
+								displacement+=Integer.parseInt(canSignals.get(sig.cansignalname).m_length);
+							}
+						}
+					}
+				;""}»
+				// reset left-hand side of bit field (done later with the bitwise AND)
+				//«tempVarName»=«tempVarName» << («canSignals.get(signalName).m_startBit»-«canSignals.get(signalName).m_length»+1);
+
 				// reset right-hand side of bit field
-				«tempVarName»=«tempVarName» >> (gcm.getLength()*8-«canSignals.get(signalName).m_length»);
+				«tempVarName»=«tempVarName» >> («displacement»);
+				«var String mask="0"»
+				«{for(var int i=0;i<Integer.parseInt(canSignals.get(signalName).m_length);i++) mask+="1";""}»
+				«tempVarName»=«tempVarName» & 0b«mask»;
 				
 				«IF Integer.parseInt(canSignals.get(signalName).m_length)>=8»
 					«IF canSignals.get(signalName).m_endian.compareTo("big")==0»
-					// 4.2 Optional: Fix endianness depending on CAN message specification.
+					// Optional: Fix endianness depending on CAN message specification.
 						«IF Integer.parseInt(canSignals.get(signalName).m_length)<=16»
 						uint16_t temp_cast=static_cast<uint16_t>(«tempVarName»);
 						temp_cast=ntohs(temp_cast);
@@ -852,22 +891,21 @@ namespace canmapping {
 						«tempVarName» = ntohll(«tempVarName»);
 						«ENDIF»
 					«ELSE»
-					// 4.2 Endianness doesn't need fixing, skipping this step.
+					// Endianness doesn't need fixing, skipping this step.
 					«ENDIF»
 				«ELSE»
-					// 4.2 Field too short for endianness adjustment, skipping this step.
+					// Field too short for endianness adjustment, skipping this step.
 				«ENDIF»
 		
 				// variable holding the transformed value
 				double «finalVarName»=static_cast<double>(«tempVarName»);
 				
-				// 4.3 Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
-				// scaling
+				// Apply value transformation (i.e. formula) to map raw value to (physically) meaningful value according to CAN message specification.
 				const double SCALE = «canSignals.get(signalName).m_multiplyBy»;
-				«finalVarName»=«finalVarName»*SCALE;
-				// adding
 				const double OFFSET = «canSignals.get(signalName).m_add»;
-				«finalVarName»=«finalVarName»+OFFSET;
+				
+				// scaling and adding
+				«finalVarName»=(«finalVarName»*SCALE)+OFFSET;
 				
 				// clamping
 				if(«finalVarName»<«canSignals.get(signalName).m_rangeStart»)
@@ -877,7 +915,7 @@ namespace canmapping {
 				
 				«memberVarName»=«finalVarName»;
 				
-				// 4.4 Create a field for a generic message.
+				// Create a field for a generic message.
 				odcore::reflection::Field<double> *f = new odcore::reflection::Field<double>(«memberVarName»);
 				f->setLongFieldIdentifier(0); // The identifiers specified here must match with the ones defined in the .odvd file!
 				f->setShortFieldIdentifier(«currentSignalInMapping.signalIdentifier»); // The identifiers specified here must match with the ones defined in the .odvd file!
@@ -886,7 +924,7 @@ namespace canmapping {
 				f->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);
 				f->setSize(sizeof(«memberVarName»));
 		
-				// 4.5 Add created field to generic message.
+				// Add created field to generic message.
 				message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f));
 			}
 		«ELSE /*if the signal doesn't exist*/»
@@ -895,30 +933,28 @@ namespace canmapping {
 		«ENDIF»
 	«ENDFOR»
 		
-		// 5. Depending on the CAN message specification, we are either ready here
+		// Depending on the CAN message specification, we are either ready here
 		// (i.e. mapping one CAN message to one high-level C++ message), or we have
 		// to wait for more low-level CAN messages to complete this high-level C++ message.
 		// Thus, our state machine would have to store this (incomplete) "message"
 		// variable internally to continue decoding later.
 		{
-			// 6. As we are ready here, we create a visitor to traverse the 
+			// As we are ready here, we create a visitor to traverse the 
 			// unnamed message and create a named message (i.e. an instance
 			// of a high-level C++ message) to be distributed as a Container.
 			odcore::reflection::MessageToVisitableVisitor mtvv(message);
 			
-			// 7. Create an instance of the named high-level message.
-            «var String HLName=mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»
-        ::«mapping.mappingName.replaceAll("\\.", "::")» «HLName»;
-	
-			// 8. Letting the high-level message accept the visitor to enter the values.
-        «HLName».accept(mtvv);
+            «var String memberHLName="m_"+mapping.mappingName.toFirstLower.replaceAll("\\.", "_")»	
+			// Letting the high-level message accept the visitor to set the values.
+        «memberHLName».accept(mtvv);
 
-			// 9. Create the resulting container carrying a valid payload.
-			c = odcore::data::Container(«HLName»);
+			// Create the resulting container carrying a valid payload.
+			c = odcore::data::Container(«memberHLName»);
 		}
 	«ELSE»
+
 	(void) gcm;
-    // Return an empty container
+	// Return an empty container
 	std::cerr<<"Warning: Mapping '«className»' is empty."<<endl;
 	«ENDIF»
 		return c;
@@ -981,8 +1017,6 @@ Signal "«signalName»" could not be found. It will be ignored.
 «ENDFOR»
 */
 
-#include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
-
 #include <memory>
 #include <iostream>
 #include <opendavinci/odcore/reflection/Message.h>
@@ -991,6 +1025,8 @@ Signal "«signalName»" could not be found. It will be ignored.
 #include <opendavinci/odcore/base/SerializationFactory.h>
 #include <opendavinci/odcore/base/Serializer.h>
 #include <opendavinci/odcore/base/Deserializer.h>
+
+#include "generated/«mapping.mappingName.toString.replaceAll('\\.','/')».h"
 
 namespace canmapping {
 
@@ -1115,25 +1151,25 @@ class CANBridgeTest : public CxxTest::TestSuite {
 
 	void testDecode() {
 		«var int testIndex=0»
-		«FOR test : canSignalTesting»
+		«FOR test : canSignalTesting /* this loops over all the provided test suites*/»
 			«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
 				«var String testName="test_"+(testIndex++)»
 				«var HashMap<String,String> GCMs=new HashMap<String,String>»
+			{
 				// Mapping name «test.mappingName»
 				«var int gcmIndex=0»
+				«var String gcmName="gcm_"»
 				«FOR description : test.CANMessageDescriptions»
 				// id «description.canIdentifier»
-				// payload «description.payload» : length «(description.payload.length-2)/2»
-					«IF description.payload.length==18»
-						«var String gcmName="gcm_"+(gcmIndex++)»
-						::automotive::GenericCANMessage «gcmName»;
-						«gcmName».setIdentifier(«description.canIdentifier»);
-						«gcmName».setLength(«(description.payload.length-2)/2»);
-						«gcmName».setData(«description.payload»);
-						«GCMs.put(description.canIdentifier,gcmName)»
-					«ENDIF»
+				// payload «description.payload» : length «(description.payload.length-2)/2» bytes
+
+					::automotive::GenericCANMessage «{gcmIndex+=1;gcmName=gcmName.substring(0,4)+gcmIndex}»;
+					«gcmName».setIdentifier(«description.canIdentifier»);
+					«gcmName».setLength(«(description.payload.length-2)/2»);
+					«gcmName».setData(«description.payload»);
+					«{GCMs.put(description.canIdentifier,gcmName);""}»
 				«ENDFOR»
-				
+
 				canmapping::«mapping.mappingName.toString.replaceAll("\\.", "::")» «testName»;
 				«IF canIDs.length==GCMs.size»
 					«FOR canid:canIDs»
@@ -1148,33 +1184,35 @@ class CANBridgeTest : public CxxTest::TestSuite {
 							for(chunk:chunks) capitalizedName+=chunk.toFirstUpper
 							for(result:test.results)
 								if(result.signalIdentifier.compareTo(mapping.mappings.get(index).signalIdentifier)==0)
-									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-5);"+'\n'
+									asserts+="TS_ASSERT_DELTA("+testName+".get"+capitalizedName+"() , "+result.expectedResult+", 1e-4);"+'\n'
 						}
 					}»
 					«FOR assertions:asserts»
 					«assertions»
 					«ENDFOR»
 				«ELSE»
-				// not enough CAN messages were provided
+					// not enough CAN messages were provided «canIDs.length» «GCMs.size»
 				«ENDIF»
+			}
 		    «ENDIF»
 		«ENDFOR»
-        }
-        
+    }
+
 «{testIndex=0;""}»
     void testEncode() {
         «FOR test : canSignalTesting»
         	«IF test.mappingName.toString.compareTo(mapping.mappingName.toString)==0»
         		«var String testName="test_"+(testIndex++)»
-        		// Mapping name «test.mappingName»
+    			{
+    			// Mapping name «test.mappingName»
 
-        		«IF test.CANMessageDescriptions.size==1 && test.CANMessageDescriptions.get(0).payload.length==18»
+        		«IF test.CANMessageDescriptions.size==1»
 
 				// id «test.CANMessageDescriptions.get(0).canIdentifier»
 				// payload «test.CANMessageDescriptions.get(0).payload» : length «(test.CANMessageDescriptions.get(0).payload.length-2)/2»
 
 				odcore::reflection::Message message;
-
+	
     	    	«var ArrayList<String> assignments=new ArrayList<String>»
     			«{
     				for(var int index=0;index<mapping.mappings.size;index++){
@@ -1189,16 +1227,17 @@ class CANBridgeTest : public CxxTest::TestSuite {
 												"f_"+fIndex+"->setLongFieldIdentifier(0);"+
 												"f_"+fIndex+"->setShortFieldIdentifier("+result.signalIdentifier+");"+'\n'+
 												"f_"+fIndex+"->setFieldDataType(odcore::data::reflection::AbstractField::DOUBLE_T);"+'\n'+
-												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"
+												"message.addField(std::shared_ptr<odcore::data::reflection::AbstractField>(f_"+fIndex+"));"+'\n'
     							//assignments+="HLClass.set"+chunks.get(chunks.size-1).toFirstUpper+"("+result.expectedResult+");"+'\n'
     						}
     					}
     				}
     			}»
 
-    			«FOR assignment:assignments»
-    			«assignment»
-    			«ENDFOR»
+			«FOR assignment:assignments»
+			«assignment»
+			«ENDFOR»
+
 				odcore::reflection::MessageToVisitableVisitor mtvv(message);
 				::«mapping.mappingName.toString.replaceAll("\\.", "::")» HLClass;
 				HLClass.accept(mtvv);
@@ -1208,13 +1247,13 @@ class CANBridgeTest : public CxxTest::TestSuite {
 				::automotive::GenericCANMessage GCM;
 				GCM=«testName».encode(c);
 				TS_ASSERT_EQUALS(GCM.getData(),static_cast<uint64_t>(«test.CANMessageDescriptions.get(0).payload»));
-
+			}
         		«ELSE»
-        		std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
+        			std::cerr<<"Warning: Multiple CAN messages for one mapping are not supported."<<std::endl;
 	            «ENDIF»
             «ENDIF»
         «ENDFOR»
-        }
+    }
 };
 
 #endif /*CANMAPPINGTESTSUITE_«mapping.mappingName.split('\\.').get(mapping.mappingName.split('\\.').size-1).toUpperCase»_H_*/

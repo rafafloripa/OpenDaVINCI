@@ -17,9 +17,6 @@ unordered mapping automotive.vehicle.LightSystem {
     lightsystem.headlights : 1;
 }
 
-mapping EmptyCanMessage {
-}
-
 test automotive.vehicle.WheelSpeed {
   0x123: 0x223C2217220D2207
   
@@ -28,4 +25,3 @@ test automotive.vehicle.WheelSpeed {
   id 3 = 87.17
   id 4 = 87.11
 }
-
