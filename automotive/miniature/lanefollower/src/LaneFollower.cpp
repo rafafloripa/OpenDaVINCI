@@ -202,10 +202,27 @@ namespace automotive {
             TimeStamp afterImageProcessing;
             cerr << "Processing time: " << (afterImageProcessing.toMicroseconds() - beforeImageProcessing.toMicroseconds())/1000.0 << "ms." << endl;
 
+            cv::Mat mat_img(m_image);
+			cv::Mat dst, cdst;
+    		cv::Canny(mat_img, dst, 50, 200, 3);
+    		cv::cvtColor(dst, cdst, CV_GRAY2BGR);
+    		vector<cv::Vec2f> lines;
+    		// detect lines
+    		cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
+    		IplImage ipl_img = dst;
+
+            // Example: Show the image.
+            //if (m_debug) {
+            //    if (m_image != NULL) {
+            //        cvShowImage("Camera Feed Image", &ipl_img);
+            //        cvWaitKey(10);
+            //    }
+            //}
+
             // Show resulting features.
             if (m_debug) {
                 if (m_image != NULL) {
-                    cvShowImage("WindowShowImage", m_image);
+                    cvShowImage("WindowShowImage", &ipl_img);
                     cvWaitKey(10);
                 }
             }
