@@ -129,7 +129,7 @@ namespace automotive {
                 CvPoint left;
                 left.y = y;
                 left.x = -1;
-                for(int x = m_image->width/2; x > 0; x--) {
+                for(int x = m_image->width/2; x > 50; x--) {
 		            pixelLeft = cvGet2D(m_image, y, x);
 		            if (pixelLeft.val[0] >= 200) {
                         left.x = x;
@@ -148,6 +148,10 @@ namespace automotive {
                         right.x = x;
                         break;
                     }
+                    //if (pixelRight.val[0] >= 200 && pixelLeft.val[0] <= 100) {
+                    //	right.x = x * 2;
+                    //	break;
+                    //}
                 }
 
                 if (m_debug) {
@@ -177,7 +181,7 @@ namespace automotive {
                             m_eOld = 0;
                         }
 
-                        e = ((right.x - m_image->width/2.0) - distance)/distance;
+                        e = ((right.x + 100 - m_image->width/2.0) - distance)/distance;
 
                         useRightLaneMarking = true;
                     }
