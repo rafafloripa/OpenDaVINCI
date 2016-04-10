@@ -35,7 +35,7 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-
+        
         /**
          * This class wraps the software/hardware interface board.
          */
