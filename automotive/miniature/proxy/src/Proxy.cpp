@@ -48,7 +48,8 @@ namespace automotive {
             TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
             m_recorder(),
             m_camera(),
-            arduino()
+            arduino(),
+            buffer("")
         {}
 
         Proxy::~Proxy() {
@@ -146,15 +147,19 @@ namespace automotive {
 
                     // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    std::map<uint32_t, double> data = arduino->getData();
+                    buffer = arduino->getBuffer();
+                    string temp = getPackage();
+                    map<uint32_t, double> data = parseString(temp);
+
                     if (!data.empty()) {
                         SensorBoardData obj;;
                         obj.setMapOfDistances(data);
                         Container sensors(obj);
+                        cout << "before distribute" << endl;
                         distribute(sensors);
                     }
-
-                    arduino->sendData("Hello u\n");
+                    cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
+                    //arduino->sendData("Hello u\n");
                 }
             }
 
@@ -163,6 +168,55 @@ namespace automotive {
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
+        string Proxy::getPackage() {
+            //buffer = handler->getBuffer();
+            string package = "";
+            int size = buffer.length();                             //Check the entire buffer
+            bool end = false;
+            bool start = false;
+            int n = 0;
+            while (!end && n < size) {                              //Try to make a package
+                if ((buffer[n]==')') && (start)) {                               //found the end delimeter 
+                    package += buffer[n];
+                    end = true;
+                }
+                else if (buffer[n]=='(') {                          //found the start delimeter
+                    start = true;
+                    package = "(";
+                }
+                else {
+                    if (start)
+                        package += buffer[n];                           //else keep adding
+                }
+                n++;
+                cout << "HERE: " << package << "--end" << endl;
+            }
+            size = package.length();
+            if (start && end) {                         //checks if the package has the correct delimeters
+                buffer.erase(0,n);                                  //erases all the unnecessary bits
+                cout << "package: " << package << endl;
+                return package;
+            }
+            return "";
+        }
+
+        map<uint32_t, double> Proxy::parseString (const string &s) {
+            map<uint32_t, double> newMap;
+            if (s.size() >= 2) {
+                cout << "here2" << s << endl;
+                string s2 = s.substr(1, s.size() - 2);              //Remove the delimeters (only leave the sensor values with a comma)
+                istringstream line(s2);
+                int n= 0;
+                double d;
+                while(line >> d) {                                  //While there are integers there
+                    newMap[n] = d;                                  //Makes the key value map
+                    if (line.peek() == ',')                         //ignores the commas
+                        line.ignore();
+                    n++;
+                }
+            }
+            return newMap;
+        }
+
     }
 } // automotive::miniature
-

@@ -30,63 +30,19 @@
  namespace automotive {
     namespace miniature {
 
-        SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate) 
+        SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate)
         {}
 
         void SerialReceiveBytes::nextString(const string &s) {
             //HERE MAYBE WE CAN CREATE THE DATA TYPE AT ONCE?
             buffer+=s;
-            //cout << "Received Serial " << current.length() << " bytes containing '" << current << "'" << endl;
+            //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
         }
 
-        string SerialReceiveBytes::getPackage() {
-            string package = "";
-            int size = buffer.length();                             //Check the entire buffer
-            bool end = false;
-            int n = 0;
-            while (!end && n < size) {                              //Try to make a package
-                if (buffer[n]==')') {                               //found the end delimeter 
-                    package += buffer[n];
-                    end = true;
-                }
-                else if (buffer[n]=='(') {                          //found the start delimeter
-                    package = "(";
-                }
-                else {
-                    package += buffer[n];                           //else keep adding
-                }
-                n++;
-                cout << "HERE: " << package << endl;
-            }
-            size = package.length();
-            if ((package[0]=='(') && end) {                         //checks if the package has the correct delimeters
-                buffer.erase(0,n);                                  //erases all the unnecessary bits
-                cout << "package: " << package << endl;
-                return package;
-            }
-            return "";
-        }
-
-        map<uint32_t, double> SerialReceiveBytes::parseString (const string &s) {
-            map<uint32_t, double> newMap;
-            if (s.size() >= 2) {
-                cout << "here2" << s << endl;
-                string s2 = s.substr(1, s.size() - 2);              //Remove the delimeters (only leave the sensor values with a comma)
-                istringstream line(s2);
-                int n= 0;
-                double d;
-                while(line >> d) {                                  //While there are integers there
-                    newMap[n] = d;                                  //Makes the key value map
-                    if (line.peek() == ',')                         //ignores the commas
-                        line.ignore();
-                    n++;
-                }
-            }
-            return newMap;
-        }
-
-        bool SerialReceiveBytes::checkSum(const string &s) {
-            return s==s;
+        string SerialReceiveBytes::getBuffer() {
+        	string answer = buffer;
+        	buffer = "";
+        	return answer;
         }
 
         // We add some of OpenDaVINCI's namespaces for the sake of readability.
@@ -114,15 +70,6 @@
             catch(string &exception) {
                 cerr << "Error while creating serial port: " << exception << endl;
             }
-        }
-
-        map<uint32_t, double> SerialReceiveBytes::getData()  {
-            string temp = getPackage ();
-            cout << "getPackage: " << temp << endl;
-            std::map<uint32_t, double> answer;
-            if (checkSum(temp))
-                answer = parseString (temp);
-            return answer;
         }
 
         void SerialReceiveBytes::sendData(const string &s) {
