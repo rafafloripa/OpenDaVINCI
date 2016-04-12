@@ -41,6 +41,7 @@ namespace automotive {
 		    map<uint32_t, double> getData();
 		    void sendData(const string &s);
 		private:
+			char getNextChar();
 			string getPackage();
 		    map<uint32_t, double> parseString(const string &s);
 		    bool checkSum(const string &s);

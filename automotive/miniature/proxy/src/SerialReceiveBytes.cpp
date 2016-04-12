@@ -39,32 +39,32 @@
             //cout << "Received Serial " << current.length() << " bytes containing '" << current << "'" << endl;
         }
 
+        char SerialReceiveBytes::getNextChar() {
+            char c = buffer[0];
+            buffer = buffer.substr(1);
+            return c;
+        }
+
         string SerialReceiveBytes::getPackage() {
             string package = "";
-            int size = buffer.length();                             //Check the entire buffer
             bool end = false;
-            int n = 0;
-            while (!end && n < size) {                              //Try to make a package
-                if (buffer[n]==')') {                               //found the end delimeter 
-                    package += buffer[n];
+            
+            while (!end) {
+                char c = getNextChar();
+                if (c == ')') {
+                    package += c;
                     end = true;
                 }
-                else if (buffer[n]=='(') {                          //found the start delimeter
-                    package = "(";
+                else if (c == '(') {
+                    package = c;
                 }
                 else {
-                    package += buffer[n];                           //else keep adding
+                    package += c;
                 }
-                n++;
-                cout << "HERE: " << package << endl;
+                cout << "Package is now: " << package << endl;
             }
-            size = package.length();
-            if ((package[0]=='(') && end) {                         //checks if the package has the correct delimeters
-                buffer.erase(0,n);                                  //erases all the unnecessary bits
-                cout << "package: " << package << endl;
-                return package;
-            }
-            return "";
+
+            return package;
         }
 
         map<uint32_t, double> SerialReceiveBytes::parseString (const string &s) {

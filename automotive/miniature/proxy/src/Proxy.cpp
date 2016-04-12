@@ -148,7 +148,7 @@ namespace automotive {
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
                     std::map<uint32_t, double> data = arduino->getData();
                     if (!data.empty()) {
-                        SensorBoardData obj;;
+                        SensorBoardData obj;
                         obj.setMapOfDistances(data);
                         Container sensors(obj);
                         distribute(sensors);
