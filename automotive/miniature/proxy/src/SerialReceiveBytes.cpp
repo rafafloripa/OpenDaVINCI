@@ -39,7 +39,6 @@
             //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
         }
 
-<<<<<<< HEAD
         char SerialReceiveBytes::getNextChar() {
             char c = buffer[0];
             buffer = buffer.substr(1);
@@ -88,12 +87,12 @@
 
         bool SerialReceiveBytes::checkSum(const string &s) {
             return s==s;
-=======
+        }
+        
         string SerialReceiveBytes::getBuffer() {
         	string answer = buffer;
         	buffer = "";
         	return answer;
->>>>>>> 750c4291d25fcc1824de7d5f539b9a268fe8eb51
         }
 
         // We add some of OpenDaVINCI's namespaces for the sake of readability.
