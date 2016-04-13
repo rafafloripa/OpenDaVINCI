@@ -35,7 +35,7 @@ namespace automotive {
     namespace miniature {
 
         using namespace std;
-        
+
         /**
          * This class wraps the software/hardware interface board.
          */
@@ -83,6 +83,8 @@ namespace automotive {
                 string getPackage();
 
                 map<uint32_t, double> parseString(const string &s);
+
+//                char getNextChar();
 
             private:
                 unique_ptr<odtools::recorder::Recorder> m_recorder;

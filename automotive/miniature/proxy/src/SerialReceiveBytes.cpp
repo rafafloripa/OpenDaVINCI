@@ -39,55 +39,33 @@
             //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
         }
 
-        char SerialReceiveBytes::getNextChar() {
-            char c = buffer[0];
-            buffer = buffer.substr(1);
-            return c;
-        }
+        // char SerialReceiveBytes::getNextChar() {
+        //     char c = buffer[0];
+        //     buffer = buffer.substr(1);
+        //     return c;
+        // }
 
-        string SerialReceiveBytes::getPackage() {
-            string package = "";
-            bool end = false;
+        // string SerialReceiveBytes::getPackage() {
+        //     string package = "";
+        //     bool end = false;
             
-            while (!end) {
-                char c = getNextChar();
-                if (c == ')') {
-                    package += c;
-                    end = true;
-                }
-                else if (c == '(') {
-                    package = c;
-                }
-                else {
-                    package += c;
-                }
-                cout << "Package is now: " << package << endl;
-            }
+        //     while (!end) {
+        //         char c = getNextChar();
+        //         if (c == ')') {
+        //             package += c;
+        //             end = true;
+        //         }
+        //         else if (c == '(') {
+        //             package = c;
+        //         }
+        //         else {
+        //             package += c;
+        //         }
+        //         cout << "Package is now: " << package << endl;
+        //     }
 
-            return package;
-        }
-
-        map<uint32_t, double> SerialReceiveBytes::parseString (const string &s) {
-            map<uint32_t, double> newMap;
-            if (s.size() >= 2) {
-                cout << "here2" << s << endl;
-                string s2 = s.substr(1, s.size() - 2);              //Remove the delimeters (only leave the sensor values with a comma)
-                istringstream line(s2);
-                int n= 0;
-                double d;
-                while(line >> d) {                                  //While there are integers there
-                    newMap[n] = d;                                  //Makes the key value map
-                    if (line.peek() == ',')                         //ignores the commas
-                        line.ignore();
-                    n++;
-                }
-            }
-            return newMap;
-        }
-
-        bool SerialReceiveBytes::checkSum(const string &s) {
-            return s==s;
-        }
+        //     return package;
+        // }
         
         string SerialReceiveBytes::getBuffer() {
         	string answer = buffer;
@@ -123,6 +101,7 @@
         }
 
         void SerialReceiveBytes::sendData(const string &s) {
+        	cout << "trying to send data: " << s << endl;
             serial->send(s);
         }
     }

@@ -41,10 +41,8 @@ namespace automotive {
 		    void sendData(const string &s);
 		    string getBuffer();
 		private:
-			char getNextChar();
-			string getPackage();
-		    map<uint32_t, double> parseString(const string &s);
-		    bool checkSum(const string &s);
+//			char getNextChar();
+//			string getPackage();
 			string buffer;
 			shared_ptr<SerialPort> serial;
 			const string SERIAL_PORT;

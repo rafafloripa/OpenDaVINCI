@@ -26,6 +26,7 @@
 #include <iostream>
 #include "SerialReceiveBytes.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
+ #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "OpenCVCamera.h"
@@ -35,6 +36,8 @@
 #endif
 
 #include "Proxy.h"
+
+ const double pi = 3.1415926535897;
 
 namespace automotive {
     namespace miniature {
@@ -147,7 +150,7 @@ namespace automotive {
 
                     // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    buffer = arduino->getBuffer();
+                    buffer += arduino->getBuffer();
                     string temp = getPackage();
                     map<uint32_t, double> data = parseString(temp);
 
@@ -160,6 +163,15 @@ namespace automotive {
                     }
                     cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
                     //arduino->sendData("Hello u\n");
+
+                    //Check the container
+	                Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
+	                VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
+	                double speed = vc.getSpeed();
+	                double angle_radians = vc.getSteeringWheelAngle();
+	                double angle = angle_radians*180/pi;
+	                string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")\n";
+	                //arduino->sendData(sendData);
                 }
             }
 
