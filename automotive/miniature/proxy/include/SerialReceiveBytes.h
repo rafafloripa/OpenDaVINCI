@@ -38,13 +38,16 @@ namespace automotive {
 		    virtual void nextString(const string &s);
 		    virtual void setUp();
 		    virtual void tearDown();
-		    map<uint32_t, double> getData();
 		    void sendData(const string &s);
+		    string getBuffer();
 		private:
+<<<<<<< HEAD
 			char getNextChar();
 			string getPackage();
 		    map<uint32_t, double> parseString(const string &s);
 		    bool checkSum(const string &s);
+=======
+>>>>>>> 750c4291d25fcc1824de7d5f539b9a268fe8eb51
 			string buffer;
 			shared_ptr<SerialPort> serial;
 			const string SERIAL_PORT;

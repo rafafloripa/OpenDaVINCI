@@ -30,15 +30,16 @@
  namespace automotive {
     namespace miniature {
 
-        SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate) 
+        SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate)
         {}
 
         void SerialReceiveBytes::nextString(const string &s) {
             //HERE MAYBE WE CAN CREATE THE DATA TYPE AT ONCE?
             buffer+=s;
-            //cout << "Received Serial " << current.length() << " bytes containing '" << current << "'" << endl;
+            //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
         }
 
+<<<<<<< HEAD
         char SerialReceiveBytes::getNextChar() {
             char c = buffer[0];
             buffer = buffer.substr(1);
@@ -87,6 +88,12 @@
 
         bool SerialReceiveBytes::checkSum(const string &s) {
             return s==s;
+=======
+        string SerialReceiveBytes::getBuffer() {
+        	string answer = buffer;
+        	buffer = "";
+        	return answer;
+>>>>>>> 750c4291d25fcc1824de7d5f539b9a268fe8eb51
         }
 
         // We add some of OpenDaVINCI's namespaces for the sake of readability.
@@ -114,15 +121,6 @@
             catch(string &exception) {
                 cerr << "Error while creating serial port: " << exception << endl;
             }
-        }
-
-        map<uint32_t, double> SerialReceiveBytes::getData()  {
-            string temp = getPackage ();
-            cout << "getPackage: " << temp << endl;
-            std::map<uint32_t, double> answer;
-            if (checkSum(temp))
-                answer = parseString (temp);
-            return answer;
         }
 
         void SerialReceiveBytes::sendData(const string &s) {
