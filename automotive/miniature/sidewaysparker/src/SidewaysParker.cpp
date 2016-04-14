@@ -54,15 +54,25 @@ namespace automotive {
 
         // This method will do the main data processing job.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode SidewaysParker::body() {
-            const double ULTRASONIC_FRONT_RIGHT = 4;
-            double distanceOld = 0;
-            double absPathStart = 0;
-            double absPathEnd = 0;
-
-            int stageMoving = 0;
-            int stageMeasuring = 0;
+  
+           // Parameters for overtaking.
+            //const int32_t ULTRASONIC_FRONT_CENTER = 3;
+            //const int32_t ULTRASONIC_FRONT_RIGHT = 4;
+            //const int32_t INFRARED_FRONT_RIGHT = 0;
+            const int32_t INFRARED_REAR_RIGHT = 2;
+            const int32_t INFRARED_REAR = 1;
+            double sensor = 0;
+            enum VehicleState {Initial, SearchingForGap, Measuring, Positioning, Angling, Reversing, Straightening, Finishing, Stopping};
+            VehicleState car = Initial;
+            double gap = 0;
+            double startDistance = 0;
+            double currentDistance = 0;
+            double startAngle;
+            double angle;
+            double rear;
 
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+
                 // 1. Get most recent vehicle data:
                 Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
                 VehicleData vd = containerVehicleData.getData<VehicleData> ();
@@ -73,92 +83,113 @@ namespace automotive {
 
                 // Create vehicle control data.
                 VehicleControl vc;
-
-                // Moving state machine.
-                if (stageMoving == 0) {
-                    // Go forward.
+                
+                if(car==Initial){
                     vc.setSpeed(2);
                     vc.setSteeringWheelAngle(0);
+                    car=SearchingForGap;
                 }
-                if ((stageMoving > 0) && (stageMoving < 40)) {
-                    // Move slightly forward.
-                    vc.setSpeed(.4);
-                    vc.setSteeringWheelAngle(0);
-                    stageMoving++;
+
+                else if(car==SearchingForGap){
+                    sensor = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
+                    std::cout << "Searching reading: " << sensor << "\n";
+                    vc.setSpeed(2);
+                    if(sensor<0){
+                        startDistance= vd.getAbsTraveledPath();
+                        car=Measuring;
+                    }
                 }
-                if ((stageMoving >= 40) && (stageMoving < 45)) {
-                    // Stop.
+
+                else if(car==Measuring){
+                    sensor = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
+                    std::cout << "Measuring reading: " << sensor << "\n";
+                    vc.setSpeed(2);
+                    if(sensor>0){
+                        currentDistance = vd.getAbsTraveledPath();
+                        gap = currentDistance - startDistance;
+                        std::cout << "gap is: " << gap << "\n";
+                        if(gap>10){
+                            std::cout << "******************* Parking gap found. ************" << "\n";
+                            car= Positioning;
+                        }else{
+                            car=SearchingForGap;
+                        }
+                    }    
+                }
+
+                else if (car==Positioning){
                     vc.setSpeed(0);
+                    if(vd.getSpeed()<0.05){
+                        startAngle=vd.getHeading();
+                        car=Angling;
+                    }
+                }
+
+                else if (car==Angling){
+                    angle=vd.getHeading();
+                    std::cout << "angle is: " << angle << "\n";
+                    if(angle>=(startAngle+0.65)){
+                        startDistance= vd.getAbsTraveledPath();
+                        car=Reversing;
+                    }
+                    vc.setSpeed(-0.35);
+                    vc.setSteeringWheelAngle(1.2);
+                }    
+
+                else if (car==Reversing){
+                    currentDistance = vd.getAbsTraveledPath();
+                    if(currentDistance - startDistance >= 4.5){
+                        car=Straightening;
+                    }
+                    vc.setSpeed(-0.45);
                     vc.setSteeringWheelAngle(0);
-                    stageMoving++;
                 }
-                if ((stageMoving >= 45) && (stageMoving < 85)) {
-                    // Backwards, steering wheel to the right.
-                    vc.setSpeed(-1.6);
-                    vc.setSteeringWheelAngle(25);
-                    stageMoving++;
+
+                else if (car==Straightening){
+                    angle=vd.getHeading();
+                    std::cout << "currentAngle is: " << angle << "\n";
+                    std::cout << "startAngle is: " << startAngle << "\n";
+                    vc.setSpeed(-0.45);
+                    vc.setSteeringWheelAngle(-3);
+                    if(angle<=(startAngle+0.01)){
+                        vc.setSpeed(-.25);
+                        vc.setSteeringWheelAngle(0);
+                        car=Finishing;
+                    } 
+                }   
+
+                else if (car==Finishing){
+                    rear = sbd.getValueForKey_MapOfDistances(INFRARED_REAR);
+                    if(rear>0 && rear<10){
+                        vc.setSpeed(0);
+                        car=Stopping;
+                    }
+                    else{
+                        vc.setSpeed(-0.25);
+                    }
                 }
-                if ((stageMoving >= 85) && (stageMoving < 220)) {
-                    // Backwards, steering wheel to the left.
-                    vc.setSpeed(-.175);
-                    vc.setSteeringWheelAngle(-25);
-                    stageMoving++;
-                }
-                if (stageMoving >= 220) {
-                    // Stop.
+
+                else if (car==Stopping){
                     vc.setSpeed(0);
-                    vc.setSteeringWheelAngle(0);
+                    if(vd.getSpeed()<=0.00){
+                        std::cout << "Finished Parking." << "\n";
+                        //break;
+                    }
                 }
-
-                // Measuring state machine.
-                switch (stageMeasuring) {
-                    case 0:
-                        {
-                            // Initialize measurement.
-                            distanceOld = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
-                            stageMeasuring++;
-                        }
-                    break;
-                    case 1:
-                        {
-                            // Checking for sequence +, -.
-                            if ((distanceOld > 0) && (sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) < 0)) {
-                                // Found sequence +, -.
-                                stageMeasuring = 2;
-                                absPathStart = vd.getAbsTraveledPath();
-                            }
-                            distanceOld = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
-                        }
-                    break;
-                    case 2:
-                        {
-                            // Checking for sequence -, +.
-                            if ((distanceOld < 0) && (sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) > 0)) {
-                                // Found sequence -, +.
-                                stageMeasuring = 1;
-                                absPathEnd = vd.getAbsTraveledPath();
-
-                                const double GAP_SIZE = (absPathEnd - absPathStart);
-
-                                cerr << "Size = " << GAP_SIZE << endl;
-
-                                if ((stageMoving < 1) && (GAP_SIZE > 7)) {
-                                    stageMoving = 1;
-                                }
-                            }
-                            distanceOld = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
-                        }
-                    break;
-                }
-
+                
                 // Create container for finally sending the data.
                 Container c(vc);
                 // Send container.
                 getConference().send(c);
-            }
 
+            }
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+
         }
+
+
+
+
     }
 } // automotive::miniature
 
