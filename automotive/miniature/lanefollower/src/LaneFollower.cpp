@@ -115,6 +115,20 @@ namespace automotive {
 	        return retVal;
         }
 
+        IplImage LaneFollower::DetectLane(IplImage *src) {
+
+        	cv::Mat mat_img(src);
+			cv::Mat dst, cdst;
+    		cv::Canny(mat_img, dst, 50, 200, 3);
+    		cv::cvtColor(dst, cdst, CV_GRAY2BGR);
+    		vector<cv::Vec2f> lines;
+    		// detect lines
+    		cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
+    		IplImage ipl_img = dst;
+
+    		return ipl_img;
+        }
+
         void LaneFollower::processImage() {
             static bool useRightLaneMarking = true;
             double e = 0;
@@ -128,7 +142,7 @@ namespace automotive {
                 CvScalar pixelLeft;
                 CvPoint left;
                 left.y = y;
-                left.x = -1;
+                left.x = -1;			//Changed from 0->50 to "anchor" right
                 for(int x = m_image->width/2; x > 50; x--) {
 		            pixelLeft = cvGet2D(m_image, y, x);
 		            if (pixelLeft.val[0] >= 200) {
@@ -148,28 +162,71 @@ namespace automotive {
                         right.x = x;
                         break;
                     }
-                    //if (pixelRight.val[0] >= 200 && pixelLeft.val[0] <= 100) {
-                    //	right.x = x * 2;
-                    //	break;
-                    //}
                 }
+                //Added for intersect
+                CvScalar pixelUp;
+                CvPoint up;
+                up.y = -1;
+                up.x = 320;	//w/2=320, h/2=240
+                for (int ypoint = (m_image->height/2) + 100; ypoint > 100; ypoint--) {
+                	pixelUp = cvGet2D(m_image, ypoint, (m_image->width/2));
+
+                	if (pixelUp.val[0] >= 200 && pixelRight.val[0] >= 200 && pixelLeft.val[0] >= 200) {
+                		up.y = ypoint;
+
+                		int value = m_image->height/2 - up.y;
+                		double desiredSteering = m_vehicleControl.getSteeringWheelAngle();
+                		double turnR = 0.002, turnL = -0.0033;
+
+                		cout << "\n" << "FIRST IF! " << desiredSteering << ", " << value << ", " << right.x << ", " << left.x <<"\n";
+
+                		if (value > -50 && value < -30 && right.x > 435 && 
+                				right.x < 500 && left.x > 50 && left.x < 91 &&
+                				desiredSteering < turnR && desiredSteering > turnL) {
+                			//int count = 0;
+
+                			cout << "\n" << "HITTED IF STATEMENT" << "\n";
+
+                			m_vehicleControl.setSpeed(0);
+                			Container c2(m_vehicleControl);
+                			getConference().send(c2);
+
+                			sleep(3);
+
+                		}
+
+                		break;
+                	}
+                }
+
 
                 if (m_debug) {
                     if (left.x > 0) {
-                    	CvScalar green = CV_RGB(0, 255, 0);
-                    	cvLine(m_image, cvPoint(m_image->width/2, y), left, green, 1, 8);
+                    	CvScalar blue = CV_RGB(0, 0, 255);
+                    	cvLine(m_image, cvPoint(m_image->width/2, y), left, blue, 1, 8);
 
-                        stringstream sstr;
-                        sstr << (m_image->width/2 - left.x);
-                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 - 100, y - 2), &m_font, green);
+                        //stringstream sstr;
+                        //sstr << (m_image->width/2 - left.x);
+                    	//cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 - 100, y - 2), &m_font, blue);
                     }
                     if (right.x > 0) {
-                    	CvScalar red = CV_RGB(255, 0, 0);
-                    	cvLine(m_image, cvPoint(m_image->width/2, y), right, red, 1, 8);
+                    	CvScalar green = CV_RGB(0, 255, 0);
+                    	cvLine(m_image, cvPoint(m_image->width/2, y), right, green, 1, 8);
 
-                        stringstream sstr;
-                        sstr << (right.x - m_image->width/2);
-                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 + 100, y - 2), &m_font, red);
+                        //stringstream sstr;
+                        //sstr << (right.x - m_image->width/2);
+                    	//cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 + 100, y - 2), &m_font, green);
+                    }
+
+                    
+                    //Added for intersect
+                    if (up.y > 0) {
+                    	CvScalar red = CV_RGB(255, 0, 0);
+                    	cvLine(m_image, cvPoint(y, m_image->width/2), up, red, 1, 8);
+
+                    	stringstream sstr;
+                    	sstr << (m_image->height/2 - up.y);
+                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2, up.y), &m_font, red);
                     }
                 }
 
@@ -215,13 +272,7 @@ namespace automotive {
     		cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
     		IplImage ipl_img = dst;
 
-            // Example: Show the image.
-            //if (m_debug) {
-            //    if (m_image != NULL) {
-            //        cvShowImage("Camera Feed Image", &ipl_img);
-            //        cvWaitKey(10);
-            //    }
-            //}
+    		//IplImage ipl_img = DetectLane(m_image);
 
             // Show resulting features.
             if (m_debug) {
