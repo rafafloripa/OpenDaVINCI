@@ -164,6 +164,9 @@ namespace automotive {
                     cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
                     //arduino->sendData("Hello u\n");
 
+                    //For lane following no 0s --except for intersections
+                    //For overtaking no 0s --except for intersections
+                    //0s will only be accepted for parking
                     //Check the container
 	                Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
 	                VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
