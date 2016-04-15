@@ -20,7 +20,6 @@
 #include <stdint.h>
 #include <iostream>
 #include <string>
-#include <cstring>
 #include <memory>
 #include <opendavinci/odcore/base/Thread.h>
 #include <opendavinci/odcore/wrapper/SerialPort.h>
@@ -31,71 +30,79 @@
  namespace automotive {
     namespace miniature {
 
-            SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): current(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate) 
-            {}
+        SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate)
+        {}
 
-            void SerialReceiveBytes::nextString(const string &s) {
-                //HERE MAYBE WE CAN CREATE THE DATA TYPE AT ONCE?
-                current = s;
-                //cout << "Received Serial " << current.length() << " bytes containing '" << current << "'" << endl;
-            }
+        void SerialReceiveBytes::nextString(const string &s) {
+            //HERE MAYBE WE CAN CREATE THE DATA TYPE AT ONCE?
+            buffer+=s;
+            //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
+        }
 
-            // We add some of OpenDaVINCI's namespaces for the sake of readability.
-            void SerialReceiveBytes::setUp() {
-                try {
-                // We are using OpenDaVINCI's std::shared_ptr to automatically
-                // release any acquired resources.
-                // Get sensor data from IR/US.
+        // char SerialReceiveBytes::getNextChar() {
+        //     char c = buffer[0];
+        //     buffer = buffer.substr(1);
+        //     return c;
+        // }
+
+        // string SerialReceiveBytes::getPackage() {
+        //     string package = "";
+        //     bool end = false;
             
-                    // const string SERIAL_PORT2 = "/dev/ttyUSB1";
-                    // const uint32_t BAUD_RATE2 = 19200;// Get sensor data from IR/US.
-                    //cout << "SerialPort: " << SERIAL_PORT << " baud_rate: " << BAUD_RATE << endl;
-                    serial = shared_ptr<SerialPort>(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
-                    // This instance will handle any bytes that are received
-                    // from our serial port.
-                    //SerialReceiveBytes handler(SERIAL_PORT2, BAUD_RATE2);
-                    serial->setStringListener(this);
+        //     while (!end) {
+        //         char c = getNextChar();
+        //         if (c == ')') {
+        //             package += c;
+        //             end = true;
+        //         }
+        //         else if (c == '(') {
+        //             package = c;
+        //         }
+        //         else {
+        //             package += c;
+        //         }
+        //         cout << "Package is now: " << package << endl;
+        //     }
 
-                    // Start receiving bytes.
-                    serial->start();
+        //     return package;
+        // }
+        
+        string SerialReceiveBytes::getBuffer() {
+        	string answer = buffer;
+        	buffer = "";
+        	return answer;
+        }
 
-                    // const uint32_t timeMicros = 100 * 1000;
-                    // odcore::base::Thread::usleepFor(timeMicros);
-
-                    // serial->stop();
-                    // serial->setStringListener(NULL);
-
-                    //return current;
-                    // Stop receiving bytes and unregister our handler.
-                }
-                catch(string &exception) {
-                    cerr << "Error while creating serial port: " << exception << endl;
-                }
+        // We add some of OpenDaVINCI's namespaces for the sake of readability.
+        void SerialReceiveBytes::setUp() {
+            try {
+            // We are using OpenDaVINCI's std::shared_ptr to automatically
+            // release any acquired resources.
+            // Get sensor data from IR/US.
+                serial = shared_ptr<SerialPort>(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
+                serial->setStringListener(this);
+                serial->start();
             }
-
-            void SerialReceiveBytes::tearDown() {
-                // Stop receiving bytes and unregister our handler.
-                cout << "Cleaning up the SerialReceiver" << endl;
-                try {
-                    serial->stop();
-                    serial->setStringListener(NULL);
-                }
-                catch(string &exception) {
-                    cerr << "Error while creating serial port: " << exception << endl;
-                }
+            catch(string &exception) {
+                cerr << "Error while creating serial port: " << exception << endl;
             }
+        }
 
-             string SerialReceiveBytes::getData()  {
-            //     try {
-            //         setUp();
-            //         tearDown();
-            //         cout << "hello" << endl;
-            //     }
-            //     catch(string &exception) {
-            //             cerr << "Error while creating serial port: " << exception << endl;
-            //     }
-                 return current;
-             }
-            
+        void SerialReceiveBytes::tearDown() {
+            // Stop receiving bytes and unregister our handler.
+            cout << "Cleaning up the SerialReceiver" << endl;
+            try {
+                serial->stop();
+                serial->setStringListener(NULL);
+            }
+            catch(string &exception) {
+                cerr << "Error while creating serial port: " << exception << endl;
+            }
+        }
+
+        void SerialReceiveBytes::sendData(const string &s) {
+        	cout << "trying to send data: " << s << endl;
+            serial->send(s);
+        }
     }
 }

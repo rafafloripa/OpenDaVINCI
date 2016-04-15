@@ -80,10 +80,17 @@ namespace automotive {
 
                 void distribute(odcore::data::Container c);
 
+                string getPackage();
+
+                map<uint32_t, double> parseString(const string &s);
+
+//                char getNextChar();
+
             private:
                 unique_ptr<odtools::recorder::Recorder> m_recorder;
                 unique_ptr<Camera> m_camera;
                 unique_ptr<SerialReceiveBytes> arduino;
+                string buffer;
         };
 
     }

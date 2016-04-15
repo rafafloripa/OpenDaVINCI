@@ -26,6 +26,7 @@
 #include <iostream>
 #include "SerialReceiveBytes.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
+ #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "OpenCVCamera.h"
@@ -35,6 +36,8 @@
 #endif
 
 #include "Proxy.h"
+
+ const double pi = 3.1415926535897;
 
 namespace automotive {
     namespace miniature {
@@ -48,7 +51,8 @@ namespace automotive {
             TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
             m_recorder(),
             m_camera(),
-            arduino()
+            arduino(),
+            buffer("")
         {}
 
         Proxy::~Proxy() {
@@ -146,19 +150,31 @@ namespace automotive {
 
                     // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    string data = arduino->getData();
-                    cout << "Received proxy " << data.length() << " bytes containing '" << data << "'" << endl;
-                    std::map<uint32_t, double> myMap;
-                    myMap[0] = 10;
-                    myMap[1] = 20;
-                    myMap[2] = 30;
-                    myMap[3] = 20;
-                    myMap[4] = 10;
-                    SensorBoardData obj;;
-                    obj.setNumberOfSensors(5);
-                    obj.setMapOfDistances(myMap);
-                    Container sensors(obj);
-                    distribute(sensors);
+                    buffer += arduino->getBuffer();
+                    string temp = getPackage();
+                    map<uint32_t, double> data = parseString(temp);
+
+                    if (!data.empty()) {
+                        SensorBoardData obj;
+                        obj.setMapOfDistances(data);
+                        Container sensors(obj);
+                        cout << "before distribute" << endl;
+                        distribute(sensors);
+                    }
+                    cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
+                    //arduino->sendData("Hello u\n");
+
+                    //For lane following no 0s --except for intersections
+                    //For overtaking no 0s --except for intersections
+                    //0s will only be accepted for parking
+                    //Check the container
+	                Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
+	                VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
+	                double speed = vc.getSpeed();
+	                double angle_radians = vc.getSteeringWheelAngle();
+	                double angle = angle_radians*180/pi;
+	                string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")\n";
+	                //arduino->sendData(sendData);
                 }
             }
 
@@ -167,6 +183,55 @@ namespace automotive {
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
+        string Proxy::getPackage() {
+            //buffer = handler->getBuffer();
+            string package = "";
+            int size = buffer.length();                             //Check the entire buffer
+            bool end = false;
+            bool start = false;
+            int n = 0;
+            while (!end && n < size) {                              //Try to make a package
+                if ((buffer[n]==')') && (start)) {                               //found the end delimeter 
+                    package += buffer[n];
+                    end = true;
+                }
+                else if (buffer[n]=='(') {                          //found the start delimeter
+                    start = true;
+                    package = "(";
+                }
+                else {
+                    if (start)
+                        package += buffer[n];                           //else keep adding
+                }
+                n++;
+                cout << "HERE: " << package << "--end" << endl;
+            }
+            size = package.length();
+            if (start && end) {                         //checks if the package has the correct delimeters
+                buffer.erase(0,n);                                  //erases all the unnecessary bits
+                cout << "package: " << package << endl;
+                return package;
+            }
+            return "";
+        }
+
+        map<uint32_t, double> Proxy::parseString (const string &s) {
+            map<uint32_t, double> newMap;
+            if (s.size() >= 2) {
+                cout << "here2" << s << endl;
+                string s2 = s.substr(1, s.size() - 2);              //Remove the delimeters (only leave the sensor values with a comma)
+                istringstream line(s2);
+                int n= 0;
+                double d;
+                while(line >> d) {                                  //While there are integers there
+                    newMap[n] = d;                                  //Makes the key value map
+                    if (line.peek() == ',')                         //ignores the commas
+                        line.ignore();
+                    n++;
+                }
+            }
+            return newMap;
+        }
+
     }
 } // automotive::miniature
-

@@ -38,8 +38,8 @@ using namespace odcore;
 using namespace odcore::wrapper;
 
 int32_t main(int32_t argc, char **argv) {
-    const string SERIAL_PORT = "/dev/pts/20";
-    const uint32_t BAUD_RATE = 19200;
+    const string SERIAL_PORT = "/dev/ttyACM0";
+    const uint32_t BAUD_RATE = 9600;
 
     // We are using OpenDaVINCI's std::shared_ptr to automatically
     // release any acquired resources.
