@@ -39,51 +39,39 @@
             //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
         }
 
-        char SerialReceiveBytes::popChar() {
-            char c = buffer[0];
-            buffer = buffer.substr(1);
-            return c;
-        }
+        // char SerialReceiveBytes::getNextChar() {
+        //     char c = buffer[0];
+        //     buffer = buffer.substr(1);
+        //     return c;
+        // }
 
-        string SerialReceiveBytes::getPackage() {
-            bool end = false;
-            int emptyBuffer = 0;
-            string package = "";
-            while (!end){
-                if (package.length() > 100 || emptyBuffer > 200) {
-                    cout << "communication error" << endl;
-                    end = true;
-                }
-                else if (buffer.length() == 0) {
-                    emptyBuffer++;
-                    //cout << "emptyBuffer = " << to_string(emptyBuffer) << endl;
-                }
-                else {
-                    emptyBuffer = 0;
-                    char c = popChar();
-                    switch (c) {
-                        case ')':
-                            package += c;
-                            return package;
-                            break;
-                        case '(':
-                            package = "";
-                            break;
-                        default:
-                            package += c;
-                            break;
+        // string SerialReceiveBytes::getPackage() {
+        //     string package = "";
+        //     bool end = false;
+            
+        //     while (!end) {
+        //         char c = getNextChar();
+        //         if (c == ')') {
+        //             package += c;
+        //             end = true;
+        //         }
+        //         else if (c == '(') {
+        //             package = c;
+        //         }
+        //         else {
+        //             package += c;
+        //         }
+        //         cout << "Package is now: " << package << endl;
+        //     }
 
-                    }
-                }
-            }
-            return "";
-        }
+        //     return package;
+        // }
         
-/*        string SerialReceiveBytes::getBuffer() {
-        	string answer = buffer;
-        	buffer = "";
-        	return answer;
-        }*/
+        string SerialReceiveBytes::getBuffer() {
+            string answer = buffer;
+            buffer = "";
+            return answer;
+        }
 
         // We add some of OpenDaVINCI's namespaces for the sake of readability.
         void SerialReceiveBytes::setUp() {
@@ -113,7 +101,7 @@
         }
 
         void SerialReceiveBytes::sendData(const string &s) {
-        	cout << "trying to send data: " << s << endl;
+            cout << "trying to send data: " << s << endl;
             serial->send(s);
         }
     }

@@ -52,7 +52,9 @@ namespace automotive {
             m_recorder(),
             m_camera(),
             arduino(),
-            buffer("")
+            buffer(""),
+            previousSpeed(0),
+            previousAngle(0)
         {}
 
         Proxy::~Proxy() {
@@ -150,8 +152,8 @@ namespace automotive {
 
                     // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    //buffer += arduino->getBuffer();
-                    string temp = arduino -> getPackage();
+                    buffer += arduino->getBuffer();
+                    string temp = getPackage();
                     map<uint32_t, double> data = parseString(temp);
 
                     if (!data.empty()) {
@@ -168,13 +170,18 @@ namespace automotive {
                     //For overtaking no 0s --except for intersections
                     //0s will only be accepted for parking
                     //Check the container
-	                Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
-	                VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
-	                double speed = vc.getSpeed();
-	                double angle_radians = vc.getSteeringWheelAngle();
-	                double angle = angle_radians*180/pi;
-	                string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")\n";
-	                //arduino->sendData(sendData);
+                    Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
+                    VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
+                    int speed = vc.getSpeed()*50;
+                    double angle_radians = vc.getSteeringWheelAngle();
+                    int angle = angle_radians*180/pi;
+                    if ((speed!= previousSpeed) || (angle != previousAngle)) {
+                        previousSpeed = speed;
+                        previousAngle = angle;
+                       string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")z";
+                    //string sendData = "(15,45)\n";
+                       arduino->sendData(sendData);
+                    }
                 }
             }
 
@@ -183,8 +190,7 @@ namespace automotive {
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
-
-       /* string Proxy::getPackage() {
+        string Proxy::getPackage() {
             //buffer = handler->getBuffer();
             string package = "";
             int size = buffer.length();                             //Check the entire buffer
@@ -214,7 +220,7 @@ namespace automotive {
                 return package;
             }
             return "";
-        }*/
+        }
 
         map<uint32_t, double> Proxy::parseString (const string &s) {
             map<uint32_t, double> newMap;

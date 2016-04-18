@@ -39,10 +39,10 @@ namespace automotive {
 		    virtual void setUp();
 		    virtual void tearDown();
 		    void sendData(const string &s);
-		    string getPackage();
-		    //string getBuffer();
+		    string getBuffer();
 		private:
-			char popChar();
+//			char getNextChar();
+//			string getPackage();
 			string buffer;
 			shared_ptr<SerialPort> serial;
 			const string SERIAL_PORT;

@@ -91,6 +91,8 @@ namespace automotive {
                 unique_ptr<Camera> m_camera;
                 unique_ptr<SerialReceiveBytes> arduino;
                 string buffer;
+                int previousSpeed;
+                int previousAngle;
         };
 
     }
