@@ -150,8 +150,8 @@ namespace automotive {
 
                     // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    buffer += arduino->getBuffer();
-                    string temp = getPackage();
+                    //buffer += arduino->getBuffer();
+                    string temp = arduino -> getPackage();
                     map<uint32_t, double> data = parseString(temp);
 
                     if (!data.empty()) {
@@ -180,7 +180,8 @@ namespace automotive {
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
-        string Proxy::getPackage() {
+
+       /* string Proxy::getPackage() {
             //buffer = handler->getBuffer();
             string package = "";
             int size = buffer.length();                             //Check the entire buffer
@@ -210,7 +211,7 @@ namespace automotive {
                 return package;
             }
             return "";
-        }
+        }*/
 
         map<uint32_t, double> Proxy::parseString (const string &s) {
             map<uint32_t, double> newMap;
