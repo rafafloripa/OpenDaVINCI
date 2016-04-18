@@ -69,7 +69,7 @@ bool LaneFollower::readSharedImage(Container &c) {
 					si.getWidth() * si.getHeight() * numberOfChannels);
 			}
 
-			//cvFlip(m_image, 0, -1);
+			cvFlip(m_image, 0, -1);
 
 			retVal = true;
 		}
@@ -296,8 +296,14 @@ void LaneFollower::processImage() {
     cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << ", y = " << y << endl;
 
 
-    // Go forward.
-    m_vehicleControl.setSpeed(2);
+    // Go forward. Changed speed (in config and here) conditionally!
+
+    if (desiredSteering > 0.001 || desiredSteering < -0.001) {
+        m_vehicleControl.setSpeed(1.5);
+    } else {
+        m_vehicleControl.setSpeed(5);
+    }
+
     m_vehicleControl.setSteeringWheelAngle(desiredSteering);
 }
 
