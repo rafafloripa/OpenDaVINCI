@@ -34,31 +34,27 @@ void Overtaker2::tearDown() {
 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
     //comparison values for sensors
     /*
-    const int32_t ULTRASONIC_FRONT_RIGHT = 4;
-    
-    
-
     
     const double HEADING_PARALLEL = 0.04;
 */
+    const int32_t ULTRASONIC_FRONT_RIGHT = 4;
     const int32_t INFRARED_FRONT_RIGHT = 0;
     const int32_t INFRARED_REAR_RIGHT = 2;
     const int32_t ULTRASONIC_FRONT_CENTER = 3;
-    const double OVERTAKING_DISTANCE = 5.5;
+    const double OVERTAKING_DISTANCE = 6;
 
-    enum Move {FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, BACK_TO_RIGHT};
+    enum Move {FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, ADJUST_RIGHT, ADJUST_LEFT, STOP};
     enum Object {SETUP, TRACK_OBJECT, FOUND, NOT_FOUND};
-    //enum InOvertake {RIGHT, LEFT}; //TEST
-    Move moving = FORWARD;
-    Object obj = SETUP;
-    //InOvertake overtaking = RIGHT; //TEST
-    //bool onLeftLane = false;
 
+    //int startedOvertaking = 0;
+    Move moving = FORWARD; //standard is forward
+    Object obj = SETUP;
+    double trackWheelAngle = 0; //debug use to check which angle the wheels are in
     //test values to be compared with sensor values
     double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
-    //int32_t objOnSide = 0;
 
     while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+
 
         // 1. Get most recent vehicle data:
         Container containerVehicleData = getKeyValueDataStore().get(VehicleData::ID());
@@ -72,78 +68,116 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         // Create vehicle control data.
         VehicleControl vc;
 
+        distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+
         //moving scheme
         if(moving == FORWARD) {
             // Go FORWARD
             vc.setSpeed(1); //insert the speed from lanefollow here****
             vc.setSteeringWheelAngle(0);
+
             //onLeftLane = false;
         }
-        if(moving == TURN_LEFT) {
+        else if(moving == TURN_LEFT) {
             vc.setSpeed(1);
-            vc.setSteeringWheelAngle(-25); //sharp left turn to avoid object
+            vc.setSteeringWheelAngle(-0.5); //sharp left turn to avoid object
         }
-        if(moving == TURN_RIGHT) {
+        else if(moving == TURN_RIGHT) {
             vc.setSpeed(1);
-            vc.setSteeringWheelAngle(25); //sharp right turn
+            vc.setSteeringWheelAngle(0.4); //sharp right turn
         }
+
         //TODO MAYBE CHANGE THIS INTO A CALL TO LANEFOLLOWING ON LEFT LANE
         //OR "OVERRIDE" LANEFOLLOW TO KEEP OBJECT ON SPECIFIC LENGTH FROM VEHICLE UNTIL OVERTAKE IS DONE
-        if(moving == FOLLOW_LEFT) {
+        else if(moving == FOLLOW_LEFT) {
             vc.setSpeed(1);
             vc.setSteeringWheelAngle(0);
             //onLeftLane = true;
         }
-        distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+        else if(moving == STOP) {
+            vc.setSteeringWheelAngle(0);
+            vc.setSpeed(0);
+        }
+        //less steep right turn to get back into the right lane
+        else if(moving == ADJUST_RIGHT) {
+            vc.setSpeed(1);
+            vc.setSteeringWheelAngle(0.5);
+            
+        }
+        else if(moving == ADJUST_LEFT) {
+            vc.setSpeed(1);
+            vc.setSteeringWheelAngle(0.5);
+        }
+
         //Calculations for overtaking
         //looks for an object to overtake
         if(obj == SETUP) {
             
-
-            if(distanceToOvertake > 0) {
-            // here we may check if the object is stationary by subtracting the current distance to an old distance
-                obj = TRACK_OBJECT;
-            }
-            
+            //if an object is discovered
+            if(distanceToOvertake > 0 && distanceToOvertake < 15) {
+                obj = FOUND;
+                cout << "found " << endl;
+            }   
         }
+
         else if(obj == TRACK_OBJECT) {
-            //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+            //here we can check if an object is suitable for overtaking before moving to overtaking state
             if(distanceToOvertake <= OVERTAKING_DISTANCE) {
                 obj = FOUND;
             }
         }
-
+        //if an object is found start the overtaking process
         else if(obj == FOUND) {
-            //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
             
-            //start overtaking object
-            if(distanceToOvertake <= OVERTAKING_DISTANCE) {
-                moving = TURN_LEFT;
-                
-            }
-            //if object is recognised in rear IR sensor start turning right
-            if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) <= 0) {
-                moving = TURN_RIGHT;
-                
-            }
-            //TODO SIMPLIFY THIS TO BOTH SENSORS READ A VALUE > 0
-            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0) || (distanceToOvertake > OVERTAKING_DISTANCE)) {
+            //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+            //TODO SIMPLIFY THIS TO BOTH IR SENSORS READ A VALUE > 0
+            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && 
+                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0) || 
+                    (distanceToOvertake > OVERTAKING_DISTANCE)) {
                 moving = FORWARD;
                 
             }
-            if(sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) && sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0) {
-                moving = TURN_RIGHT;
+
+            //start overtaking object
+            if(sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) <= OVERTAKING_DISTANCE || 
+                    sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) > 0) {
+                moving = TURN_LEFT;
+                
             }
-
-
-        }
-
+            //if object is recognised in rear-R IR && nothing in front-R IR sensor start turning right
+            if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && 
+                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 0) {
+                moving = TURN_RIGHT;
+                
+            }
             
+            
+            //if front IR > back right IR and back has a reading adjust to the right right
+            if(sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) && 
+                    sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0) {
+                moving = ADJUST_RIGHT;
+            }
+            //TODO: ADD AN ADJUST_LEFT FUNCTION HERE for the case of IRRR > IRFR && IRFR has reading
+
+            //no sensors have readings go back to forward and look for a new object to overtake
+            else if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 0 && 
+                    sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) < 0 &&
+                    sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) < 0 &&
+                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 0) { //distanceToOvertake > OVERTAKING_DISTANCE 
+
+                moving = FORWARD;
+                //obj = SETUP;
+            }
+        }
+        //prints the current steeringwheel angle for debug purposes
+        trackWheelAngle = vc.getSteeringWheelAngle();
+        cout << trackWheelAngle << endl;
 
         // Create container for finally sending the data.
         Container c(vc);
         // Send container.
         getConference().send(c);
+
     }
 
     return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
