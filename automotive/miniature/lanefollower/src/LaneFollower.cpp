@@ -69,7 +69,7 @@ bool LaneFollower::readSharedImage(Container &c) {
 					si.getWidth() * si.getHeight() * numberOfChannels);
 			}
 
-			cvFlip(m_image, 0, -1);
+			//cvFlip(m_image, 0, -1);
 
 			retVal = true;
 		}
@@ -77,17 +77,36 @@ bool LaneFollower::readSharedImage(Container &c) {
 	return retVal;
 }
 
-IplImage LaneFollower::DetectLane(IplImage *src) {
+void LaneFollower::cropImage() {
 
-	cv::Mat mat_img(src);
-	cv::Mat dst, cdst;
-	cv::Canny(mat_img, dst, 50, 200, 3);
+    int image_width = (int) m_image->width;
+    int image_height = (int) m_image->height * 0.6;
+
+    cvSetImageROI(m_image, cvRect(0, 0, image_width, image_height));
+
+    // cropped image
+    IplImage *cropImg = cvCreateImage(cvGetSize(m_image), m_image->depth, m_image->nChannels);
+
+    // copy
+    std::memcpy(m_image->imageData, cropImg->imageData, cropImg->imageSize);
+    cvCopy(m_image, cropImg, NULL);
+
+    // always reset the ROI
+    cvResetImageROI(m_image);
+}
+
+void LaneFollower::DetectLane() {
+
+    cv::Mat mat_img(m_image);
+    cv::Mat dst, cdst;
+    cv::Canny(mat_img, dst, 50, 200, 3);
     cv::cvtColor(dst, cdst, CV_GRAY2BGR);
-    vector<cv::Vec2f> lines;
-    cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
-    IplImage ipl_img = dst;
+    //vector<cv::Vec2f> lines;
+    //cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
+    IplImage result = cdst;
+    //src = &result;
 
-    return ipl_img;
+    std::memcpy(m_image->imageData, result.imageData, result.imageSize);
 }
 /*
 ENORMOUS function. Can functionality be splitted?
@@ -97,8 +116,15 @@ void LaneFollower::processImage() {
 	static bool useRightLaneMarking = true;
 	double e = 0;
 
-	const int32_t CONTROL_SCANLINE = 462;
+    //cropImage();
+
+	const int32_t CONTROL_SCANLINE = 432;
 	const int32_t distance = 280;
+
+    //TESTING
+    //double desiredSteering = 0;
+
+    DetectLane();
 
 	TimeStamp beforeProcessing;
 	/*
@@ -108,16 +134,19 @@ void LaneFollower::processImage() {
 	y point.
 	Also! ENORMOUS for loop, could this be done in another way/place?
 	*/
-	for (int y = m_image->height - 8; y > m_image->height * 0.5; y -=10) {
+	//for (int y = m_image->height - 8; y > m_image->height * 0.5; y -=10) {
+    for (int y = 432; y == 432; y -=10) {
+        //desiredSteering = 0;
 
 		CvScalar pixelLeft;
 		CvPoint left;
 		left.y = y;
 		left.x = 0;
-		for (int x = m_image->width/2; x > 50; x--) {
+		for (int x = m_image->width/2; x > 0; x--) {
 			pixelLeft = cvGet2D(m_image, y, x);
 			if (pixelLeft.val[0] >= 230) {
 				left.x = x;
+                //desiredSteering = -0.785;
 				break;
 			}
 		}
@@ -130,18 +159,21 @@ void LaneFollower::processImage() {
 			pixelRight = cvGet2D(m_image, y, x);
 			if (pixelRight.val[0] >= 230) {
 				right.x = x;
+                //desiredSteering = 0.785;
 				break;
 			}
 		}
 
+        cout << "Y: " << y << "\n";
+/*
 		CvScalar pixelUp;
 		CvPoint up;
 		up.y = 0;
 		up.x = 320;		//w/2=320, h/2=240
 		for (int ypoint = (m_image->height/2) + 100; ypoint > 100; ypoint--) {
-			/*
+			
 			Could change cvGet2D to better match wanted results
-			*/
+			
 			pixelUp = cvGet2D(m_image, ypoint, m_image->width/2);
 
 			if (pixelUp.val[0] >= 230 && pixelRight.val[0] >= 200 && 
@@ -154,10 +186,10 @@ void LaneFollower::processImage() {
 
                 cout << "\n" << "FIRST IF! " << desiredSteering << ", " << value << ", " << right.x << ", " << left.x <<"\n";
 
-                /*
+                
                 Could put some of this functionality some place else to decrease
                 the amount of ifs (cyclo complex.)
-                */
+                
 
                 if (value > -50 && value < -30 && right.x > 435 && 
                 	right.x < 500 && left.x > 50 && left.x < 91 &&
@@ -175,7 +207,7 @@ void LaneFollower::processImage() {
                 break;
 			}
 		}
-
+*/
 		if (m_debug) {
             if (left.x > 0) {
             	CvScalar blue = CV_RGB(0, 0, 255);
@@ -194,7 +226,7 @@ void LaneFollower::processImage() {
             	//cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 + 100, y - 2), &m_font, green);
             }
 
-            
+ /*           
             //Added for intersect
             if (up.y > 0) {
             	CvScalar red = CV_RGB(255, 0, 0);
@@ -203,7 +235,7 @@ void LaneFollower::processImage() {
             	stringstream sstr;
             	sstr << (m_image->height/2 - up.y);
             	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2, up.y), &m_font, red);
-            }
+            }*/
         }
         /*
         Work a bit more on when/how to correct
@@ -227,7 +259,7 @@ void LaneFollower::processImage() {
                     m_eOld = 0;
                 }
                 
-                e = (distance - (m_image->width/2.0 - left.x))/distance;
+                e = (distance - (m_image->width/2.0 - left.x + 100))/distance;
 
                 useRightLaneMarking = false;
             }
@@ -246,6 +278,7 @@ void LaneFollower::processImage() {
 	//Should add call to function DetectLane() here!!
 	//Should add call to function DetectLane() here!!
 
+/*
     cv::Mat mat_img(m_image);
     cv::Mat dst, cdst;
     cv::Canny(mat_img, dst, 50, 200, 3);
@@ -253,10 +286,10 @@ void LaneFollower::processImage() {
     vector<cv::Vec2f> lines;
     cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
     IplImage ipl_img = dst;
-
+*/
 	if (m_debug) {
 		if (m_image != NULL) {
-			cvShowImage("LaneFollowImage", &ipl_img);
+			cvShowImage("LaneFollowImage", m_image);
 			cvWaitKey(10);
 		}
 	}
@@ -268,7 +301,7 @@ void LaneFollower::processImage() {
 	if (fabs(e) < 1e-2) {
 		m_eSum = 0;
 	} else {
-		m_eSum += e;
+		m_eSum = e;
 	}
 
 	// The following values have been determined by Twiddle algorithm.
@@ -286,23 +319,19 @@ void LaneFollower::processImage() {
     if (fabs(e) > 1e-2) {
         desiredSteering = y;
 
-        if (desiredSteering > 25.0) {
-            desiredSteering = 25.0;
+        if (desiredSteering > 0) {
+            desiredSteering += 0.2;
         }
-        if (desiredSteering < -25.0) {
-            desiredSteering = -25.0;
+        if (desiredSteering < 0) {
+            desiredSteering -= 0.2;
         }
     }
-    cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << ", y = " << y << endl;
+    cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering * cartesian::Constants::RAD2DEG<< ", y = " << y << endl;
 
 
     // Go forward. Changed speed (in config and here) conditionally!
 
-    if (desiredSteering > 0.001 || desiredSteering < -0.001) {
-        m_vehicleControl.setSpeed(1.5);
-    } else {
-        m_vehicleControl.setSpeed(5);
-    }
+    m_vehicleControl.setSpeed(3);
 
     m_vehicleControl.setSteeringWheelAngle(desiredSteering);
 }

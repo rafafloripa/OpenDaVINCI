@@ -68,18 +68,9 @@
         // }
         
         string SerialReceiveBytes::getBuffer() {
-            int bufferSize = buffer.size();
-            string answer = "";
-            if (bufferSize <= 42) {
-                answer = buffer;
-                buffer = "";
-                return answer; 
-            }
-            else {
-                answer = buffer.substr(bufferSize - 42);
-                buffer = "";
-                return answer;
-            }
+            string answer = buffer;
+            buffer = "";
+            return answer;
         }
 
         // We add some of OpenDaVINCI's namespaces for the sake of readability.
