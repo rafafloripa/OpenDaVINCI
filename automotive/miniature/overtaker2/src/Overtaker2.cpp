@@ -41,7 +41,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
     const int32_t INFRARED_FRONT_RIGHT = 0;
     const int32_t INFRARED_REAR_RIGHT = 2;
     const int32_t ULTRASONIC_FRONT_CENTER = 3;
-    const double OVERTAKING_DISTANCE = 6;
+    const double OVERTAKING_DISTANCE = 15;
 
     enum Move {FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, ADJUST_RIGHT, ADJUST_LEFT, STOP};
     enum Object {SETUP, TRACK_OBJECT, FOUND, NOT_FOUND};
@@ -114,7 +114,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         if(obj == SETUP) {
             
             //if an object is discovered
-            if(distanceToOvertake > 0 && distanceToOvertake < 15) {
+            if(distanceToOvertake > 0 && distanceToOvertake < 30) {
                 obj = FOUND;
                 cout << "found " << endl;
             }   
@@ -131,9 +131,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
             
             //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
             //TODO SIMPLIFY THIS TO BOTH IR SENSORS READ A VALUE > 0
-            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && 
-                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0) || 
-                    (distanceToOvertake > OVERTAKING_DISTANCE)) {
+            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 10 &&
+                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0 &&  sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 10)) {
                 moving = FORWARD;
                 
             }
