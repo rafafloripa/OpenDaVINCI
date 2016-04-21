@@ -174,7 +174,7 @@ namespace automotive {
                     VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
                     int speed = 13;//vc.getSpeed()*50;
                     double angle_radians = vc.getSteeringWheelAngle();
-                    int angle = angle_radians*cartesian::Constants::RAD2DEG
+                    int angle = angle_radians*cartesian::Constants::RAD2DEG;
 
                     int coefficient = 1;
                     if (angle < 0)
