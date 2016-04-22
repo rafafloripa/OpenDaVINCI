@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cmath>
 
+#include "opendavinci/odcore/base/KeyValueConfiguration.h"
 #include "opendavinci/odcore/io/conference/ContainerConference.h"
 #include "opendavinci/odcore/data/Container.h"
 
@@ -16,6 +17,7 @@ using namespace odcore::base::module;
 using namespace odcore::data;
 using namespace automotive;
 using namespace automotive::miniature;
+//using namespace odtools::recorder;
 
 Overtaker2::Overtaker2(int argc, char **argv) :
     TimeTriggeredConferenceClientModule(argc, argv, "Overtaker2") {}
@@ -32,16 +34,37 @@ void Overtaker2::tearDown() {
 
 // This method will do the main data processing job.
 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
+    //get values from the config file to determine if you're on the car or simulator
+    KeyValueConfiguration kv = getKeyValueConfiguration();
+    const bool sim = kv.getValue<uint32_t>("global.simulation"); //from the config file
+
+    int32_t ULTRASONIC_FRONT_RIGHT;
+    int32_t INFRARED_FRONT_RIGHT;
+    int32_t INFRARED_REAR_RIGHT;
+    int32_t ULTRASONIC_FRONT_CENTER;
+    double OVERTAKING_DISTANCE;
+
+    //sim value 0 = simulation, 1 is on the car
+    if(sim == 0) { //todo: fine tune the different angles on the wheel and distances for overtake
+        ULTRASONIC_FRONT_RIGHT = 4;
+        INFRARED_FRONT_RIGHT = 0;
+        INFRARED_REAR_RIGHT = 2;
+        ULTRASONIC_FRONT_CENTER = 3;
+        OVERTAKING_DISTANCE = 6; //for a steep left turn 6 seems to be good
+    }
+    else {
+        ULTRASONIC_FRONT_RIGHT = 4;
+        INFRARED_FRONT_RIGHT = 0;
+        INFRARED_REAR_RIGHT = 2;
+        ULTRASONIC_FRONT_CENTER = 3;
+        OVERTAKING_DISTANCE = 15;
+    }
     //comparison values for sensors
     /*
     
     const double HEADING_PARALLEL = 0.04;
 */
-    const int32_t ULTRASONIC_FRONT_RIGHT = 4;
-    const int32_t INFRARED_FRONT_RIGHT = 0;
-    const int32_t INFRARED_REAR_RIGHT = 2;
-    const int32_t ULTRASONIC_FRONT_CENTER = 3;
-    const double OVERTAKING_DISTANCE = 15;
+    
 
     enum Move {FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, ADJUST_RIGHT, ADJUST_LEFT, STOP};
     enum Object {SETUP, TRACK_OBJECT, FOUND, NOT_FOUND};
@@ -84,7 +107,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         }
         else if(moving == TURN_RIGHT) {
             vc.setSpeed(1);
-            vc.setSteeringWheelAngle(0.4); //sharp right turn
+            vc.setSteeringWheelAngle(0.5); //sharp right turn
         }
 
         //TODO MAYBE CHANGE THIS INTO A CALL TO LANEFOLLOWING ON LEFT LANE
@@ -106,7 +129,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         }
         else if(moving == ADJUST_LEFT) {
             vc.setSpeed(1);
-            vc.setSteeringWheelAngle(0.5);
+            vc.setSteeringWheelAngle(-0.5);
         }
 
         //Calculations for overtaking
@@ -114,7 +137,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         if(obj == SETUP) {
             
             //if an object is discovered
-            if(distanceToOvertake > 0 && distanceToOvertake < 30) {
+            if(distanceToOvertake > 0 && distanceToOvertake < 15) { // 30 real life?
                 obj = FOUND;
                 cout << "found " << endl;
             }   
@@ -131,8 +154,10 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
             
             //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
             //TODO SIMPLIFY THIS TO BOTH IR SENSORS READ A VALUE > 0
-            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 10 &&
-                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0 &&  sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 10)) {
+            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 &&
+                    sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 10 &&
+                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0 &&
+                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 10)) {
                 moving = FORWARD;
                 
             }
@@ -158,7 +183,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
             }
             //TODO: ADD AN ADJUST_LEFT FUNCTION HERE for the case of IRRR > IRFR && IRFR has reading
 
-            //no sensors have readings go back to forward and look for a new object to overtake
+            //no sensors have readings go back to forward and look for a new object to overtake (lanefollow)
             else if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 0 && 
                     sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) < 0 &&
                     sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) < 0 &&
