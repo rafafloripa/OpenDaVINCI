@@ -19,6 +19,7 @@
 #ifndef SerialReceiveBytes_H_
 #define SerialReceiveBytes_H_
 
+#include <map>
 #include "opendavinci/odcore/io/StringListener.h"
 #include <opendavinci/odcore/wrapper/SerialPort.h>
 #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
@@ -34,13 +35,16 @@ namespace automotive {
 		    // Your class needs to implement the method void nextString(const std::string &s).
 		public:
 			SerialReceiveBytes(string Port, unsigned int BAUD_RATE);
-		    virtual void nextString(const std::string &s);
+		    virtual void nextString(const string &s);
 		    virtual void setUp();
 		    virtual void tearDown();
-		    std::string getData();
+		    void sendData(const string &s);
+		    string getBuffer();
 		private:
-			string current;
-			std::shared_ptr<SerialPort> serial;
+//			char getNextChar();
+//			string getPackage();
+			string buffer;
+			shared_ptr<SerialPort> serial;
 			const string SERIAL_PORT;
             const uint32_t BAUD_RATE;
 		};

@@ -26,6 +26,7 @@
 #include <iostream>
 #include "SerialReceiveBytes.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
+ #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "OpenCVCamera.h"
@@ -35,6 +36,8 @@
 #endif
 
 #include "Proxy.h"
+
+ const double pi = 3.1415926535897;
 
 namespace automotive {
     namespace miniature {
@@ -48,15 +51,21 @@ namespace automotive {
             TimeTriggeredConferenceClientModule(argc, argv, "proxy"),
             m_recorder(),
             m_camera(),
-            arduino()
+            arduino(),
+            buffer(""),
+            previousSpeed(0),
+            previousAngle(0)
         {}
 
         Proxy::~Proxy() {
         }
 
         void Proxy::setUp() {
-            const string serial_port = getKeyValueConfiguration().getValue<string>("proxy.Sensor.SerialPort");
-            const uint32_t baud_rate = getKeyValueConfiguration().getValue<uint32_t>("proxy.Sensor.SerialSpeed");
+            // Get configuration data.
+            KeyValueConfiguration kv = getKeyValueConfiguration();
+
+            const string serial_port = kv.getValue<string>("proxy.Sensor.SerialPort");
+            const uint32_t baud_rate = kv.getValue<uint32_t>("proxy.Sensor.SerialSpeed");
             arduino = unique_ptr<SerialReceiveBytes>(new SerialReceiveBytes(serial_port, baud_rate));
             arduino->setUp();
 
@@ -65,39 +74,36 @@ namespace automotive {
                 cerr << endl << endl << "Proxy: WARNING! Running proxy with a LOW frequency (consequence: data updates are too seldom and will influence your algorithms in a negative manner!) --> suggestions: --freq=20 or higher! Current frequency: " << getFrequency() << " Hz." << endl << endl << endl;
             }
 
-            // Get configuration data.
-            KeyValueConfiguration kv = getKeyValueConfiguration();
-
             // Create built-in recorder.
             const bool useRecorder = kv.getValue<uint32_t>("proxy.useRecorder") == 1;
             if (useRecorder) {
                 // URL for storing containers.
                 stringstream specialURL;
-                specialURL << getKeyValueConfiguration().getValue<string>("proxy.recorder.output") << TimeStamp().getYYYYMMDD_HHMMSS() << "/";
+                specialURL << kv.getValue<string>("proxy.recorder.output") << TimeStamp().getYYYYMMDD_HHMMSS() << "/";
                 const char* temp = specialURL.str().c_str();
                 mkdir(temp, ACCESSPERMS);
                 stringstream recordingURL;
                 recordingURL << "file://" << specialURL.str() << "recording.rec";
                 // Size of memory segments.
-                const uint32_t MEMORY_SEGMENT_SIZE = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.memorySegmentSize");
+                const uint32_t MEMORY_SEGMENT_SIZE = kv.getValue<uint32_t>("global.buffer.memorySegmentSize");
                 // Number of memory segments.
-                const uint32_t NUMBER_OF_SEGMENTS = getKeyValueConfiguration().getValue<uint32_t>("global.buffer.numberOfMemorySegments");
+                const uint32_t NUMBER_OF_SEGMENTS = kv.getValue<uint32_t>("global.buffer.numberOfMemorySegments");
                 // Run recorder in asynchronous mode to allow real-time recording in background.
                 const bool THREADING = true;
                 // Dump shared images and shared data?
-                const bool DUMP_SHARED_DATA = getKeyValueConfiguration().getValue<uint32_t>("proxy.recorder.dumpshareddata") == 1;
+                const bool DUMP_SHARED_DATA = kv.getValue<uint32_t>("proxy.recorder.dumpshareddata") == 1;
 
                 m_recorder = unique_ptr<Recorder>(new Recorder(recordingURL.str(), MEMORY_SEGMENT_SIZE, NUMBER_OF_SEGMENTS, THREADING, DUMP_SHARED_DATA));
             }
 
             // Create the camera grabber.
-            const string NAME = getKeyValueConfiguration().getValue<string>("proxy.camera.name");
-            string TYPE = getKeyValueConfiguration().getValue<string>("proxy.camera.type");
+            const string NAME = kv.getValue<string>("proxy.camera.name");
+            string TYPE = kv.getValue<string>("proxy.camera.type");
             std::transform(TYPE.begin(), TYPE.end(), TYPE.begin(), ::tolower);
-            const uint32_t ID = getKeyValueConfiguration().getValue<uint32_t>("proxy.camera.id");
-            const uint32_t WIDTH = getKeyValueConfiguration().getValue<uint32_t>("proxy.camera.width");
-            const uint32_t HEIGHT = getKeyValueConfiguration().getValue<uint32_t>("proxy.camera.height");
-            const uint32_t BPP = getKeyValueConfiguration().getValue<uint32_t>("proxy.camera.bpp");
+            const uint32_t ID = kv.getValue<uint32_t>("proxy.camera.id");
+            const uint32_t WIDTH = kv.getValue<uint32_t>("proxy.camera.width");
+            const uint32_t HEIGHT = kv.getValue<uint32_t>("proxy.camera.height");
+            const uint32_t BPP = kv.getValue<uint32_t>("proxy.camera.bpp");
 
             if (TYPE.compare("opencv") == 0) {
                 m_camera = unique_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP));
@@ -146,19 +152,55 @@ namespace automotive {
 
                     // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    string data = arduino->getData();
-                    cout << "Received proxy " << data.length() << " bytes containing '" << data << "'" << endl;
-                    std::map<uint32_t, double> myMap;
-                    myMap[0] = 10;
-                    myMap[1] = 20;
-                    myMap[2] = 30;
-                    myMap[3] = 20;
-                    myMap[4] = 10;
-                    SensorBoardData obj;;
-                    obj.setNumberOfSensors(5);
-                    obj.setMapOfDistances(myMap);
-                    Container sensors(obj);
-                    distribute(sensors);
+                    buffer += arduino->getBuffer();
+                    string temp = getPackage();
+                    map<uint32_t, double> data = parseString(temp);
+
+                    if (!data.empty()) {
+                        SensorBoardData obj;
+                        obj.setMapOfDistances(data);
+                        Container sensors(obj);
+                        cout << "before distribute" << endl;
+                        distribute(sensors);
+                    }
+                    //cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
+                    //arduino->sendData("Hello u\n");
+
+                    //For lane following no 0s --except for intersections
+                    //For overtaking no 0s --except for intersections
+                    //0s will only be accepted for parking
+                    //Check the container
+                    Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
+                    VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
+                    int speed = 13;//vc.getSpeed()*50;
+                    double angle_radians = vc.getSteeringWheelAngle();
+                    int angle = angle_radians*cartesian::Constants::RAD2DEG;
+
+                    int coefficient = 1;
+                    if (angle < 0)
+                        coefficient = -1;
+                    angle = abs(angle);
+                    if (angle > 0 && angle <= 10) {
+                        angle = 10;
+                    } else if (angle > 10 && angle <= 15) {
+                        angle = 15;
+                    } else if (angle > 15 && angle <= 20) {
+                        angle = 20;
+                    } else if (angle > 20 && angle <= 25) {
+                        angle = 25;
+                    } else if (angle > 25) {
+                        angle = 30;
+                    }
+                    angle = angle*coefficient;
+
+                    if ((speed != previousSpeed) || (angle != previousAngle)) {
+
+                        previousSpeed = speed;
+                        previousAngle = angle;
+                       string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")z";
+                        //string sendData = "(15,45)\n";
+                       arduino->sendData(sendData);
+                    }
                 }
             }
 
@@ -167,6 +209,55 @@ namespace automotive {
             return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
+        string Proxy::getPackage() {
+            //buffer = handler->getBuffer();
+            string package = "";
+            int size = buffer.length();                             //Check the entire buffer
+            bool end = false;
+            bool start = false;
+            int n = 0;
+            while (!end && n < size) {                              //Try to make a package
+                if ((buffer[n]==')') && (start)) {                               //found the end delimeter 
+                    package += buffer[n];
+                    end = true;
+                }
+                else if (buffer[n]=='(') {                          //found the start delimeter
+                    start = true;
+                    package = "(";
+                }
+                else {
+                    if (start)
+                        package += buffer[n];                           //else keep adding
+                }
+                n++;
+                //cout << "HERE: " << package << "--end" << endl;
+            }
+            size = package.length();
+            if (start && end) {                         //checks if the package has the correct delimeters
+                buffer.erase(0,n);                                  //erases all the unnecessary bits
+                //cout << "package: " << package << endl;
+                return package;
+            }
+            return "";
+        }
+
+        map<uint32_t, double> Proxy::parseString (const string &s) {
+            map<uint32_t, double> newMap;
+            if (s.size() >= 2) {
+                //cout << "here2" << s << endl;
+                string s2 = s.substr(1, s.size() - 2);              //Remove the delimeters (only leave the sensor values with a comma)
+                istringstream line(s2);
+                int n= 0;
+                double d;
+                while(line >> d) {                                  //While there are integers there
+                    newMap[n] = d;                                  //Makes the key value map
+                    if (line.peek() == ',')                         //ignores the commas
+                        line.ignore();
+                    n++;
+                }
+            }
+            return newMap;
+        }
+
     }
 } // automotive::miniature
-

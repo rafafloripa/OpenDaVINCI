@@ -101,8 +101,8 @@ namespace automotive {
 				        memcpy(m_image->imageData, m_sharedImageMemory->getSharedMemory(), si.getWidth() * si.getHeight() * si.getBytesPerPixel());
 			        }
 
-			        // Mirror the image when getting from simcam
-			        cvFlip(m_image, 0, -1);
+			        // Mirror the image.
+			        //cvFlip(m_image, 0, -1);
 
 			        retVal = true;
 		        }
@@ -112,29 +112,15 @@ namespace automotive {
 
         // This method is called to process an image described by the SharedImage data structure.
         void LaneDetector::processImage() {
-            cv::Mat mat_img(m_image);
-            cv::Mat dst, cdst;
-            cv::Canny(mat_img, dst, 50, 200, 3); 
-            cv::cvtColor(dst, cdst, CV_GRAY2BGR);
-            vector<cv::Vec2f> lines;
-            // detect lines
-            cv::HoughLines(dst, lines, 1, CV_PI/180, 100, 0, 0 );
-            IplImage ipl_img = dst;
 
-            // // draw lines
-            // for( size_t i = 0; i < lines.size(); i++ )
-            // {
-            //     float rho = lines[i][0], theta = lines[i][1];
-            //     cv::Point pt1, pt2;
-            //     double a = cos(theta), b = sin(theta);
-            //     double x0 = a*rho, y0 = b*rho;
-            //     pt1.x = cvRound(x0 + 1000*(-b));
-            //     pt1.y = cvRound(y0 + 1000*(a));
-            //     pt2.x = cvRound(x0 - 1000*(-b));
-            //     pt2.y = cvRound(y0 - 1000*(a));
-            //     line( cdst, pt1, pt2, cv::Scalar(0,0,255), 3, CV_AA);
-            // }
-            // imshow("detected lines", cdst);
+        	cv::Mat mat_img(m_image);
+			cv::Mat dst, cdst;
+    		cv::Canny(mat_img, dst, 50, 200, 3);
+    		cv::cvtColor(dst, cdst, CV_GRAY2BGR);
+    		vector<cv::Vec2f> lines;
+    		// detect lines
+    		cv::HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
+    		IplImage ipl_img = dst;
 
             // Example: Show the image.
             if (m_debug) {
