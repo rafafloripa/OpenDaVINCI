@@ -92,15 +92,23 @@ namespace automotive {
                 double m_eSum;
                 double m_eOld;
 
+                double max_eSum;
+                double min_eSum;
+
+                double max_e;
+                double min_e;
+
+                double previousSteering;
+
                 automotive::VehicleControl m_vehicleControl;
 
 	            virtual void setUp();
 
 	            virtual void tearDown();
 
-                void processImage();
+	            void DetectLane();
 
-                IplImage DetectLane(IplImage *src);
+                void processImage();
         };
 
     }
