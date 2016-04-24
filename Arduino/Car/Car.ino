@@ -43,6 +43,7 @@ const int maxTurn = 45;
 
 void setup() {
   Serial.begin(9600);
+  Serial.setTimeout(100);
   IRRF.begin();
   IRRB.begin();
   IRB.begin();
@@ -62,17 +63,19 @@ void setup() {
 
 // Main Loop
 void loop() {
-    if (interrupt) {;
+    if (interrupt) {
+      //sendData();
       handleRC();
     }
     else {
-      sendData();
+      //sendData();
       checkSerial();
       String packet = parseBuffer();
       if (packet!= "") {
         executePacket(packet);
       }
     }
+    sendData();
 }
 
 // Interrupt Service Routine
@@ -128,7 +131,7 @@ void sendData() {
     float irrb = IRRB.getDistance();
     float irb = IRB.getDistance();
     String data = "(" + String(usfc) + "," + String(usfr) + "," + String(irrf) + "," + String(irrb) + "," + String(irb) + ")";
-    Serial.print(data);
+    Serial.println(data);
     startTimeData = millis();
   }
 }
@@ -145,15 +148,15 @@ void executePacket(String packet) {
   val1 = constrain(val1, maxReverse, maxSpeed);                             // Constrain the min and max values available for val1
   val2 = constrain(val2, maxTurn*-1, maxTurn);                              // Constrain the min and max values available for val2
   servos.move(val1);
-  Serial.println(val1);
+  //Serial.println(val1);
   servos.turn(val2);
-  Serial.println(val2);
+  //Serial.println(val2);
 }
 
 // Checks if there is something in the serial. If so adds it to our buffer.
 void checkSerial() {
   if (Serial.available()) 
-    ourBuffer += Serial.readStringUntil('\n');
+    ourBuffer += Serial.readStringUntil('z');
 }
 
 // Parse the buffer to check for a package. Parses the buffer from right to left to get the latest command.

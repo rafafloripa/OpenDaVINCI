@@ -160,7 +160,7 @@ namespace automotive {
                         SensorBoardData obj;
                         obj.setMapOfDistances(data);
                         Container sensors(obj);
-                        cout << "before distribute" << endl;
+//                        cout << "before distribute" << endl;
                         distribute(sensors);
                     }
                     //cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
