@@ -64,18 +64,16 @@ void setup() {
 // Main Loop
 void loop() {
     if (interrupt) {
-      //sendData();
       handleRC();
     }
     else {
-      //sendData();
+      sendData();
       checkSerial();
       String packet = parseBuffer();
       if (packet!= "") {
         executePacket(packet);
       }
     }
-    sendData();
 }
 
 // Interrupt Service Routine
@@ -148,9 +146,7 @@ void executePacket(String packet) {
   val1 = constrain(val1, maxReverse, maxSpeed);                             // Constrain the min and max values available for val1
   val2 = constrain(val2, maxTurn*-1, maxTurn);                              // Constrain the min and max values available for val2
   servos.move(val1);
-  //Serial.println(val1);
   servos.turn(val2);
-  //Serial.println(val2);
 }
 
 // Checks if there is something in the serial. If so adds it to our buffer.
