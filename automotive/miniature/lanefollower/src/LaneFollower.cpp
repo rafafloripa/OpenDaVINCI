@@ -33,6 +33,9 @@
 
 #include "LaneFollower.h"
 
+//#include "../../overtaker2/src/Overtaker2.cpp"
+//#include "../../overtaker2/include/Overtaker2.h"
+
 namespace automotive {
     namespace miniature {
 
@@ -139,7 +142,7 @@ namespace automotive {
                     double e = 0;
 
                     const int32_t CONTROL_SCANLINE = 402; // calibrated length to right: 280px
-                    const int32_t distance = 190;
+                    const int32_t distance = 160;
 
                     DetectLane();
 
@@ -512,6 +515,9 @@ namespace automotive {
             double distanceToObstacleOld = 0;
 
 */
+
+            enum RunningState{FollowingLane, Overtaking};
+
             // Overall state machine handler.
 	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 		        bool has_next_frame = false;
