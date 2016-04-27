@@ -110,8 +110,13 @@
         }
 
         void SerialReceiveBytes::sendData(const string &s) {
+	try {
             cout << "trying to send data: " << s << endl;
             serial->send(s);
+	}
+	catch (string &exception) {
+	cerr <<  "Error sending data: " << exception << endl; 
+	}
         }
     }
 }
