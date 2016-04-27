@@ -64,17 +64,17 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
     
     const double HEADING_PARALLEL = 0.04;
 */
-    
-
-    enum Move {FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, ADJUST_RIGHT, ADJUST_LEFT, STOP};
+    enum Move {FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, ADJUST_RIGHT, ADJUST_LEFT, STOP, SLIGHT_L};
     enum Object {SETUP, TRACK_OBJECT, FOUND, NOT_FOUND};
 
     //int startedOvertaking = 0;
     Move moving = FORWARD; //standard is forward
     Object obj = SETUP;
+
     double trackWheelAngle = 0; //debug use to check which angle the wheels are in
     //test values to be compared with sensor values
     double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
+    double ultrafront, ultrafrontright, irfr, irrr;
 
     while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 
@@ -91,7 +91,12 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         // Create vehicle control data.
         VehicleControl vc;
 
+        //Sensors
         distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+        ultrafront = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+        ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
+        irfr = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
+        irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
 
         //moving scheme
         if(moving == FORWARD) {
@@ -108,6 +113,11 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
         else if(moving == TURN_RIGHT) {
             vc.setSpeed(1);
             vc.setSteeringWheelAngle(0.5); //sharp right turn
+        }
+        //used to smoothly get back into the right lane after an overtaking is done
+        else if(moving == SLIGHT_L) {
+            vc.setSpeed(1);
+            vc.setSteeringWheelAngle(-0.1);
         }
 
         //TODO MAYBE CHANGE THIS INTO A CALL TO LANEFOLLOWING ON LEFT LANE
@@ -154,42 +164,41 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
             
             //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
             //TODO SIMPLIFY THIS TO BOTH IR SENSORS READ A VALUE > 0
-            if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 &&
-                    sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 10 &&
-                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0 &&
-                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 10)) {
+            if((irrr > 0 &&
+                    irrr < 10 &&
+                    irfr > 0 &&
+                    irfr < 10)) {
                 moving = FORWARD;
                 
             }
 
             //start overtaking object
-            if(sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) <= OVERTAKING_DISTANCE || 
-                    sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) > 0) {
+            if(ultrafront <= OVERTAKING_DISTANCE || 
+                    ultrafrontright > 0) {
                 moving = TURN_LEFT;
                 
             }
             //if object is recognised in rear-R IR && nothing in front-R IR sensor start turning right
-            if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && 
-                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 0) {
+            if(irrr > 0 && 
+                    irfr < 0) {
                 moving = TURN_RIGHT;
                 
             }
             
-            
-            //if front IR > back right IR and back has a reading adjust to the right right
-            if(sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) && 
-                    sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0) {
+            //if front right IR > back right IR and back has a reading adjust to the right
+            if(irfr > irrr && 
+                    irrr > 0) {
                 moving = ADJUST_RIGHT;
             }
             //TODO: ADD AN ADJUST_LEFT FUNCTION HERE for the case of IRRR > IRFR && IRFR has reading
 
             //no sensors have readings go back to forward and look for a new object to overtake (lanefollow)
-            else if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 0 && 
-                    sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) < 0 &&
-                    sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) < 0 &&
-                    sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 0) { //distanceToOvertake > OVERTAKING_DISTANCE 
+            else if(irrr < 0 && 
+                    ultrafront < 0 &&
+                    ultrafrontright < 0 &&
+                    irfr < 0) { //distanceToOvertake > OVERTAKING_DISTANCE 
 
-                moving = FORWARD;
+                moving = FORWARD; //SLIGHT_L will move slightly to left to compensate with merging back to right lane
                 //obj = SETUP;
             }
         }
