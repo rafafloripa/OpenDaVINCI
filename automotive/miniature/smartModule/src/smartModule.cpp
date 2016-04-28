@@ -43,13 +43,13 @@ int getState() {
 void smartModule::setUp() {
     // This method will be call automatically _before_ running body().
     laneFollower.runModule();
-    overtaker.runModule();
+    //overtaker.runModule();
 }
 
 void smartModule::tearDown() {
     // This method will be call automatically _after_ return from body().
     laneFollower.kill();
-    overtaker.kill();
+    //overtaker.kill();
 }
 
 bool smartModule::shouldOvertake() {

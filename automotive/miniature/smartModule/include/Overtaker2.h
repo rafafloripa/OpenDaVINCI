@@ -35,7 +35,7 @@ using namespace std;
                  */
                 Overtaker2(int argc, char **argv);
 
-                double getFCUS();
+                //double getFCUS();
 
                 void kill();
 

@@ -76,6 +76,8 @@ namespace automotive {
 
 	            void kill();
 
+	            void start();
+
             protected:
 	            /**
 	             * This method is called to process an incoming container.
