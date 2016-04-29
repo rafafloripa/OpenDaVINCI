@@ -16,13 +16,8 @@ void Servos::begin() {
 
 //Receives the angle in degrees up to 90. Negative for left and positive for right.
 void Servos::turn(uint8_t angle) {
-	angle = map(angle,-90, 90, _minServo, _maxServo);
-	Serial.print("angle: ");
-	Serial.println(angle);
-	
+	angle = map(angle,-90, 90, _minServo, _maxServo);	
 	_angle = constrain (angle, _minServo, _maxServo);
-	Serial.print("_angle: ");
-	Serial.println(_angle);
 	servo.write(_angle+deviation);
 }
 
@@ -38,8 +33,6 @@ void Servos::turnWave(unsigned int angleWave) {
 
 void Servos::move(int speed) {
 	speed = map(speed, -100,100, _minRC, _maxRC);
-	Serial.print("speed: ");
-	Serial.println(speed);
 	_speed = constrain (speed, _minESC, _maxESC);
 	esc.writeMicroseconds(_speed);
 }

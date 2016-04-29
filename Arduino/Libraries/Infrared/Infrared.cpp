@@ -11,7 +11,7 @@ void Infrared::begin () {
 float Infrared::getDistance() {
 	unsigned int value = analogRead (_pin);
   float answer = ((2914 / (value + 5)) - 1);
-  if (answer > 35)
+  if ((answer > 35) || (answer < 3))
   	answer = -1;
   return answer;
 }

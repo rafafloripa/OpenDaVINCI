@@ -10,18 +10,18 @@
 
 Ultrasonic::Ultrasonic(uint8_t address) {
   _address = address;
-  _delay = 11;
-  _gainValue = 0;
-  _rangeValue = 23; //more or less 47 cms (10*43mm) + 43mm
+  _delay = 70;
+  _gainValue = 10;
+  _rangeValue = 35; //more or less 47 cms (10*43mm) + 43mm
 }
 
 void Ultrasonic::begin() {
   Wire.begin();
-  setGain(_gainValue);
-  setRange(_rangeValue);
+  //setGain(_gainValue);
+  //setRange(_rangeValue);
 }
 
-uint8_t Ultrasonic::getDistance() {
+int Ultrasonic::getDistance() {
   Wire.beginTransmission(_address);
   Wire.write(byte(0x00));
   Wire.write(byte(0x51));
@@ -34,8 +34,8 @@ uint8_t Ultrasonic::getDistance() {
   while (Wire.available() < 2);
   byte high = Wire.read();
   byte low = Wire.read();
-  uint8_t answer = (high << 8) + low;
-  if (answer > 50)
+  int answer = (high << 8) + low;
+  if ((answer > 50) || (answer < 3))
     answer = -1;
   return answer;
 }

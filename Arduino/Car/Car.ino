@@ -32,6 +32,7 @@ Servos servos (SERVO_PIN, ESC_PIN);
 volatile bool interrupt; //Global variable to keep track of the state (AI or RC).
 volatile bool firstInterrupt;
 volatile int zeroServo;
+volatile unsigned int encoderCount;
 unsigned long startTimeData;
 String ourBuffer = "";
 
@@ -44,6 +45,8 @@ const int maxTurn = 45;
 void setup() {
   Serial.begin(9600);
   Serial.setTimeout(100);
+  Serial1.begin(57600);
+  Serial1.setTimeout(100);
   IRRF.begin();
   IRRB.begin();
   IRB.begin();
@@ -54,11 +57,12 @@ void setup() {
   pinMode(RC_STEERING, INPUT);
   pinMode(RC_ESC, INPUT);
   attachInterrupt(digitalPinToInterrupt(RC_STEERING), highInterrupt, RISING);
-  //attachInterrupt(digitalPinToInterrupt(WheelEncoder1), encoderInterrupt, RISING);
+  attachInterrupt(digitalPinToInterrupt(WheelEncoder1), encoderInterrupt, RISING);
   interrupt = false; //Initialize the global variable to false.
   firstInterrupt = true;
   zeroServo = 0;
   startTimeData = millis();
+  encoderCount = 0;
 }
 
 // Main Loop
@@ -83,9 +87,9 @@ void highInterrupt () {
   interrupt = true;
 }
 
-//void encoderInterrupt() {
-//  encoderCount = encoderCount + 1;
-//}
+void encoderInterrupt() {
+  encoderCount = encoderCount + 1;
+}
 
 
 // Function to handle all the RC behavior.
@@ -128,9 +132,20 @@ void sendData() {
     float irrf = IRRF.getDistance();
     float irrb = IRRB.getDistance();
     float irb = IRB.getDistance();
-    String data = "(" + String(usfc) + "," + String(usfr) + "," + String(irrf) + "," + String(irrb) + "," + String(irb) + ")";
+    String gyro = getLastSerialGyro();
+    String data = "(" + String(usfc) + "," + String(usfr) + "," + String(irrf) + "," + String(irrb) + "," + String(irb) + "," + gyro + "," + String(encoderCount) + ")";
     Serial.println(data);
     startTimeData = millis();
+  }
+}
+
+String getLastSerialGyro() {
+  if (Serial1.available()){
+    String input = "";
+    while (Serial1.available()) input = Serial1.readStringUntil('\n');
+    return input;
+  }else{
+    return "-1";                                                            // Taking into account that it can only take values between 0 - 359
   }
 }
 

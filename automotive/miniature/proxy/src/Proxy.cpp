@@ -154,21 +154,35 @@ namespace automotive {
                     // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
                     buffer += arduino->getBuffer();
                     string temp = getPackage();
-                    map<uint32_t, double> data = parseString(temp);
+                    if (!temp.compare("") == 0) {
+                        map<uint32_t, double> data = parseString(temp);
+                        map<uint32_t, double> sensormap;
+                        for(int x = 0; x <=4; x++) {
+                            sensormap[x] = data[x];
+                        }
+                        double gyro = data[5];
+                        double encoder = data[6];
 
-                    if (!data.empty()) {
-                        SensorBoardData obj;
-                        obj.setMapOfDistances(data);
-                        Container sensors(obj);
-//                        cout << "before distribute" << endl;
-                        distribute(sensors);
+
+
+                        cout << "after parsing-------->  gyro:" << gyro << " encoder: " << encoder << endl; 
+
+
+
+
+                        if (!sensormap.empty()) {
+                            SensorBoardData obj;
+                            obj.setMapOfDistances(sensormap);
+                            Container sensors(obj);
+    //                        cout << "before distribute" << endl;
+                            distribute(sensors);
+                        }
+
+                        VehicleData* vc = new VehicleData();
+                        vc->setHeading(gyro);
+                        vc->setAbsTraveledPath(encoder);
                     }
-                    //cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
-                    //arduino->sendData("Hello u\n");
 
-                    //For lane following no 0s --except for intersections
-                    //For overtaking no 0s --except for intersections
-                    //0s will only be accepted for parking
                     //Check the container
                     Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
                     VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
@@ -258,6 +272,5 @@ namespace automotive {
             }
             return newMap;
         }
-
     }
 } // automotive::miniature
