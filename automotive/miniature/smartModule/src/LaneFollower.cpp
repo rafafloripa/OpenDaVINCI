@@ -61,6 +61,8 @@ namespace automotive {
 
         LaneFollower::~LaneFollower() {}
 
+        bool RUNNING = true;
+
         //Might not be needed in "LF"
         int LaneFollower::getState() {
             int state = 0;
@@ -72,6 +74,7 @@ namespace automotive {
         void LaneFollower::kill() {
             tearDown();
             odcore::base::module::AbstractModule::setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
+            RUNNING = false;
         }
 
         //For starting LF out of scope
@@ -521,9 +524,10 @@ namespace automotive {
             int32_t INFRARED_REAR_RIGHT;
             int32_t ULTRASONIC_FRONT_CENTER;
             double OVERTAKING_DISTANCE;
+            double steeringWheelAngle = 0;
 
             //sim value 0 = simulation, 1 is on the car
-            if(sim == 0) { //todo: fine tune the different angles on the wheel and distances for overtake
+            if(sim == 1) { //todo: fine tune the different angles on the wheel and distances for overtake
                 ULTRASONIC_FRONT_RIGHT = 4;
                 INFRARED_FRONT_RIGHT = 0;
                 INFRARED_REAR_RIGHT = 2;
@@ -546,7 +550,7 @@ namespace automotive {
             STATES states = InRightLane;
 
             // Overall state machine handler.
-	        while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
+	        while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
 		        bool has_next_frame = false;
 
                 //The following makes it possible to get the sensor readings
@@ -559,6 +563,9 @@ namespace automotive {
                 ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
                 irfr = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
                 irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
+                steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
+
+                cout << "Steering: " << steeringWheelAngle << "\n";
 
                 // Get the most recent available container for a SharedImage.
                 Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
@@ -580,11 +587,16 @@ namespace automotive {
 
                     states = InChangeToLeftLane;
 
-                    //Until in left lane
-                    //Until in left lane
-                    //Until in left lane
-                    m_vehicleControl.setSpeed(1.0);
+                    //Could play around with adding values to steeringWheelAngle
+                    //in other scenario
+/*                    if (steeringWheelAngle < -0.2) {
+                        m_vehicleControl.setSteeringWheelAngle(-0.7);
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(-0.5);
+                    }
+*/
                     m_vehicleControl.setSteeringWheelAngle(-0.5);
+                    m_vehicleControl.setSpeed(1.0);
                     cout << "CHANGE TO LEFT" << "\n";
 
                 } else if (states == InChangeToLeftLane && distanceToOvertake < 0) {
@@ -603,8 +615,15 @@ namespace automotive {
                     states = InChangeToRightLane;
 
                     cout << "IN CHANGE TO RIGHT LANE!" << "\n";
-
+/*                    
+                    if (steeringWheelAngle > 0.2) {
+                        m_vehicleControl.setSteeringWheelAngle(0.5);
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(0.3);
+                    }
+*/
                     m_vehicleControl.setSteeringWheelAngle(0.3);
+                    m_vehicleControl.setSpeed(1.0);
                     cout << "CHANGE TO RIGHT" << "\n";
 
                     //Until in right lane
@@ -620,7 +639,7 @@ namespace automotive {
                 // Send container.
                 getConference().send(c2);
 	        }
-
+            cout << "CLOSING" << "\n";
 	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
