@@ -30,6 +30,11 @@ void Overtaker2::setUp() {
 
 void Overtaker2::tearDown() {
     // This method will be call automatically _after_ return from body().
+    odcore::base::module::AbstractModule::setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
+}
+
+void Overtaker2::kill() {
+    tearDown();
 }
 
 // This method will do the main data processing job.
@@ -150,7 +155,7 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Overtaker2::body() {
             if(distanceToOvertake > 0 && distanceToOvertake < 15) { // 30 real life?
                 obj = FOUND;
                 cout << "found " << endl;
-            }   
+            }
         }
 
         else if(obj == TRACK_OBJECT) {
