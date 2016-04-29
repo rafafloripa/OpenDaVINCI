@@ -49,6 +49,7 @@ bool LaneFollowerWithOvertaker::shouldOvertake() {
 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollowerWithOvertaker::body() {
 
     laneFollower.runModule();
+    laneFollower.setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);   
 
     /*while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 
@@ -70,5 +71,11 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollowerWithOverta
         getConference().send(c);
     }
 */
+
+   /* if(sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) <= OVERTAKING_DISTANCE || 
+        sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) > 0) {
+        moving = TURN_LEFT;
+    }*/
+
     return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
 }
