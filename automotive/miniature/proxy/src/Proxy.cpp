@@ -105,7 +105,7 @@ namespace automotive {
             const uint32_t WIDTH = kv.getValue<uint32_t>("proxy.camera.width");
             const uint32_t HEIGHT = kv.getValue<uint32_t>("proxy.camera.height");
             const uint32_t BPP = kv.getValue<uint32_t>("proxy.camera.bpp");
-            const bool sim = kv.getValue<int32_t> ("global.simulation") == 1;
+            const bool sim = kv.getValue<int32_t> ("proxy.debug") == 1;
 
             if (TYPE.compare("opencv") == 0) {
                 m_camera = unique_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP, sim));
