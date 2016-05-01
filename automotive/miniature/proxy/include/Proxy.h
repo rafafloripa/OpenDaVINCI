@@ -27,7 +27,7 @@
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odtools/recorder/Recorder.h"
 #include "automotivedata/generated/automotive/miniature/SensorBoardData.h"
-#include "SerialReceiveBytes.h"
+#include "SerialConnection.h"
 
 #include "Camera.h"
 
@@ -84,12 +84,10 @@ namespace automotive {
 
                 map<uint32_t, double> parseString(const string &s);
 
-//                char getNextChar();
-
             private:
                 unique_ptr<odtools::recorder::Recorder> m_recorder;
                 unique_ptr<Camera> m_camera;
-                unique_ptr<SerialReceiveBytes> arduino;
+                unique_ptr<SerialConnection> arduino;
                 string buffer;
                 int previousSpeed;
                 int previousAngle;

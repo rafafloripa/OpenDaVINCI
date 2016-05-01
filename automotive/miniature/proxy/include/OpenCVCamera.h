@@ -63,7 +63,7 @@ namespace automotive {
                  * @param height
                  * @param bpp
                  */
-                OpenCVCamera(const string &name, const uint32_t &id, const uint32_t &width, const uint32_t &height, const uint32_t &bpp);
+                OpenCVCamera(const string &name, const uint32_t &id, const uint32_t &width, const uint32_t &height, const uint32_t &bpp, const bool &sim);
 
                 virtual ~OpenCVCamera();
 
@@ -77,6 +77,7 @@ namespace automotive {
             private:
                 CvCapture *m_capture;
                 IplImage *m_image;
+                bool simulation;
         };
 
     }

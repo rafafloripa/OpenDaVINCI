@@ -27,10 +27,11 @@
 namespace automotive {
     namespace miniature {
 
-        OpenCVCamera::OpenCVCamera(const string &name, const uint32_t &id, const uint32_t &width, const uint32_t &height, const uint32_t &bpp) :
+        OpenCVCamera::OpenCVCamera(const string &name, const uint32_t &id, const uint32_t &width, const uint32_t &height, const uint32_t &bpp, const bool &sim) :
             Camera(name, id, width, height, bpp),
             m_capture(NULL),
-            m_image(NULL) {
+            m_image(NULL),
+            simulation(sim) {
 
             m_capture = cvCaptureFromCAM(id);
             if (m_capture) {
@@ -81,9 +82,10 @@ namespace automotive {
 
             if ( (dest != NULL) && (size > 0) && (m_image != NULL) ) {
                 ::memcpy(dest, m_image->imageData, size);
-
-                cvShowImage("WindowShowImage", m_image);
-                cvWaitKey(10);
+                if (simulation) {
+                    cvShowImage("WindowShowImage", m_image);
+                    cvWaitKey(10);
+                }
 
                 retVal = true;
             }

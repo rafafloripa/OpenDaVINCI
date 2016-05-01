@@ -25,65 +25,28 @@
 #include <opendavinci/odcore/wrapper/SerialPort.h>
 #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
 
-#include "SerialReceiveBytes.h"
+#include "SerialConnection.h"
 
  namespace automotive {
     namespace miniature {
 
-        SerialReceiveBytes::SerialReceiveBytes(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate)
+        SerialConnection::SerialConnection(string serial_port, uint32_t baud_rate): buffer(""), serial(), SERIAL_PORT(serial_port), BAUD_RATE (baud_rate), running(false)
         {}
 
-        void SerialReceiveBytes::nextString(const string &s) {
-            //HERE MAYBE WE CAN CREATE THE DATA TYPE AT ONCE?
+        void SerialConnection::nextString(const string &s) {
+            //Function implemented from String Listener.
             buffer+=s;
-            //cout << "Received Serial " << s.length() << " bytes containing '" << s << "'" << endl;
         }
-
-        // char SerialReceiveBytes::getNextChar() {
-        //     char c = buffer[0];
-        //     buffer = buffer.substr(1);
-        //     return c;
-        // }
-
-        // string SerialReceiveBytes::getPackage() {
-        //     string package = "";
-        //     bool end = false;
-            
-        //     while (!end) {
-        //         char c = getNextChar();
-        //         if (c == ')') {
-        //             package += c;
-        //             end = true;
-        //         }
-        //         else if (c == '(') {
-        //             package = c;
-        //         }
-        //         else {
-        //             package += c;
-        //         }
-        //         cout << "Package is now: " << package << endl;
-        //     }
-
-        //     return package;
-        // }
         
-        string SerialReceiveBytes::getBuffer() {
-            int bufferSize = buffer.size();
-            string answer = "";
-            if (bufferSize <= 42) {
-                answer = buffer;
-                buffer = "";
-                return answer; 
-            }
-            else {
-                answer = buffer.substr(bufferSize - 42);
-                buffer = "";
-                return answer;
-            }
+        string SerialConnection::getBuffer() {
+            // Get the buffer and clean it.
+            string answer = buffer;
+            buffer="";
+            return answer;
         }
 
         // We add some of OpenDaVINCI's namespaces for the sake of readability.
-        void SerialReceiveBytes::setUp() {
+        void SerialConnection::setUp() {
             try {
             // We are using OpenDaVINCI's std::shared_ptr to automatically
             // release any acquired resources.
@@ -91,13 +54,15 @@
                 serial = shared_ptr<SerialPort>(SerialPortFactory::createSerialPort(SERIAL_PORT, BAUD_RATE));
                 serial->setStringListener(this);
                 serial->start();
+                running = true;
             }
             catch(string &exception) {
+                running = false;
                 cerr << "Error while creating serial port: " << exception << endl;
             }
         }
 
-        void SerialReceiveBytes::tearDown() {
+        void SerialConnection::tearDown() {
             // Stop receiving bytes and unregister our handler.
             cout << "Cleaning up the SerialReceiver" << endl;
             try {
@@ -109,14 +74,15 @@
             }
         }
 
-        void SerialReceiveBytes::sendData(const string &s) {
-	try {
-            cout << "trying to send data: " << s << endl;
-            serial->send(s);
-	}
-	catch (string &exception) {
-	cerr <<  "Error sending data: " << exception << endl; 
-	}
+        void SerialConnection::sendData(const string &s) {
+            // Check first if the serial was created correctly.
+        	if (running) {
+                cout << "trying to send data: " << s << endl;
+                serial->send(s);
+        	}
+        	else {
+        	   cerr <<  "Error sending data. Serial Port not Created." << endl;
+        	}
         }
     }
 }
