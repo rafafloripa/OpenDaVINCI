@@ -526,20 +526,26 @@ namespace automotive {
             double OVERTAKING_DISTANCE;
             double steeringWheelAngle = 0;
 
-            //sim value 0 = simulation, 1 is on the car
+            double ultrathreshold = 0; //upper bound sensor reading to simulate not picking up an object
+            double irthreshold = 0;
+
+            //sim value 1 = simulation, 0 is on the car
             if(sim == 1) { //todo: fine tune the different angles on the wheel and distances for overtake
                 ULTRASONIC_FRONT_RIGHT = 4;
                 INFRARED_FRONT_RIGHT = 0;
                 INFRARED_REAR_RIGHT = 2;
                 ULTRASONIC_FRONT_CENTER = 3;
-                OVERTAKING_DISTANCE = 8; //for a steep left turn 6 seems to be good
+                OVERTAKING_DISTANCE = 10; //for a steep left turn 6 seems to be good
+                ultrathreshold = 20;
+                irthreshold = 10;
             }
-            else {
+            else {//these IDs are not the same on the car as in the simulator. need to recheck them
                 ULTRASONIC_FRONT_RIGHT = 4;
                 INFRARED_FRONT_RIGHT = 0;
                 INFRARED_REAR_RIGHT = 2;
                 ULTRASONIC_FRONT_CENTER = 3;
-                OVERTAKING_DISTANCE = 15;
+                OVERTAKING_DISTANCE = 40;
+                ultrathreshold = 40;
             }
 
             double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
@@ -565,12 +571,12 @@ namespace automotive {
                 irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
                 steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
 
-                cout << "Steering: " << steeringWheelAngle << "\n";
+                cout << "Steering: " << steeringWheelAngle << "\n";//debug
 
                 // Get the most recent available container for a SharedImage.
                 Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
 
-                cout << "State is " << states << "\n";
+                cout << "State is " << states << "\n"; //debug
 
                 if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
                     // Example for processing the received container.
@@ -601,7 +607,8 @@ namespace automotive {
 
                 } else if (states == InChangeToLeftLane && distanceToOvertake < 0) {
 
-                    if (irfr > 0 && irfr < 10) {
+                    //to know that we have actually seen the object on the side of the car
+                    if (irfr > 0 && irfr < irthreshold) {
                         stateCounter = 1;
                     }
 
@@ -611,7 +618,8 @@ namespace automotive {
                         stateCounter = 0;
                     }
 
-                } else if ((states == InLeftLane || states == InChangeToRightLane) && ((irfr < 0 || irfr > 10) && (ultrafrontright < 0 || ultrafrontright > 10))) {
+                } else if ((states == InLeftLane || states == InChangeToRightLane) &&
+                            ((irfr < 0 || irfr > irthreshold) && (ultrafrontright < 0 || ultrafrontright > ultrathreshold))) {
                     states = InChangeToRightLane;
 
                     cout << "IN CHANGE TO RIGHT LANE!" << "\n";
@@ -629,7 +637,7 @@ namespace automotive {
                     //Until in right lane
                     //Until in right lane
                     //Until in right lane
-                    if (irrr < 0 || irrr > 10) {
+                    if (irrr < 0 || irrr > irthreshold) {
                         states = InRightLane;
                     }
                 }
