@@ -33,7 +33,7 @@ private:
 
 smartModule::~smartModule() {}
 
-int getState() {
+int smartModule::getState() {
 
     int state = 0;
 
