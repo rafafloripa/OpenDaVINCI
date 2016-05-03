@@ -91,6 +91,7 @@ namespace automotive {
                 string buffer;
                 int previousSpeed;
                 int previousAngle;
+		int initializer;
         };
 
     }

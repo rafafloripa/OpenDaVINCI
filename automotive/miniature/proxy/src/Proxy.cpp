@@ -54,7 +54,8 @@ namespace automotive {
             arduino(),
             buffer(""),
             previousSpeed(0),
-            previousAngle(0)
+            previousAngle(0),
+            initializer(0)
         {}
 
         Proxy::~Proxy() {
@@ -181,38 +182,44 @@ namespace automotive {
                         Container vehicleData(vd);
                         distribute(vehicleData);
                     }
+                    if (initializer > 20) {
+	                    //Check the container
+	                    Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
+	                    VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
+	                    int speed = vc.getSpeed();
+	                    double angle_radians = vc.getSteeringWheelAngle();
+	                    int angle = angle_radians*cartesian::Constants::RAD2DEG;
 
-                    //Check the container
-                    Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
-                    VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
-                    int speed = 13;//vc.getSpeed()*50;
-                    double angle_radians = vc.getSteeringWheelAngle();
-                    int angle = angle_radians*cartesian::Constants::RAD2DEG;
+	                    int coefficient = 1;
+	                    if (angle < 0)
+	                        coefficient = -1;
+	                    angle = abs(angle);
+	                    if (angle > 0 && angle <= 10) {
+	                        angle = 10;
+	                    } else if (angle > 10 && angle <= 15) {
+	                        angle = 15;
+	                    } else if (angle > 15 && angle <= 20) {
+	                        angle = 20;
+	                    } else if (angle > 20 && angle <= 25) {
+	                        angle = 25;
+	                    } else if (angle > 25 && angle <=30) {
+	                        angle = 30;
+	                    } else if (angle > 30) {
+	                    	angle = 45;
+	                    }
+	                    angle = angle*coefficient;
 
-                    int coefficient = 1;
-                    if (angle < 0)
-                        coefficient = -1;
-                    angle = abs(angle);
-                    if (angle > 0 && angle <= 10) {
-                        angle = 10;
-                    } else if (angle > 10 && angle <= 15) {
-                        angle = 15;
-                    } else if (angle > 15 && angle <= 20) {
-                        angle = 20;
-                    } else if (angle > 20 && angle <= 25) {
-                        angle = 25;
-                    } else if (angle > 25) {
-                        angle = 30;
-                    }
-                    angle = angle*coefficient;
-
-                    if ((speed != previousSpeed) || (angle != previousAngle)) {
-
-                        previousSpeed = speed;
-                        previousAngle = angle;
-                       string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")z";
-                       arduino->sendData(sendData);
-                    }
+	                    if ((speed != previousSpeed) || (angle != previousAngle)) {
+	                       	previousSpeed = speed;
+	                        previousAngle = angle;
+	                       	string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")z";
+	                       	arduino->sendData(sendData);
+	                    }
+	                }
+	                else {
+	                	initializer++;
+	                	cout << "initializing\n";
+	                }
                 }
             }
 
