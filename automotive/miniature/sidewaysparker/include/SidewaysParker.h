@@ -60,6 +60,7 @@ namespace automotive {
                  */
                 SidewaysParker(const int32_t &argc, char **argv);
 
+
                 virtual ~SidewaysParker();
 
                 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode body();
