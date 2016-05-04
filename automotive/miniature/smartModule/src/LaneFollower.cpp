@@ -83,62 +83,62 @@ namespace automotive {
         }
 
         void LaneFollower::setUp() {
-	        // This method will be call automatically _before_ running body().
-	        if (m_debug) {
-		        // Create an OpenCV-window.
-		        cvNamedWindow("WindowShowImage", CV_WINDOW_AUTOSIZE);
-		        cvMoveWindow("WindowShowImage", 300, 100);
-	        }
+            // This method will be call automatically _before_ running body().
+            if (m_debug) {
+                // Create an OpenCV-window.
+                cvNamedWindow("WindowShowImage", CV_WINDOW_AUTOSIZE);
+                cvMoveWindow("WindowShowImage", 300, 100);
+            }
         }
 
         void LaneFollower::tearDown() {
-	        // This method will be call automatically _after_ return from body().
-	        if (m_image != NULL) {
-		        cvReleaseImage(&m_image);
-	        }
+            // This method will be call automatically _after_ return from body().
+            if (m_image != NULL) {
+                cvReleaseImage(&m_image);
+            }
 
-	        if (m_debug) {
-		        cvDestroyWindow("WindowShowImage");
-	        }
+            if (m_debug) {
+                cvDestroyWindow("WindowShowImage");
+            }
         }
 
         bool LaneFollower::readSharedImage(Container &c) {
-	        bool retVal = false;
+            bool retVal = false;
 
-	        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
-		        SharedImage si = c.getData<SharedImage> ();
+            if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
+                SharedImage si = c.getData<SharedImage> ();
 
-		        // Check if we have already attached to the shared memory.
-		        if (!m_hasAttachedToSharedImageMemory) {
-			        m_sharedImageMemory
-					        = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
-							        si.getName());
-		        }
+                // Check if we have already attached to the shared memory.
+                if (!m_hasAttachedToSharedImageMemory) {
+                    m_sharedImageMemory
+                            = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
+                                    si.getName());
+                }
 
-		        // Check if we could successfully attach to the shared memory.
-		        if (m_sharedImageMemory->isValid()) {
-			        // Lock the memory region to gain exclusive access using a scoped lock.
+                // Check if we could successfully attach to the shared memory.
+                if (m_sharedImageMemory->isValid()) {
+                    // Lock the memory region to gain exclusive access using a scoped lock.
                     Lock l(m_sharedImageMemory);
-			        const uint32_t numberOfChannels = 3;
-			        // For example, simply show the image.
-			        if (m_image == NULL) {
-				        m_image = cvCreateImage(cvSize(si.getWidth(), si.getHeight()), IPL_DEPTH_8U, numberOfChannels);
-			        }
+                    const uint32_t numberOfChannels = 3;
+                    // For example, simply show the image.
+                    if (m_image == NULL) {
+                        m_image = cvCreateImage(cvSize(si.getWidth(), si.getHeight()), IPL_DEPTH_8U, numberOfChannels);
+                    }
 
-			        // Copying the image data is very expensive...
-			        if (m_image != NULL) {
-				        memcpy(m_image->imageData,
-						       m_sharedImageMemory->getSharedMemory(),
-						       si.getWidth() * si.getHeight() * numberOfChannels);
-			        }
+                    // Copying the image data is very expensive...
+                    if (m_image != NULL) {
+                        memcpy(m_image->imageData,
+                               m_sharedImageMemory->getSharedMemory(),
+                               si.getWidth() * si.getHeight() * numberOfChannels);
+                    }
 
-			        // Mirror the image.
-			        cvFlip(m_image, 0, -1);
+                    // Mirror the image.
+                    //cvFlip(m_image, 0, -1);
 
-			        retVal = true;
-		        }
-	        }
-	        return retVal;
+                    retVal = true;
+                }
+            }
+            return retVal;
         }
 
         /*
@@ -146,14 +146,14 @@ namespace automotive {
         */
         void LaneFollower::DetectLane() {
 
- 			cv::Mat mat_img(m_image);
-    		cv::Mat dst, cdst;
-    		cv::Canny(mat_img, dst, 50, 200, 3);
-    		cv::cvtColor(dst, cdst, CV_GRAY2BGR);
-		    IplImage result = cdst;
+            cv::Mat mat_img(m_image);
+            cv::Mat dst, cdst;
+            cv::Canny(mat_img, dst, 50, 200, 3);
+            cv::cvtColor(dst, cdst, CV_GRAY2BGR);
+            IplImage result = cdst;
 
-    		std::memcpy(m_image->imageData, result.imageData, result.imageSize);
-		}
+            std::memcpy(m_image->imageData, result.imageData, result.imageSize);
+        }
 
         void LaneFollower::processImage() {
                     static bool useRightLaneMarking = true;
@@ -191,7 +191,6 @@ namespace automotive {
                                 break;
                             }
                         }
-
                         if (m_debug) {
                             if (left.x > 0) {
                                 CvScalar green = CV_RGB(0, 255, 0);
@@ -262,14 +261,6 @@ namespace automotive {
                     else {
                         m_eSum += e;
                     }
-        //            const double Kp = 2.5;
-        //            const double Ki = 8.5;
-        //            const double Kd = 0;
-
-                    // The following values have been determined by Twiddle algorithm.
-/*                    const double Kp = 0.4482626884328734;
-                    const double Ki = 3.103197570937628;
-                    const double Kd = 0.030450210485408566;*/
 
                     const double Kp = 0.75;
                     const double Ki = 0;
@@ -299,198 +290,10 @@ namespace automotive {
                     else if (m_eSum < min_eSum) {
                         min_eSum = m_eSum;
                     }
-
-                    //cerr << "PID: " << "max_eSum = " << max_eSum << ", min_eSum = " << min_eSum << endl << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << ", y = " << y << endl;
-
-
                     // Go forward.
                     m_vehicleControl.setSpeed(13);
                     m_vehicleControl.setSteeringWheelAngle(desiredSteering);
                 }
-
-
-
-
-
-
-
-
-        /*
-        void LaneFollower::processImage() {
-            //static bool useRightLaneMarking = true;
-            double e = 0;
-            double desiredSteering = 0;
-
-            const int32_t CONTROL_SCANLINE = m_image->height - 18;
-            //const int32_t CONTROL_SCANLINE = 462; // calibrated length to right: 280px
-            //const int32_t distance = 280;
-
-            DetectLane();
-
-            TimeStamp beforeImageProcessing;           
-
-            for(int32_t y = m_image->height - 8; y > m_image->height * .7; y -= 10) {
-                // Search from middle to the left:
-                CvScalar pixelLeft;
-                CvPoint left;
-                left.y = y;
-                left.x = -1;
-                for(int x = m_image->width/2; x > 0; x--) {
-		            pixelLeft = cvGet2D(m_image, y, x);
-		            if (pixelLeft.val[0] >= 200) {
-                        left.x = x;
-                        break;
-                    }
-                }
-
-                // Search from middle to the right:
-                CvScalar pixelRight;
-                CvPoint right;
-                right.y = y;
-                right.x = -1;
-                for(int x = m_image->width/2; x < m_image->width; x++) {
-		            pixelRight = cvGet2D(m_image, y, x);
-		            if (pixelRight.val[0] >= 200) {
-                        right.x = x;
-                        break;
-                    }
-                }
-
-                double leftDist = -1;
-				double rightDist = -1;
-
-                if (m_debug) {
-                    if (left.x > 0) {
-                    	leftDist = m_image->width/2 - left.x;
-
-                    	CvScalar green = CV_RGB(0, 255, 0);
-                    	cvLine(m_image, cvPoint(m_image->width/2, y), left, green, 1, 8);
-
-                        stringstream sstr;
-                        sstr << (m_image->width/2 - left.x);
-                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 - 100, y - 2), &m_font, green);
-                    }
-                    if (right.x > 0) {
-                    	rightDist = right.x - m_image->width/2;
-
-                    	CvScalar red = CV_RGB(255, 0, 0);
-                    	cvLine(m_image, cvPoint(m_image->width/2, y), right, red, 1, 8);
-
-                        stringstream sstr;
-                        sstr << (right.x - m_image->width/2);
-                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 + 100, y - 2), &m_font, red);
-                    }
-                }
-
-                if (y == CONTROL_SCANLINE && right.x > 0) {
-                	desiredSteering = (rightDist - 225) / 500;
-                } 
-                else if (y == CONTROL_SCANLINE && left.x > 0) {
-                	desiredSteering = (225 - leftDist) / 500;	
-                }
-//                else if (right.x > 0 && left.x > 0) {
-//                	desiredSteering = (rightDist - leftDist) / 1000;
-//                }
-
-                
-
-                
-
-                if (y == CONTROL_SCANLINE) {
-                    // Calculate the deviation error.
-                    if (right.x > 0) {
-                        if (!useRightLaneMarking) {
-                            m_eSum = 0;
-                            m_eOld = 0;
-                        }
-
-                        e = ((right.x - m_image->width/2.0) - distance)/distance;
-
-                        useRightLaneMarking = true;
-                    }
-                    else if (left.x > 0) {
-                        if (useRightLaneMarking) {
-                            m_eSum = 0;
-                            m_eOld = 0;
-                        }
-                        
-                        e = (distance - (m_image->width/2.0 - left.x))/distance;
-
-                        useRightLaneMarking = false;
-                    }
-                    else {
-                        // If no measurements are available, reset PID controller.
-                        m_eSum = 0;
-                        m_eOld = 0;
-                    }
-                }
-                
-            }
-
-            TimeStamp afterImageProcessing;
-            cerr << "Processing time: " << (afterImageProcessing.toMicroseconds() - beforeImageProcessing.toMicroseconds())/1000.0 << "ms." << endl;
-
-            // Show resulting features.
-            if (m_debug) {
-                if (m_image != NULL) {
-                    cvShowImage("WindowShowImage", m_image);
-                    cvWaitKey(10);
-                }
-            }
-
-            TimeStamp currentTime;
-            //double timeStep = (currentTime.toMicroseconds() - m_previousTime.toMicroseconds()) / (1000.0 * 1000.0);
-            m_previousTime = currentTime;
-
- //           double desiredSteering = 0;
-            cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << endl;
-
-
-            if (fabs(e) < 1e-2) {
-                m_eSum = 0;
-            }
-            else {
-                m_eSum += e;
-            }
-//            const double Kp = 2.5;
-//            const double Ki = 8.5;
-//            const double Kd = 0;
-
-            // The following values have been determined by Twiddle algorithm.
-            const double Kp = 0.4482626884328734;
-            const double Ki = 3.103197570937628;
-            const double Kd = 0.030450210485408566;
-
-            const double p = Kp * e;
-            const double i = Ki * timeStep * m_eSum;
-            const double d = Kd * (e - m_eOld)/timeStep;
-            m_eOld = e;
-
-            const double y = p + i + d;
-            double desiredSteering = 0;
-
-            if (fabs(e) > 1e-2) {
-                    desiredSteering = y;
-
-                if (desiredSteering > 25.0) {
-                    desiredSteering = 25.0;
-                }
-
-                if (desiredSteering < -25.0) {
-                    desiredSteering = -25.0;
-                }
-            }
-  
-
-            cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << ", y = " << y << endl;
-
-
-            // Go forward.
-            m_vehicleControl.setSpeed(13);
-            m_vehicleControl.setSteeringWheelAngle(desiredSteering);
-        }
-
-        */
 
         /*
             Could add getSteeeringWheelAngle to manage
@@ -500,9 +303,9 @@ namespace automotive {
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollower::body() {
-	        // Get configuration data.
-	        KeyValueConfiguration kv = getKeyValueConfiguration();
-	        m_debug = kv.getValue<int32_t> ("lanefollower.debug") == 1;
+            // Get configuration data.
+            KeyValueConfiguration kv = getKeyValueConfiguration();
+            m_debug = kv.getValue<int32_t> ("lanefollower.debug") == 1;
 
             // Initialize fonts.
             const double hscale = 0.4;
@@ -511,7 +314,10 @@ namespace automotive {
             const int thickness = 1;
             const int lineType = 6;
 
-            int stateCounter = 0;
+            bool wheelCorrection = false;
+            int sensorFilter = 0;
+            int THRESHOLD = 27;
+            int sensorThreshold = 5;
 
             cvInitFont(&m_font, CV_FONT_HERSHEY_DUPLEX, hscale, vscale, shear, thickness, lineType);
 
@@ -524,9 +330,9 @@ namespace automotive {
             int32_t INFRARED_REAR_RIGHT;
             int32_t ULTRASONIC_FRONT_CENTER;
             double OVERTAKING_DISTANCE;
-            double steeringWheelAngle = 0;
+            //double steeringWheelAngle = 0;
 
-            //sim value 0 = simulation, 1 is on the car
+            //sim value 1 = simulation, 0 is on the car
             if(sim == 1) { //todo: fine tune the different angles on the wheel and distances for overtake
                 ULTRASONIC_FRONT_RIGHT = 4;
                 INFRARED_FRONT_RIGHT = 0;
@@ -535,23 +341,25 @@ namespace automotive {
                 OVERTAKING_DISTANCE = 8; //for a steep left turn 6 seems to be good
             }
             else {
-                ULTRASONIC_FRONT_RIGHT = 4;
-                INFRARED_FRONT_RIGHT = 0;
-                INFRARED_REAR_RIGHT = 2;
-                ULTRASONIC_FRONT_CENTER = 3;
-                OVERTAKING_DISTANCE = 15;
+                //Remapped the values for the sensors
+                ULTRASONIC_FRONT_RIGHT = 1;
+                INFRARED_FRONT_RIGHT = 2; //0
+                INFRARED_REAR_RIGHT = 3;  //2
+                ULTRASONIC_FRONT_CENTER = 0; //3
+                OVERTAKING_DISTANCE = 50;
             }
 
-            double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
+            double distanceToOvertake = 0, oldistanceToOvertake = 0; //use this value to see how far away the object to overtake is
             double ultrafrontright, irfr, irrr;
+            double oldultrafrontright = 0, oldirfr = 0/*, oldirrr = 0*/;
 
             enum STATES {InRightLane, InLeftLane, InChangeToLeftLane, InChangeToRightLane};
 
             STATES states = InRightLane;
 
             // Overall state machine handler.
-	        while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
-		        bool has_next_frame = false;
+            while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
+                bool has_next_frame = false;
 
                 //The following makes it possible to get the sensor readings
                 // 2. Get most recent sensor board data: comes from automotive/miniature
@@ -563,9 +371,12 @@ namespace automotive {
                 ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
                 irfr = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
                 irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
-                steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
+                //steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
 
-                cout << "Steering: " << steeringWheelAngle << "\n";
+                cout << "IRRR: " << irrr << "\n";
+                cout << "IRFR: " << irfr << "\n";
+                cout << "ULTARFRONTRIGHT: " << ultrafrontright << "\n";
+                cout << "ULTRAFRONTCENTER: " << distanceToOvertake << "\n";
 
                 // Get the most recent available container for a SharedImage.
                 Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
@@ -583,64 +394,77 @@ namespace automotive {
                 }
 
                 if ((states == InRightLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) || 
-                            (states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0)) {
+                            ((states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) &&
+                            (distanceToOvertake - oldistanceToOvertake < sensorThreshold))) {
 
                     states = InChangeToLeftLane;
 
-                    //Could play around with adding values to steeringWheelAngle
-                    //in other scenario
-/*                    if (steeringWheelAngle < -0.2) {
-                        m_vehicleControl.setSteeringWheelAngle(-0.7);
-                    } else {
-                        m_vehicleControl.setSteeringWheelAngle(-0.5);
-                    }
-*/
-                    m_vehicleControl.setSteeringWheelAngle(-0.5);
+                
+                    m_vehicleControl.setSteeringWheelAngle(-0.785);
                     m_vehicleControl.setSpeed(1.0);
                     cout << "CHANGE TO LEFT" << "\n";
 
-                } else if (states == InChangeToLeftLane && distanceToOvertake < 0) {
+                } else if (states == InChangeToLeftLane) {
 
-                    if (irfr > 0 && irfr < 10) {
-                        stateCounter = 1;
+                    if (irfr > 0 && irfr < THRESHOLD
+                            && (irfr - oldirfr < sensorThreshold)) {
+                        wheelCorrection = true;
+                        m_vehicleControl.setSteeringWheelAngle(0.3);
                     }
 
-                    if (stateCounter == 1) {
+                    if (wheelCorrection) {
                         states = InLeftLane;
                         cout << "IN LEFT LANE CHANGE" << "\n";
-                        stateCounter = 0;
+                        wheelCorrection = false;
                     }
 
-                } else if ((states == InLeftLane || states == InChangeToRightLane) && ((irfr < 0 || irfr > 10) && (ultrafrontright < 0 || ultrafrontright > 10))) {
+                    if (distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) {
+                        m_vehicleControl.setSteeringWheelAngle(0.7);
+                        m_vehicleControl.setSpeed(1.0);
+                        cout << "CORRECTION CORRECTION!" << "\n";
+                    }
+
+                } else if (sensorFilter < 30 && (states == InLeftLane || states == InChangeToRightLane) && ((irfr < 0 || irfr > THRESHOLD) && (ultrafrontright < 0 || ultrafrontright > 40))
+                        && (oldirfr - irfr < sensorThreshold) && (oldultrafrontright - ultrafrontright < sensorThreshold)) {
                     states = InChangeToRightLane;
 
                     cout << "IN CHANGE TO RIGHT LANE!" << "\n";
-/*                    
-                    if (steeringWheelAngle > 0.2) {
-                        m_vehicleControl.setSteeringWheelAngle(0.5);
-                    } else {
-                        m_vehicleControl.setSteeringWheelAngle(0.3);
-                    }
-*/
-                    m_vehicleControl.setSteeringWheelAngle(0.3);
+
+                    m_vehicleControl.setSteeringWheelAngle(0.785);
                     m_vehicleControl.setSpeed(1.0);
                     cout << "CHANGE TO RIGHT" << "\n";
+
+                    sensorFilter++;
 
                     //Until in right lane
                     //Until in right lane
                     //Until in right lane
-                    if (irrr < 0 || irrr > 10) {
-                        states = InRightLane;
+                    //irrr < 0 || irrr > THRESHOLD  irfr > irrr
+                    if ((irrr < 0 || irrr > THRESHOLD)/* && (oldirrr - irrr < sensorThreshold) || (sensorFilter > 14)*/) {
+                        states = InRightLane;           //-0.3 sim
+                        m_vehicleControl.setSteeringWheelAngle(0.5);
+                        sensorFilter = 0;
+                        cout << "BREAK BREAK BREAK BREAK BREAK!" << "\n";
                     }
                 }
+
+                else if (sensorFilter > 29) {
+                    sensorFilter = 0;
+                    states = InRightLane;
+                    cout << "WHAT HAPPENED?!" << "\n";
+                }
+
+                oldistanceToOvertake = distanceToOvertake;
+                oldultrafrontright = ultrafrontright;
+                oldirfr = irfr;
 
                 // Create container for finally sending the set values for the control algorithm.
                 Container c2(m_vehicleControl);
                 // Send container.
                 getConference().send(c2);
-	        }
+            }
             cout << "CLOSING" << "\n";
-	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }
