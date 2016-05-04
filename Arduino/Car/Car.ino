@@ -37,15 +37,16 @@ unsigned long startTimeData;
 String ourBuffer = "";
 
 //Constants
-const int deviation = -10;
-const int maxReverse = -70;
+const int maxReverse = -100;
 const int maxSpeed = 20;
 const int maxTurn = 45;
+const int neutral = 1500;
+const int marginError = 50;
 
 void setup() {
   Serial.begin(9600);
   Serial.setTimeout(100);
-  Serial1.begin(57600);
+  Serial1.begin(9600);
   Serial1.setTimeout(100);
   IRRF.begin();
   IRRB.begin();
@@ -96,8 +97,7 @@ void encoderInterrupt() {
 void handleRC() {
   unsigned long lengthServo = pulseIn(RC_STEERING, HIGH, 10000);
   unsigned long lengthESC = pulseIn(RC_ESC, HIGH, 10000);
-  if (firstInterrupt)
-  {
+  if (firstInterrupt) {
     servos.moveWave(1500);
     servos.turn(0);
     firstInterrupt = false;
@@ -114,14 +114,27 @@ void handleRC() {
     if (lengthServo == 0) { //RC is turned off
       zeroServo = zeroServo + 1;
     }
-    else
-    {
+    else {
       zeroServo = 0;
-      servos.turnWave(lengthServo);
+      if (lengthServo > neutral+marginError || lengthServo < neutral-marginError) {    // Margin of error
+        servos.turnWave(lengthServo);
+        //Serial.print("Servo: ");
+        //Serial.println(lengthServo);
+      }
+      else {
+        servos.turnWave(1500);
+      }
     }
     if (lengthESC > 0) {
+      if (lengthESC > neutral+marginError || lengthESC < neutral-marginError) {
         servos.moveWave(lengthESC);
+        //Serial.print("ESC: ");
+        //Serial.println(lengthESC);
       }
+      else {
+        servos.moveWave(1500);
+      }
+    }
   }
 }
 

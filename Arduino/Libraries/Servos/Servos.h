@@ -25,8 +25,8 @@
       const unsigned int _maxRC = 2000;
       const unsigned int _minRC = 1000;
       const unsigned int _maxESC = 1650;
-      const unsigned int _minESC = 1250;
-      const int deviation = -25;
+      const unsigned int _minESC = 1000;
+      const int deviation = -22;
       Servo servo;
       Servo esc;
   };
