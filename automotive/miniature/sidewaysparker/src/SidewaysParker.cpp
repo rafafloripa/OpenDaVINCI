@@ -49,9 +49,9 @@ namespace automotive {
         VehicleData vd;             // Create Vehicle data
 
         // SENSOR IDs
-        const int32_t ULTRASONIC_FRONT_CENTER = 3;
-        const int32_t INFRARED_FRONT_RIGHT = 0;
-        const int32_t INFRARED_REAR = 1;
+        const int32_t ULTRASONIC_FRONT_CENTER = 0;
+        const int32_t INFRARED_FRONT_RIGHT = 2;
+        const int32_t INFRARED_REAR = 4;
 
         // States of the car during the parking procedure
         enum VehicleState {Initial, SearchingForGap, Measuring, Positioning, Angling, Reversing, StraighteningBack, StraighteningFront, Finishing, Stopping};
@@ -59,6 +59,7 @@ namespace automotive {
 
         // Varialbes for parking evaluation
         double sensor = 0;
+        double sensorPrev=0;
         double gap = 0;              
         double startDistance = 0;
         double currentDistance = 0;
@@ -67,12 +68,15 @@ namespace automotive {
         double rear=0;
         double front=0;
         bool stopped=0;
+        int brakeTime=0;
                 
         // Varialbes for parking evaluation
         double MIN_PARKING = 6.5;            // Simulator value
         double REV_DISTANCE = 1.2;           // Simulator value
         double REV_BUFFER = 2.2;             // Simulator value
         double FINISH_BUFFER = 3.0;          // Simulator value
+        int speedForward = 2;
+        int speedReverse = 1;
 
         SidewaysParker::~SidewaysParker() {}
 
@@ -85,14 +89,16 @@ namespace automotive {
 
         void measureGap(){
             std::cout << "Measuring reading: " << sensor << "\n";
-            if(sensor>0){       // If an object is detected then the gap will be calculated and evaluated.      
+            if(sensor>0 && sensorPrev>0){       // If an object is detected then the gap will be calculated and evaluated.      
                 currentDistance = vd.getAbsTraveledPath();
                 gap = currentDistance - startDistance;
                 std::cout << "gap is: " << gap << "\n";
                 if(gap>MIN_PARKING){
                     std::cout << "******************* Parking gap found. ************" << "\n";
                     vc.setSpeed(0);
+                    startAngle=angle;
                     car= Positioning;
+                    vc.setSteeringWheelAngle(-4);
                 }else{
                     car= SearchingForGap;        // If the gap is too small the car will return to the SearchingForGap phase.
                 }         
@@ -100,19 +106,23 @@ namespace automotive {
         }
 
         bool checkStopped(){
-            if(vd.getSpeed()<0.05)  stopped=true;
-            else                    stopped=false;
+            if(brakeTime>20){
+                stopped=true;
+                brakeTime = 0;
+            }
+            else        stopped=false;
             return stopped;
         }
 
         void checkAngle(){
-            angle=vd.getHeading();
+            std::cout << "Start angle is: " << startAngle << "\n";
             std::cout << "angle is: " << angle << "\n";
-            if(angle>=(startAngle+0.9)){
+            if(angle>=(startAngle+55)){
                 startDistance= vd.getAbsTraveledPath();
-                car=Reversing;
-                vc.setSpeed(-0.45);
-                vc.setSteeringWheelAngle(0);
+                std::cout << "start reversing";
+                //car=Reversing;
+                //vc.setSpeed(speedReverse);
+                //vc.setSteeringWheelAngle(0);
             }
         }
 
@@ -120,7 +130,7 @@ namespace automotive {
             currentDistance = vd.getAbsTraveledPath();
             if(currentDistance - startDistance >= REV_DISTANCE){
                 car=StraighteningBack;
-                vc.setSpeed(-0.45);
+                vc.setSpeed(speedReverse);
                 vc.setSteeringWheelAngle(-3);
             }
             else if(rear<=REV_BUFFER && rear>=0){
@@ -138,8 +148,8 @@ namespace automotive {
                 vc.setSpeed(0);
                 if(checkStopped()) car=StraighteningFront;
             }
-            else if(angle<=(startAngle+0.01)){
-                vc.setSpeed(-.25);
+            else if(angle<=(startAngle+1)){
+                vc.setSpeed(speedReverse);
                 vc.setSteeringWheelAngle(0);
                 car=Finishing;
             } 
@@ -147,17 +157,17 @@ namespace automotive {
 
         void straightenFront(){
             vc.setSteeringWheelAngle(2);
-            vc.setSpeed(0.2);
+            vc.setSpeed(5);
             angle=vd.getHeading();
             std::cout << "currentAngle is: " << angle << "\n";
             std::cout << "startAngle is: " << startAngle << "\n";
-             if(angle<=(startAngle+0.01)){
+             if(angle<=(startAngle+1)){
                 vc.setSpeed(0);
                 vc.setSteeringWheelAngle(0);
                 car=Finishing;
             }else if(front>0 && front<=REV_BUFFER){
                 car=StraighteningBack;
-                vc.setSpeed(-0.45);
+                vc.setSpeed(speedReverse);
                 vc.setSteeringWheelAngle(-3);
             }
         }
@@ -170,10 +180,12 @@ namespace automotive {
             KeyValueConfiguration kv = getKeyValueConfiguration();
             bool SIM = kv.getValue<int32_t> ("global.simulation") == 1;
             if(!SIM){
-                MIN_PARKING = 10;           // 15 interrupts = 100cm     10 interrupts = 66.6cm       1 interrupt = 6.6cm
-                REV_DISTANCE = 4;           // Distance to reverse back into space
+                MIN_PARKING = 10;           // 20 interrupts = 100cm     14 inerrupts = 70cm       1 interrupt = 5cm
+                REV_DISTANCE = 3;           // Distance to reverse back into space
                 REV_BUFFER = 10;            // Rear/front sensor distance before car will brake whilst maintaining the maneuver.
                 FINISH_BUFFER = 15;         // Rear/front sensor distance for acceptable final parking position
+                speedForward= 10;
+                speedReverse= -20;
             }
             while (getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) {
 
@@ -184,23 +196,30 @@ namespace automotive {
                 // 2. Get most recent sensor board data:
                 Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
                 SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
+                sensorPrev=sensor;                  // Assign the value of the previous sensor reading.
                 sensor = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
                 rear = sbd.getValueForKey_MapOfDistances(INFRARED_REAR);
                 front = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+                angle=vd.getHeading();
+
 
 
                 if(car==Initial){       // Starting state of the car.
-                    vc.setSpeed(2);
-                    if(sensor>0){        // Car must first detect an object to start parallel parking procedure.
+                    vc.setSpeed(speedForward);
+                    vc.setSteeringWheelAngle(0);
+                    if(sensor>0 && sensorPrev>0){        // Car must first detect an object to start parallel parking procedure.
                         car=SearchingForGap;
                     }
                 }
 
                 else if(car==SearchingForGap){
                     std::cout << "Searching reading: " << sensor << "\n";
-                    if(sensor<0){       // If the sensor reading is -1, the gap will start being measured and the starting distance of the car is noted.
+                    vc.setSpeed(speedForward);
+                    if(sensor<0 && sensorPrev<0){       // If the sensor reading is -1, the gap will start being measured and the starting distance of the car is noted.
                         startDistance= vd.getAbsTraveledPath();
                         car=Measuring;
+                        std::cout << "currentAngle is: " << angle << "\n";
+
                     }
                 }
 
@@ -209,10 +228,10 @@ namespace automotive {
                 }
 
                 else if (car==Positioning){
+                   brakeTime++;
                    if(checkStopped()){
-                        vc.setSpeed(-0.3);
+                        vc.setSpeed(speedReverse);
                         vc.setSteeringWheelAngle(4);
-                        startAngle=vd.getHeading();
                         car=Angling;
                     }
                 }
@@ -235,8 +254,8 @@ namespace automotive {
                 }    
 
                 else if (car==Finishing){
-                    if(rear>0 && rear<=FINISH_BUFFER) vc.setSpeed(0.5);
-                    else if(front>0 && front<=FINISH_BUFFER) vc.setSpeed(-0.5);
+                    if(rear>0 && rear<=FINISH_BUFFER) vc.setSpeed(speedForward);
+                    else if(front>0 && front<=FINISH_BUFFER) vc.setSpeed(speedReverse);
                     else{ vc.setSpeed(0);
                         car=Stopping;
                     }
@@ -248,6 +267,7 @@ namespace automotive {
                 }
                 
                 // Create container for finally sending the data.
+                
                 Container c(vc);
                 // Send container.
                 getConference().send(c);
