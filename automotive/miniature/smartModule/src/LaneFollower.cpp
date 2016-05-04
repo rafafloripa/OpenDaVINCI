@@ -433,6 +433,13 @@ namespace automotive {
                     //to know that we have actually seen the object on the side of the car
                     if (irfr > 0 && irfr < irthreshold) {
                         stateCounter = 1;
+                        for(int i = 0; i < 80; i++) {
+                            m_vehicleControl.setSteeringWheelAngle(0.7);
+                             // Create container for finally sending the set values for the control algorithm.
+                            Container c2(m_vehicleControl);
+                            // Send container.
+                            getConference().send(c2);
+                        }
                     }
 
                     if (stateCounter == 1) {
