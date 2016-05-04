@@ -546,6 +546,7 @@ namespace automotive {
                 ULTRASONIC_FRONT_CENTER = 3;
                 OVERTAKING_DISTANCE = 40;
                 ultrathreshold = 40;
+                irthreshold = 28;
             }
 
             double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
@@ -602,7 +603,7 @@ namespace automotive {
                     }
 */
                     m_vehicleControl.setSteeringWheelAngle(-0.5);
-                    m_vehicleControl.setSpeed(1.0);
+                    m_vehicleControl.setSpeed(1.0); //on the car use speed 13, on sim use 1.0
                     cout << "CHANGE TO LEFT" << "\n";
 
                 } else if (states == InChangeToLeftLane && distanceToOvertake < 0) {
