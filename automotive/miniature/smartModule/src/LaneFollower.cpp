@@ -62,6 +62,7 @@ namespace automotive {
         LaneFollower::~LaneFollower() {}
 
         bool RUNNING = true;
+        bool LANEFOLLOW = true; //determine if lanefollowing or overtaking
 
         //Might not be needed in "LF"
         int LaneFollower::getState() {
@@ -75,6 +76,7 @@ namespace automotive {
             tearDown();
             odcore::base::module::AbstractModule::setModuleState(odcore::data::dmcp::ModuleStateMessage::NOT_RUNNING);
             RUNNING = false;
+            LANEFOLLOW = false;
         }
 
         //For starting LF out of scope
@@ -305,192 +307,13 @@ namespace automotive {
 
                     // Go forward.
                     m_vehicleControl.setSpeed(13);
-                    m_vehicleControl.setSteeringWheelAngle(desiredSteering);
-                }
-
-
-
-
-
-
-
-
-        /*
-        void LaneFollower::processImage() {
-            //static bool useRightLaneMarking = true;
-            double e = 0;
-            double desiredSteering = 0;
-
-            const int32_t CONTROL_SCANLINE = m_image->height - 18;
-            //const int32_t CONTROL_SCANLINE = 462; // calibrated length to right: 280px
-            //const int32_t distance = 280;
-
-            DetectLane();
-
-            TimeStamp beforeImageProcessing;           
-
-            for(int32_t y = m_image->height - 8; y > m_image->height * .7; y -= 10) {
-                // Search from middle to the left:
-                CvScalar pixelLeft;
-                CvPoint left;
-                left.y = y;
-                left.x = -1;
-                for(int x = m_image->width/2; x > 0; x--) {
-		            pixelLeft = cvGet2D(m_image, y, x);
-		            if (pixelLeft.val[0] >= 200) {
-                        left.x = x;
-                        break;
+                    if(LANEFOLLOW) {
+                        m_vehicleControl.setSteeringWheelAngle(desiredSteering);
                     }
+
                 }
 
-                // Search from middle to the right:
-                CvScalar pixelRight;
-                CvPoint right;
-                right.y = y;
-                right.x = -1;
-                for(int x = m_image->width/2; x < m_image->width; x++) {
-		            pixelRight = cvGet2D(m_image, y, x);
-		            if (pixelRight.val[0] >= 200) {
-                        right.x = x;
-                        break;
-                    }
-                }
 
-                double leftDist = -1;
-				double rightDist = -1;
-
-                if (m_debug) {
-                    if (left.x > 0) {
-                    	leftDist = m_image->width/2 - left.x;
-
-                    	CvScalar green = CV_RGB(0, 255, 0);
-                    	cvLine(m_image, cvPoint(m_image->width/2, y), left, green, 1, 8);
-
-                        stringstream sstr;
-                        sstr << (m_image->width/2 - left.x);
-                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 - 100, y - 2), &m_font, green);
-                    }
-                    if (right.x > 0) {
-                    	rightDist = right.x - m_image->width/2;
-
-                    	CvScalar red = CV_RGB(255, 0, 0);
-                    	cvLine(m_image, cvPoint(m_image->width/2, y), right, red, 1, 8);
-
-                        stringstream sstr;
-                        sstr << (right.x - m_image->width/2);
-                    	cvPutText(m_image, sstr.str().c_str(), cvPoint(m_image->width/2 + 100, y - 2), &m_font, red);
-                    }
-                }
-
-                if (y == CONTROL_SCANLINE && right.x > 0) {
-                	desiredSteering = (rightDist - 225) / 500;
-                } 
-                else if (y == CONTROL_SCANLINE && left.x > 0) {
-                	desiredSteering = (225 - leftDist) / 500;	
-                }
-//                else if (right.x > 0 && left.x > 0) {
-//                	desiredSteering = (rightDist - leftDist) / 1000;
-//                }
-
-                
-
-                
-
-                if (y == CONTROL_SCANLINE) {
-                    // Calculate the deviation error.
-                    if (right.x > 0) {
-                        if (!useRightLaneMarking) {
-                            m_eSum = 0;
-                            m_eOld = 0;
-                        }
-
-                        e = ((right.x - m_image->width/2.0) - distance)/distance;
-
-                        useRightLaneMarking = true;
-                    }
-                    else if (left.x > 0) {
-                        if (useRightLaneMarking) {
-                            m_eSum = 0;
-                            m_eOld = 0;
-                        }
-                        
-                        e = (distance - (m_image->width/2.0 - left.x))/distance;
-
-                        useRightLaneMarking = false;
-                    }
-                    else {
-                        // If no measurements are available, reset PID controller.
-                        m_eSum = 0;
-                        m_eOld = 0;
-                    }
-                }
-                
-            }
-
-            TimeStamp afterImageProcessing;
-            cerr << "Processing time: " << (afterImageProcessing.toMicroseconds() - beforeImageProcessing.toMicroseconds())/1000.0 << "ms." << endl;
-
-            // Show resulting features.
-            if (m_debug) {
-                if (m_image != NULL) {
-                    cvShowImage("WindowShowImage", m_image);
-                    cvWaitKey(10);
-                }
-            }
-
-            TimeStamp currentTime;
-            //double timeStep = (currentTime.toMicroseconds() - m_previousTime.toMicroseconds()) / (1000.0 * 1000.0);
-            m_previousTime = currentTime;
-
- //           double desiredSteering = 0;
-            cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << endl;
-
-
-            if (fabs(e) < 1e-2) {
-                m_eSum = 0;
-            }
-            else {
-                m_eSum += e;
-            }
-//            const double Kp = 2.5;
-//            const double Ki = 8.5;
-//            const double Kd = 0;
-
-            // The following values have been determined by Twiddle algorithm.
-            const double Kp = 0.4482626884328734;
-            const double Ki = 3.103197570937628;
-            const double Kd = 0.030450210485408566;
-
-            const double p = Kp * e;
-            const double i = Ki * timeStep * m_eSum;
-            const double d = Kd * (e - m_eOld)/timeStep;
-            m_eOld = e;
-
-            const double y = p + i + d;
-            double desiredSteering = 0;
-
-            if (fabs(e) > 1e-2) {
-                    desiredSteering = y;
-
-                if (desiredSteering > 25.0) {
-                    desiredSteering = 25.0;
-                }
-
-                if (desiredSteering < -25.0) {
-                    desiredSteering = -25.0;
-                }
-            }
-  
-
-            cerr << "PID: " << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << ", y = " << y << endl;
-
-
-            // Go forward.
-            m_vehicleControl.setSpeed(13);
-            m_vehicleControl.setSteeringWheelAngle(desiredSteering);
-        }
-
-        */
 
         /*
             Could add getSteeeringWheelAngle to manage
@@ -528,6 +351,8 @@ namespace automotive {
 
             double ultrathreshold = 0; //upper bound sensor reading to simulate not picking up an object
             double irthreshold = 0;
+            double steeringLeft = 0;
+            double steeringRight = 0;
 
             //sim value 1 = simulation, 0 is on the car
             if(sim == 1) { //todo: fine tune the different angles on the wheel and distances for overtake
@@ -538,6 +363,8 @@ namespace automotive {
                 OVERTAKING_DISTANCE = 10; //for a steep left turn 6 seems to be good
                 ultrathreshold = 20;
                 irthreshold = 10;
+                steeringLeft = -0.5;
+                steeringRight = 0.3;
             }
             else {//these IDs are not the same on the car as in the simulator. need to recheck them
                 ULTRASONIC_FRONT_RIGHT = 4;
@@ -547,6 +374,8 @@ namespace automotive {
                 OVERTAKING_DISTANCE = 40;
                 ultrathreshold = 40;
                 irthreshold = 28;
+                steeringLeft = -0.785;
+                steeringRight = 0.5;
             }
 
             double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
@@ -558,7 +387,8 @@ namespace automotive {
 
             // Overall state machine handler.
 	        while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
-		        bool has_next_frame = false;
+		        LANEFOLLOW = true;
+                bool has_next_frame = false;
 
                 //The following makes it possible to get the sensor readings
                 // 2. Get most recent sensor board data: comes from automotive/miniature
@@ -591,18 +421,10 @@ namespace automotive {
 
                 if ((states == InRightLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) || 
                             (states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0)) {
-
+                    LANEFOLLOW = false;
                     states = InChangeToLeftLane;
 
-                    //Could play around with adding values to steeringWheelAngle
-                    //in other scenario
-/*                    if (steeringWheelAngle < -0.2) {
-                        m_vehicleControl.setSteeringWheelAngle(-0.7);
-                    } else {
-                        m_vehicleControl.setSteeringWheelAngle(-0.5);
-                    }
-*/
-                    m_vehicleControl.setSteeringWheelAngle(-0.5);
+                    m_vehicleControl.setSteeringWheelAngle(steeringLeft);
                     m_vehicleControl.setSpeed(1.0); //on the car use speed 13, on sim use 1.0
                     cout << "CHANGE TO LEFT" << "\n";
 
@@ -617,29 +439,24 @@ namespace automotive {
                         states = InLeftLane;
                         cout << "IN LEFT LANE CHANGE" << "\n";
                         stateCounter = 0;
+                        LANEFOLLOW = true;
                     }
 
                 } else if ((states == InLeftLane || states == InChangeToRightLane) &&
                             ((irfr < 0 || irfr > irthreshold) && (ultrafrontright < 0 || ultrafrontright > ultrathreshold))) {
+                    LANEFOLLOW = false;
                     states = InChangeToRightLane;
 
                     cout << "IN CHANGE TO RIGHT LANE!" << "\n";
-/*                    
-                    if (steeringWheelAngle > 0.2) {
-                        m_vehicleControl.setSteeringWheelAngle(0.5);
-                    } else {
-                        m_vehicleControl.setSteeringWheelAngle(0.3);
-                    }
-*/
-                    m_vehicleControl.setSteeringWheelAngle(0.3);
+
+                    m_vehicleControl.setSteeringWheelAngle(steeringRight);
                     m_vehicleControl.setSpeed(1.0);
                     cout << "CHANGE TO RIGHT" << "\n";
 
                     //Until in right lane
-                    //Until in right lane
-                    //Until in right lane
                     if (irrr < 0 || irrr > irthreshold) {
                         states = InRightLane;
+                        LANEFOLLOW = true;
                     }
                 }
 
