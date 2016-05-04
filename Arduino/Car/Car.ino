@@ -45,7 +45,7 @@ const int maxTurn = 45;
 void setup() {
   Serial.begin(9600);
   Serial.setTimeout(100);
-  Serial1.begin(57600);
+  Serial1.begin(9600);
   Serial1.setTimeout(100);
   IRRF.begin();
   IRRB.begin();
