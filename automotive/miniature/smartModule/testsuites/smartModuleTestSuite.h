@@ -20,6 +20,10 @@ class smartModuleTestling : public smartModule {
         smartModuleTestling(const int32_t &argc, char **argv) :
             smartModule(argc, argv) {}
 
+        int callGetState() {
+            return getState();
+        }
+
         // Here, you need to add all methods which are protected in smartModule and which are needed for the test cases.
 };
 
@@ -62,6 +66,15 @@ class smartModuleTest : public CxxTest::TestSuite {
 
         void testsmartModuleSuccessfullyCreated() {
             TS_ASSERT(dt != NULL);
+        }
+
+        void testsmartModuleGetState() {
+
+            //dt.callSetState(state);
+            //TS_ASSERT(dt->callGetState() == state);
+        
+            TS_ASSERT(false);
+
         }
 
         ////////////////////////////////////////////////////////////////////////////////////
