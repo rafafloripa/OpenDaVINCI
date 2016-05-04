@@ -135,7 +135,7 @@ namespace automotive {
 			        }
 
 			        // Mirror the image.
-			        cvFlip(m_image, 0, -1);
+			        //cvFlip(m_image, 0, -1);
 
 			        retVal = true;
 		        }
@@ -160,8 +160,8 @@ namespace automotive {
         void LaneFollower::processImage() {
                     static bool useRightLaneMarking = true;
                     double e = 0;
-
-                    const int32_t CONTROL_SCANLINE = 402; // calibrated length to right: 280px
+                                //Changed from 402 (To correct for overtaking)
+                    const int32_t CONTROL_SCANLINE = 352; // calibrated length to right: 280px
                     const int32_t distance = 190;
 
                     DetectLane();
@@ -367,15 +367,15 @@ namespace automotive {
                 steeringRight = 0.3;
             }
             else {//these IDs are not the same on the car as in the simulator. need to recheck them
-                ULTRASONIC_FRONT_RIGHT = 4;
-                INFRARED_FRONT_RIGHT = 0;
-                INFRARED_REAR_RIGHT = 2;
-                ULTRASONIC_FRONT_CENTER = 3;
-                OVERTAKING_DISTANCE = 40;
+                ULTRASONIC_FRONT_RIGHT = 1;
+                INFRARED_FRONT_RIGHT = 2;
+                INFRARED_REAR_RIGHT = 3;
+                ULTRASONIC_FRONT_CENTER = 0;
+                OVERTAKING_DISTANCE = 44;
                 ultrathreshold = 40;
                 irthreshold = 28;
                 steeringLeft = -0.785;
-                steeringRight = 0.5;
+                steeringRight = 0.785;
             }
 
             double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
@@ -433,6 +433,13 @@ namespace automotive {
                     //to know that we have actually seen the object on the side of the car
                     if (irfr > 0 && irfr < irthreshold) {
                         stateCounter = 1;
+                        for(int i = 0; i < 80; i++) {
+                            m_vehicleControl.setSteeringWheelAngle(0.7);
+                             // Create container for finally sending the set values for the control algorithm.
+                            Container c2(m_vehicleControl);
+                            // Send container.
+                            getConference().send(c2);
+                        }
                     }
 
                     if (stateCounter == 1) {
@@ -448,14 +455,28 @@ namespace automotive {
                     states = InChangeToRightLane;
 
                     cout << "IN CHANGE TO RIGHT LANE!" << "\n";
+                    /*while(irrr < 0 || irrr > irthreshold) {
+                        irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
+                        m_vehicleControl.setSteeringWheelAngle(0.7);
+                         // Create container for finally sending the set values for the control algorithm.
+                        Container c2(m_vehicleControl);
+                        // Send container.
+                        getConference().send(c2);
+                    }*/
+                    for(int i = 0; i < 260; i++) {
+                        m_vehicleControl.setSteeringWheelAngle(0.7);
+                         // Create container for finally sending the set values for the control algorithm.
+                        Container c2(m_vehicleControl);
+                        // Send container.
+                        getConference().send(c2);
+                    }
 
                     m_vehicleControl.setSteeringWheelAngle(steeringRight);
                     m_vehicleControl.setSpeed(1.0);
                     cout << "CHANGE TO RIGHT" << "\n";
 
                     //Until in right lane
-                    if (irrr < 0 || irrr > irthreshold && (ultrafrontright < 0 || ultrafrontright > ultrathreshold)
-                    		&& (distanceToOvertake < 0 || distanceToOvertake > OVERTAKING_DISTANCE)) {
+                    if (irrr < 0 || irrr > irthreshold) {
                         states = InRightLane;
                         LANEFOLLOW = true;
                     }
