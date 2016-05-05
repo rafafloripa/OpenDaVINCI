@@ -9,7 +9,7 @@
     public:
       Ultrasonic(uint8_t address);
       void begin();
-      uint8_t getDistance();
+      int getDistance();
       String getStringDistance();
       uint8_t getLight();
       void setGain(uint8_t gainValue);

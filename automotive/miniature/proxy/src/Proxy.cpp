@@ -24,9 +24,9 @@
 #include <cstring>
 #include <cmath>
 #include <iostream>
-#include "SerialReceiveBytes.h"
+#include "SerialConnection.h"
 #include "opendavinci/odcore/base/KeyValueConfiguration.h"
- #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
+#include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/odcore/data/Container.h"
 #include "opendavinci/odcore/data/TimeStamp.h"
 #include "OpenCVCamera.h"
@@ -54,22 +54,24 @@ namespace automotive {
             arduino(),
             buffer(""),
             previousSpeed(0),
-            previousAngle(0)
+            previousAngle(0),
+            initializer(0)
         {}
 
         Proxy::~Proxy() {
         }
 
+        // This method will be call automatically _before_ running body().
         void Proxy::setUp() {
             // Get configuration data.
             KeyValueConfiguration kv = getKeyValueConfiguration();
 
+            //Set up the arduino serial connection
             const string serial_port = kv.getValue<string>("proxy.Sensor.SerialPort");
             const uint32_t baud_rate = kv.getValue<uint32_t>("proxy.Sensor.SerialSpeed");
-            arduino = unique_ptr<SerialReceiveBytes>(new SerialReceiveBytes(serial_port, baud_rate));
+            arduino = unique_ptr<SerialConnection>(new SerialConnection(serial_port, baud_rate));
             arduino->setUp();
 
-            // This method will be call automatically _before_ running body().
             if (getFrequency() < 20) {
                 cerr << endl << endl << "Proxy: WARNING! Running proxy with a LOW frequency (consequence: data updates are too seldom and will influence your algorithms in a negative manner!) --> suggestions: --freq=20 or higher! Current frequency: " << getFrequency() << " Hz." << endl << endl << endl;
             }
@@ -104,9 +106,10 @@ namespace automotive {
             const uint32_t WIDTH = kv.getValue<uint32_t>("proxy.camera.width");
             const uint32_t HEIGHT = kv.getValue<uint32_t>("proxy.camera.height");
             const uint32_t BPP = kv.getValue<uint32_t>("proxy.camera.bpp");
+            const bool sim = kv.getValue<int32_t> ("proxy.debug") == 1;
 
             if (TYPE.compare("opencv") == 0) {
-                m_camera = unique_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP));
+                m_camera = unique_ptr<Camera>(new OpenCVCamera(NAME, ID, WIDTH, HEIGHT, BPP, sim));
             }
             if (TYPE.compare("ueye") == 0) {
 #ifdef HAVE_UEYE
@@ -148,59 +151,75 @@ namespace automotive {
                     distribute(c);
                     captureCounter++;
                 }
+
+                // Get information from Arduino.
                 if (arduino.get() != NULL) {
-
-                    // HERE ITS MAYBE BETTER TO MOVE THIS CODE TO THE SerialReceiveBytes.cpp at function getData
-                    // FUNCTION COULD BE CHANGED TO ALREADY RETURN A WANTED DATATYPE.
-                    buffer += arduino->getBuffer();
+                    buffer += arduino->getBuffer();     //As long as the frequency is more than 10 times per second the buffer will not be a memory leak (arduino sends only 10 times per second.)
                     string temp = getPackage();
-                    map<uint32_t, double> data = parseString(temp);
 
-                    if (!data.empty()) {
-                        SensorBoardData obj;
-                        obj.setMapOfDistances(data);
-                        Container sensors(obj);
-//                        cout << "before distribute" << endl;
-                        distribute(sensors);
+                    // Check if there is a packet.
+                    if (!temp.compare("") == 0) {
+                        map<uint32_t, double> data = parseString(temp);
+                        map<uint32_t, double> sensormap;
+                        for(int x = 0; x <=4; x++) {
+                            sensormap[x] = data[x];
+                        }
+                        double gyro = data[5];
+                        double encoder = data[6];
+ 
+                        // Share the distance sensors
+                        if (!sensormap.empty()) {
+                            SensorBoardData obj;
+                            obj.setMapOfDistances(sensormap);
+                            Container sensors(obj);
+                            distribute(sensors);
+                        }
+
+                        // Share the gyro and the wheel encoder
+                        VehicleData vd;
+                        vd.setHeading(gyro);
+                        vd.setAbsTraveledPath(encoder);
+                        Container vehicleData(vd);
+                        distribute(vehicleData);
                     }
-                    //cout << "Received Serial " << buffer.length() << " bytes containing '" << buffer << "'" << endl;
-                    //arduino->sendData("Hello u\n");
+                    if (initializer > 20) {
+	                    //Check the container
+	                    Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
+	                    VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
+	                    int speed = vc.getSpeed();
+	                    double angle_radians = vc.getSteeringWheelAngle();
+	                    int angle = angle_radians*cartesian::Constants::RAD2DEG;
 
-                    //For lane following no 0s --except for intersections
-                    //For overtaking no 0s --except for intersections
-                    //0s will only be accepted for parking
-                    //Check the container
-                    Container containerVehicleControl = getKeyValueDataStore().get(VehicleControl::ID());
-                    VehicleControl vc = containerVehicleControl.getData<VehicleControl> ();
-                    int speed = 13;//vc.getSpeed()*50;
-                    double angle_radians = vc.getSteeringWheelAngle();
-                    int angle = angle_radians*cartesian::Constants::RAD2DEG;
+	                    int coefficient = 1;
+	                    if (angle < 0)
+	                        coefficient = -1;
+	                    angle = abs(angle);
+	                    if (angle > 0 && angle <= 10) {
+	                        angle = 10;
+	                    } else if (angle > 10 && angle <= 15) {
+	                        angle = 15;
+	                    } else if (angle > 15 && angle <= 20) {
+	                        angle = 20;
+	                    } else if (angle > 20 && angle <= 25) {
+	                        angle = 25;
+	                    } else if (angle > 25 && angle <=30) {
+	                        angle = 30;
+	                    } else if (angle > 30) {
+	                    	angle = 45;
+	                    }
+	                    angle = angle*coefficient;
 
-                    int coefficient = 1;
-                    if (angle < 0)
-                        coefficient = -1;
-                    angle = abs(angle);
-                    if (angle > 0 && angle <= 10) {
-                        angle = 10;
-                    } else if (angle > 10 && angle <= 15) {
-                        angle = 15;
-                    } else if (angle > 15 && angle <= 20) {
-                        angle = 20;
-                    } else if (angle > 20 && angle <= 25) {
-                        angle = 25;
-                    } else if (angle > 25) {
-                        angle = 30;
-                    }
-                    angle = angle*coefficient;
-
-                    if ((speed != previousSpeed) || (angle != previousAngle)) {
-
-                        previousSpeed = speed;
-                        previousAngle = angle;
-                       string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")z";
-                        //string sendData = "(15,45)\n";
-                       arduino->sendData(sendData);
-                    }
+	                    if ((speed != previousSpeed) || (angle != previousAngle)) {
+	                       	previousSpeed = speed;
+	                        previousAngle = angle;
+	                       	string sendData = "(" + to_string(speed) + "," + to_string(angle) + ")z";
+	                       	arduino->sendData(sendData);
+	                    }
+	                }
+	                else {
+	                	initializer++;
+	                	cout << "initializing\n";
+	                }
                 }
             }
 
@@ -210,7 +229,6 @@ namespace automotive {
         }
 
         string Proxy::getPackage() {
-            //buffer = handler->getBuffer();
             string package = "";
             int size = buffer.length();                             //Check the entire buffer
             bool end = false;
@@ -244,7 +262,6 @@ namespace automotive {
         map<uint32_t, double> Proxy::parseString (const string &s) {
             map<uint32_t, double> newMap;
             if (s.size() >= 2) {
-                //cout << "here2" << s << endl;
                 string s2 = s.substr(1, s.size() - 2);              //Remove the delimeters (only leave the sensor values with a comma)
                 istringstream line(s2);
                 int n= 0;
@@ -258,6 +275,5 @@ namespace automotive {
             }
             return newMap;
         }
-
     }
 } // automotive::miniature

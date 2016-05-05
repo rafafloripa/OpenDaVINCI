@@ -134,8 +134,8 @@ namespace automotive {
                                si.getWidth() * si.getHeight() * numberOfChannels);
                     }
 
-                    // Mirror the image. only for simulator use
-                    cvFlip(m_image, 0, -1);
+                    // Mirror the image.
+                    //cvFlip(m_image, 0, -1);
 
                     retVal = true;
                 }
@@ -193,7 +193,6 @@ namespace automotive {
                                 break;
                             }
                         }
-
                         if (m_debug) {
                             if (left.x > 0) {
                                 CvScalar green = CV_RGB(0, 255, 0);
@@ -264,14 +263,6 @@ namespace automotive {
                     else {
                         m_eSum += e;
                     }
-        //            const double Kp = 2.5;
-        //            const double Ki = 8.5;
-        //            const double Kd = 0;
-
-                    // The following values have been determined by Twiddle algorithm.
-/*                    const double Kp = 0.4482626884328734;
-                    const double Ki = 3.103197570937628;
-                    const double Kd = 0.030450210485408566;*/
 
                     const double Kp = 0.75;
                     const double Ki = 0;
@@ -301,10 +292,6 @@ namespace automotive {
                     else if (m_eSum < min_eSum) {
                         min_eSum = m_eSum;
                     }
-
-                    //cerr << "PID: " << "max_eSum = " << max_eSum << ", min_eSum = " << min_eSum << endl << "e = " << e << ", eSum = " << m_eSum << ", desiredSteering = " << desiredSteering << ", y = " << y << endl;
-
-
                     // Go forward.
                     m_vehicleControl.setSpeed(13);
                     if(LANEFOLLOW) {
@@ -334,7 +321,10 @@ namespace automotive {
             const int thickness = 1;
             const int lineType = 6;
 
-            int stateCounter = 0;
+            bool wheelCorrection = false;
+            int sensorFilter = 0;
+            int THRESHOLD = 27;
+            int sensorThreshold = 5;
 
             cvInitFont(&m_font, CV_FONT_HERSHEY_DUPLEX, hscale, vscale, shear, thickness, lineType);
 
@@ -347,7 +337,7 @@ namespace automotive {
             int32_t INFRARED_REAR_RIGHT;
             int32_t ULTRASONIC_FRONT_CENTER;
             double OVERTAKING_DISTANCE;
-            double steeringWheelAngle = 0;
+            //double steeringWheelAngle = 0;
 
             double ultrathreshold = 0; //upper bound sensor reading to simulate not picking up an object
             double irthreshold = 0;
@@ -366,7 +356,8 @@ namespace automotive {
                 steeringLeft = -0.5;
                 steeringRight = 0.3;
             }
-            else {//these IDs are not the same on the car as in the simulator. need to recheck them
+            else {
+                //Remapped the values for the sensors
                 ULTRASONIC_FRONT_RIGHT = 1;
                 INFRARED_FRONT_RIGHT = 2;
                 INFRARED_REAR_RIGHT = 3;
@@ -378,8 +369,9 @@ namespace automotive {
                 steeringRight = 0.785;
             }
 
-            double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
+            double distanceToOvertake = 0, oldistanceToOvertake = 0; //use this value to see how far away the object to overtake is
             double ultrafrontright, irfr, irrr;
+            double oldultrafrontright = 0, oldirfr = 0/*, oldirrr = 0*/;
 
             enum STATES {InRightLane, InLeftLane, InChangeToLeftLane, InChangeToRightLane};
 
@@ -400,9 +392,13 @@ namespace automotive {
                 ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
                 irfr = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
                 irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
-                steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
+                //steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
 
                 cout << "Steering: " << steeringWheelAngle << "\n";//debug
+                cout << "IRRR: " << irrr << "\n";
+                cout << "IRFR: " << irfr << "\n";
+                cout << "ULTARFRONTRIGHT: " << ultrafrontright << "\n";
+                cout << "ULTRAFRONTCENTER: " << distanceToOvertake << "\n";
 
                 // Get the most recent available container for a SharedImage.
                 Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
@@ -420,7 +416,8 @@ namespace automotive {
                 }
 
                 if ((states == InRightLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) || 
-                            (states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0)) {
+                            ((states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) &&
+                            (distanceToOvertake - oldistanceToOvertake < sensorThreshold))) {
                     LANEFOLLOW = false;
                     states = InChangeToLeftLane;
 
@@ -428,7 +425,7 @@ namespace automotive {
                     m_vehicleControl.setSpeed(1.0); //on the car use speed 13, on sim use 1.0
                     cout << "CHANGE TO LEFT" << "\n";
 
-                } else if (states == InChangeToLeftLane && distanceToOvertake < 0) {
+                } else if (states == InChangeToLeftLane) {
 
                     //to know that we have actually seen the object on the side of the car
                     if (irfr > 0 && irfr < irthreshold) {
@@ -469,7 +466,6 @@ namespace automotive {
                         Container c2(m_vehicleControl);
                         // Send container.
                         getConference().send(c2);
-                    }
 
                     m_vehicleControl.setSteeringWheelAngle(steeringRight);
                     m_vehicleControl.setSpeed(1.0);
