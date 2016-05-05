@@ -135,7 +135,7 @@ namespace automotive {
                     }
 
                     // Mirror the image.
-                    //cvFlip(m_image, 0, -1);
+                    cvFlip(m_image, 0, -1);
 
                     retVal = true;
                 }
@@ -321,10 +321,10 @@ namespace automotive {
             const int thickness = 1;
             const int lineType = 6;
 
-            bool wheelCorrection = false;
-            int sensorFilter = 0;
-            int THRESHOLD = 27;
-            int sensorThreshold = 5;
+            //bool wheelCorrection = false;
+            //int sensorFilter = 0;
+            //int THRESHOLD = 27;
+            //int sensorThreshold = 5;
 
             cvInitFont(&m_font, CV_FONT_HERSHEY_DUPLEX, hscale, vscale, shear, thickness, lineType);
 
@@ -369,13 +369,14 @@ namespace automotive {
                 steeringRight = 0.785;
             }
 
-            double distanceToOvertake = 0, oldistanceToOvertake = 0; //use this value to see how far away the object to overtake is
+            double distanceToOvertake = 0/* oldistanceToOvertake = 0*/; //use this value to see how far away the object to overtake is
             double ultrafrontright, irfr, irrr;
-            double oldultrafrontright = 0, oldirfr = 0/*, oldirrr = 0*/;
-
+            //double oldultrafrontright = 0, oldirfr = 0/*, oldirrr = 0*/;
+            int stateCounter = 0;
             enum STATES {InRightLane, InLeftLane, InChangeToLeftLane, InChangeToRightLane};
 
             STATES states = InRightLane;
+
 
             // Overall state machine handler.
             while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
@@ -394,12 +395,6 @@ namespace automotive {
                 irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
                 //steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
 
-                cout << "Steering: " << steeringWheelAngle << "\n";//debug
-                cout << "IRRR: " << irrr << "\n";
-                cout << "IRFR: " << irfr << "\n";
-                cout << "ULTARFRONTRIGHT: " << ultrafrontright << "\n";
-                cout << "ULTRAFRONTCENTER: " << distanceToOvertake << "\n";
-
                 // Get the most recent available container for a SharedImage.
                 Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
 
@@ -416,8 +411,7 @@ namespace automotive {
                 }
 
                 if ((states == InRightLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) || 
-                            ((states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) &&
-                            (distanceToOvertake - oldistanceToOvertake < sensorThreshold))) {
+                            (states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0)) {
                     LANEFOLLOW = false;
                     states = InChangeToLeftLane;
 
@@ -466,6 +460,7 @@ namespace automotive {
                         Container c2(m_vehicleControl);
                         // Send container.
                         getConference().send(c2);
+                    }
 
                     m_vehicleControl.setSteeringWheelAngle(steeringRight);
                     m_vehicleControl.setSpeed(1.0);
