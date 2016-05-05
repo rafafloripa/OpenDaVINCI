@@ -85,62 +85,62 @@ namespace automotive {
         }
 
         void LaneFollower::setUp() {
-	        // This method will be call automatically _before_ running body().
-	        if (m_debug) {
-		        // Create an OpenCV-window.
-		        cvNamedWindow("WindowShowImage", CV_WINDOW_AUTOSIZE);
-		        cvMoveWindow("WindowShowImage", 300, 100);
-	        }
+            // This method will be call automatically _before_ running body().
+            if (m_debug) {
+                // Create an OpenCV-window.
+                cvNamedWindow("WindowShowImage", CV_WINDOW_AUTOSIZE);
+                cvMoveWindow("WindowShowImage", 300, 100);
+            }
         }
 
         void LaneFollower::tearDown() {
-	        // This method will be call automatically _after_ return from body().
-	        if (m_image != NULL) {
-		        cvReleaseImage(&m_image);
-	        }
+            // This method will be call automatically _after_ return from body().
+            if (m_image != NULL) {
+                cvReleaseImage(&m_image);
+            }
 
-	        if (m_debug) {
-		        cvDestroyWindow("WindowShowImage");
-	        }
+            if (m_debug) {
+                cvDestroyWindow("WindowShowImage");
+            }
         }
 
         bool LaneFollower::readSharedImage(Container &c) {
-	        bool retVal = false;
+            bool retVal = false;
 
-	        if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
-		        SharedImage si = c.getData<SharedImage> ();
+            if (c.getDataType() == odcore::data::image::SharedImage::ID()) {
+                SharedImage si = c.getData<SharedImage> ();
 
-		        // Check if we have already attached to the shared memory.
-		        if (!m_hasAttachedToSharedImageMemory) {
-			        m_sharedImageMemory
-					        = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
-							        si.getName());
-		        }
+                // Check if we have already attached to the shared memory.
+                if (!m_hasAttachedToSharedImageMemory) {
+                    m_sharedImageMemory
+                            = odcore::wrapper::SharedMemoryFactory::attachToSharedMemory(
+                                    si.getName());
+                }
 
-		        // Check if we could successfully attach to the shared memory.
-		        if (m_sharedImageMemory->isValid()) {
-			        // Lock the memory region to gain exclusive access using a scoped lock.
+                // Check if we could successfully attach to the shared memory.
+                if (m_sharedImageMemory->isValid()) {
+                    // Lock the memory region to gain exclusive access using a scoped lock.
                     Lock l(m_sharedImageMemory);
-			        const uint32_t numberOfChannels = 3;
-			        // For example, simply show the image.
-			        if (m_image == NULL) {
-				        m_image = cvCreateImage(cvSize(si.getWidth(), si.getHeight()), IPL_DEPTH_8U, numberOfChannels);
-			        }
+                    const uint32_t numberOfChannels = 3;
+                    // For example, simply show the image.
+                    if (m_image == NULL) {
+                        m_image = cvCreateImage(cvSize(si.getWidth(), si.getHeight()), IPL_DEPTH_8U, numberOfChannels);
+                    }
 
-			        // Copying the image data is very expensive...
-			        if (m_image != NULL) {
-				        memcpy(m_image->imageData,
-						       m_sharedImageMemory->getSharedMemory(),
-						       si.getWidth() * si.getHeight() * numberOfChannels);
-			        }
+                    // Copying the image data is very expensive...
+                    if (m_image != NULL) {
+                        memcpy(m_image->imageData,
+                               m_sharedImageMemory->getSharedMemory(),
+                               si.getWidth() * si.getHeight() * numberOfChannels);
+                    }
 
-			        // Mirror the image.
-			        cvFlip(m_image, 0, -1);
+                    // Mirror the image. only for simulator use
+                    cvFlip(m_image, 0, -1);
 
-			        retVal = true;
-		        }
-	        }
-	        return retVal;
+                    retVal = true;
+                }
+            }
+            return retVal;
         }
 
         /*
@@ -148,20 +148,20 @@ namespace automotive {
         */
         void LaneFollower::DetectLane() {
 
- 			cv::Mat mat_img(m_image);
-    		cv::Mat dst, cdst;
-    		cv::Canny(mat_img, dst, 50, 200, 3);
-    		cv::cvtColor(dst, cdst, CV_GRAY2BGR);
-		    IplImage result = cdst;
+            cv::Mat mat_img(m_image);
+            cv::Mat dst, cdst;
+            cv::Canny(mat_img, dst, 50, 200, 3);
+            cv::cvtColor(dst, cdst, CV_GRAY2BGR);
+            IplImage result = cdst;
 
-    		std::memcpy(m_image->imageData, result.imageData, result.imageSize);
-		}
+            std::memcpy(m_image->imageData, result.imageData, result.imageSize);
+        }
 
         void LaneFollower::processImage() {
                     static bool useRightLaneMarking = true;
                     double e = 0;
-
-                    const int32_t CONTROL_SCANLINE = 402; // calibrated length to right: 280px
+                                //Changed from 402 (To correct for overtaking)
+                    const int32_t CONTROL_SCANLINE = 352; // calibrated length to right: 280px
                     const int32_t distance = 190;
 
                     DetectLane();
@@ -323,9 +323,9 @@ namespace automotive {
         // This method will do the main data processing job.
         // Therefore, it tries to open the real camera first. If that fails, the virtual camera images from camgen are used.
         odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode LaneFollower::body() {
-	        // Get configuration data.
-	        KeyValueConfiguration kv = getKeyValueConfiguration();
-	        m_debug = kv.getValue<int32_t> ("lanefollower.debug") == 1;
+            // Get configuration data.
+            KeyValueConfiguration kv = getKeyValueConfiguration();
+            m_debug = kv.getValue<int32_t> ("lanefollower.debug") == 1;
 
             // Initialize fonts.
             const double hscale = 0.4;
@@ -367,15 +367,15 @@ namespace automotive {
                 steeringRight = 0.3;
             }
             else {//these IDs are not the same on the car as in the simulator. need to recheck them
-                ULTRASONIC_FRONT_RIGHT = 4;
-                INFRARED_FRONT_RIGHT = 0;
-                INFRARED_REAR_RIGHT = 2;
-                ULTRASONIC_FRONT_CENTER = 3;
-                OVERTAKING_DISTANCE = 40;
+                ULTRASONIC_FRONT_RIGHT = 1;
+                INFRARED_FRONT_RIGHT = 2;
+                INFRARED_REAR_RIGHT = 3;
+                ULTRASONIC_FRONT_CENTER = 0;
+                OVERTAKING_DISTANCE = 44;
                 ultrathreshold = 40;
                 irthreshold = 28;
                 steeringLeft = -0.785;
-                steeringRight = 0.5;
+                steeringRight = 0.785;
             }
 
             double distanceToOvertake = 0; //use this value to see how far away the object to overtake is
@@ -386,8 +386,8 @@ namespace automotive {
             STATES states = InRightLane;
 
             // Overall state machine handler.
-	        while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
-		        LANEFOLLOW = true;
+            while ((getModuleStateAndWaitForRemainingTimeInTimeslice() == odcore::data::dmcp::ModuleStateMessage::RUNNING) && RUNNING) {
+                LANEFOLLOW = true;
                 bool has_next_frame = false;
 
                 //The following makes it possible to get the sensor readings
@@ -434,7 +434,7 @@ namespace automotive {
                     if (irfr > 0 && irfr < irthreshold) {
                         stateCounter = 1;
                         for(int i = 0; i < 80; i++) {
-                            m_vehicleControl.setSteeringWheelAngle(0.7);
+                            m_vehicleControl.setSteeringWheelAngle(steeringRight);
                              // Create container for finally sending the set values for the control algorithm.
                             Container c2(m_vehicleControl);
                             // Send container.
@@ -455,6 +455,21 @@ namespace automotive {
                     states = InChangeToRightLane;
 
                     cout << "IN CHANGE TO RIGHT LANE!" << "\n";
+                    /*while(irrr < 0 || irrr > irthreshold) {
+                        irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
+                        m_vehicleControl.setSteeringWheelAngle(0.7);
+                         // Create container for finally sending the set values for the control algorithm.
+                        Container c2(m_vehicleControl);
+                        // Send container.
+                        getConference().send(c2);
+                    }*/
+                    for(int i = 0; i < 260; i++) {
+                        m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                         // Create container for finally sending the set values for the control algorithm.
+                        Container c2(m_vehicleControl);
+                        // Send container.
+                        getConference().send(c2);
+                    }
 
                     m_vehicleControl.setSteeringWheelAngle(steeringRight);
                     m_vehicleControl.setSpeed(1.0);
@@ -471,9 +486,9 @@ namespace automotive {
                 Container c2(m_vehicleControl);
                 // Send container.
                 getConference().send(c2);
-	        }
+            }
             cout << "CLOSING" << "\n";
-	        return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
+            return odcore::data::dmcp::ModuleExitCodeMessage::OKAY;
         }
 
     }
