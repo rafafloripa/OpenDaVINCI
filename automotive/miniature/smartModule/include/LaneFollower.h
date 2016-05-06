@@ -105,8 +105,10 @@ namespace automotive {
                 double min_e;
 
                 double previousSteering;
+		bool sim;
 
                 automotive::VehicleControl m_vehicleControl;
+                int speedCar;
 
 	            virtual void setUp();
 

@@ -57,7 +57,9 @@ namespace automotive {
             max_e(0),
             min_e(0),
             previousSteering(0),
-            m_vehicleControl() {}
+            sim(false),
+            m_vehicleControl(),
+            speedCar(10) {}
 
         LaneFollower::~LaneFollower() {}
 
@@ -135,7 +137,8 @@ namespace automotive {
                     }
 
                     // Mirror the image.
-                    cvFlip(m_image, 0, -1);
+                    if (sim)
+                        cvFlip(m_image, 0, -1);
 
                     retVal = true;
                 }
@@ -278,11 +281,11 @@ namespace automotive {
                     if (fabs(e) > 1e-2) {
                         desiredSteering = y;
 
-                        if (desiredSteering > 25.0) {
-                            desiredSteering = 25.0;
+                        if (desiredSteering > 35.0) {
+                            desiredSteering = 35.0;
                         }
-                        if (desiredSteering < -25.0) {
-                            desiredSteering = -25.0;
+                        if (desiredSteering < -35.0) {
+                            desiredSteering = -35.0;
                         }
                     }
 
@@ -293,7 +296,7 @@ namespace automotive {
                         min_eSum = m_eSum;
                     }
                     // Go forward.
-                    m_vehicleControl.setSpeed(13);
+                    m_vehicleControl.setSpeed(speedCar);
                     if(LANEFOLLOW) {
                         m_vehicleControl.setSteeringWheelAngle(desiredSteering);
                     }
@@ -330,50 +333,59 @@ namespace automotive {
 
             //get values from the config file to determine if you're on the car or simulator
             //KeyValueConfiguration kv = getKeyValueConfiguration();
-            const bool sim = kv.getValue<uint32_t>("global.simulation"); //from the config file
+            sim = kv.getValue<uint32_t>("global.simulation"); //from the config file
 
-            int32_t ULTRASONIC_FRONT_RIGHT;
+            //int32_t ULTRASONIC_FRONT_RIGHT;
             int32_t INFRARED_FRONT_RIGHT;
             int32_t INFRARED_REAR_RIGHT;
             int32_t ULTRASONIC_FRONT_CENTER;
             double OVERTAKING_DISTANCE;
             //double steeringWheelAngle = 0;
 
-            double ultrathreshold = 0; //upper bound sensor reading to simulate not picking up an object
+            //double ultrathreshold = 0; //upper bound sensor reading to simulate not picking up an object
             double irthreshold = 0;
             double steeringLeft = 0;
             double steeringRight = 0;
+            int distaceThresholdTurn, distanceThresholdCorrect;
+            int startingDistance, currentDistance = 0;
 
             //sim value 1 = simulation, 0 is on the car
             if(sim == 1) { //todo: fine tune the different angles on the wheel and distances for overtake
-                ULTRASONIC_FRONT_RIGHT = 4;
+                //ULTRASONIC_FRONT_RIGHT = 4;
                 INFRARED_FRONT_RIGHT = 0;
                 INFRARED_REAR_RIGHT = 2;
                 ULTRASONIC_FRONT_CENTER = 3;
                 OVERTAKING_DISTANCE = 10; //for a steep left turn 6 seems to be good
-                ultrathreshold = 20;
+                //ultrathreshold = 20;
                 irthreshold = 10;
-                steeringLeft = -0.5;
+                steeringLeft = -0.4;
                 steeringRight = 0.3;
+                speedCar = 2;
+                distaceThresholdTurn = 8;
+                distanceThresholdCorrect = 3;
             }
             else {
                 //Remapped the values for the sensors
-                ULTRASONIC_FRONT_RIGHT = 1;
+                //ULTRASONIC_FRONT_RIGHT = 1;
                 INFRARED_FRONT_RIGHT = 2;
                 INFRARED_REAR_RIGHT = 3;
                 ULTRASONIC_FRONT_CENTER = 0;
-                OVERTAKING_DISTANCE = 44;
-                ultrathreshold = 40;
-                irthreshold = 28;
-                steeringLeft = -0.785;
-                steeringRight = 0.785;
+                OVERTAKING_DISTANCE = 50;
+                //ultrathreshold = 65;
+                irthreshold = 35;
+                steeringLeft = -1;
+                steeringRight = 1;
+                //speedCar = 10;
+                distaceThresholdTurn = 8;
+                distanceThresholdCorrect = 4;
             }
 
-            double distanceToOvertake = 0/* oldistanceToOvertake = 0*/; //use this value to see how far away the object to overtake is
-            double ultrafrontright, irfr, irrr;
-            //double oldultrafrontright = 0, oldirfr = 0/*, oldirrr = 0*/;
-            int stateCounter = 0;
-            enum STATES {InRightLane, InLeftLane, InChangeToLeftLane, InChangeToRightLane};
+            double distanceToOvertake = 0;
+            double /*ultrafrontright,*/ irfr, irrr;
+            bool alreadyFound = false;
+           
+            //int stateCounter = 0;
+            enum STATES {InRightLane, InChangeToLeftLane, InLeftLaneCorrect, InLeftLane, InChangeToRightLane, InRightLaneCorrect};
 
             STATES states = InRightLane;
 
@@ -390,10 +402,16 @@ namespace automotive {
 
                 //Sensors
                 distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
-                ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
+                cout << "distanceToOvertake: " << distanceToOvertake << endl; 
+                //ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
                 irfr = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
                 irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
-                //steeringWheelAngle = m_vehicleControl.getSteeringWheelAngle();
+
+                //Wheel Encoder
+                Container containerVehicleData = getKeyValueDataStore().get(automotive::VehicleData::ID());
+                VehicleData vd = containerVehicleData.getData<VehicleData> ();
+                currentDistance = vd.getAbsTraveledPath();
+
 
                 // Get the most recent available container for a SharedImage.
                 Container c = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
@@ -406,70 +424,132 @@ namespace automotive {
                 }
 
                 // Process the read image and calculate regular lane following set values for control algorithm.
-                if (true == has_next_frame) {
+                if (has_next_frame && LANEFOLLOW) {
                     processImage();
                 }
 
-                if ((states == InRightLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) || 
-                            (states == InChangeToLeftLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0)) {
+                if (states == InRightLane && distanceToOvertake <= OVERTAKING_DISTANCE && distanceToOvertake > 0) {
                     LANEFOLLOW = false;
                     states = InChangeToLeftLane;
+                    startingDistance = currentDistance;
 
                     m_vehicleControl.setSteeringWheelAngle(steeringLeft);
-                    m_vehicleControl.setSpeed(1.0); //on the car use speed 13, on sim use 1.0
-                    cout << "CHANGE TO LEFT" << "\n";
+                    m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
+                    cout << "CHANGE TO LEFT: " << distanceToOvertake << "\n";
 
                 } else if (states == InChangeToLeftLane) {
-
+                    //if (irrr > 0 && irrr < 30) {
+                    if (currentDistance >= startingDistance + distaceThresholdTurn) {
+                        states = InLeftLaneCorrect;
+                        startingDistance = currentDistance;
+                        cout << "To correct in left lane" << "\n";
+                        //LANEFOLLOW = true;
+                        m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                        m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(steeringLeft);
+                        m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
+                    }
                     //to know that we have actually seen the object on the side of the car
-                    if (irfr > 0 && irfr < irthreshold) {
-                        stateCounter = 1;
-                        for(int i = 0; i < 80; i++) {
-                            m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                    // if (irfr > 0 && irfr < irthreshold) {
+                    //     stateCounter = 1;
+                    //     for(int i = 0; i < 20; i++) {
+                    //         m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                    //          // Create container for finally sending the set values for the control algorithm.
+                    //         Container c2(m_vehicleControl);
+                    //         // Send container.
+                    //         getConference().send(c2);
+                    //     }
+                    // }
+
+                    // if (stateCounter == 1) {
+                    //     states = InLeftLane;
+                    //     cout << "IN LEFT LANE CHANGE" << "\n";
+                    //     stateCounter = 0;
+                    //     LANEFOLLOW = true;
+                    // }
+
+                } else if (states == InLeftLaneCorrect) {
+                    cout << "currentDistance: " << currentDistance << endl;
+                    if (currentDistance >= startingDistance + distanceThresholdCorrect) {
+                        states = InLeftLane;
+                        alreadyFound = false;
+                        cout << "Back to lanefollow in the left lane" << "\n";
+                        //LANEFOLLOW = true;
+                        m_vehicleControl.setSteeringWheelAngle(0);
+                        m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                        m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
+                    }
+                } 
+                else if (states == InLeftLane) {
+                    if ((irfr < 0 || irfr > irthreshold) /*&& (ultrafrontright < 0 || ultrafrontright > ultrathreshold) && alreadyFound*/) {
+                        //LANEFOLLOW = false;
+                        states = InChangeToRightLane;
+                        startingDistance = currentDistance;
+                        cout << "CHANGE TO RIGHT" << "\n";
+                        /*while(irrr < 0 || irrr > irthreshold) {
+                            irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
+                            m_vehicleControl.setSteeringWheelAngle(0.7);
                              // Create container for finally sending the set values for the control algorithm.
                             Container c2(m_vehicleControl);
                             // Send container.
                             getConference().send(c2);
-                        }
-                    }
+                        }*/
+                        // for(int i = 0; i < 20; i++) {
+                        //     m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                        //      // Create container for finally sending the set values for the control algorithm.
+                        //     Container c2(m_vehicleControl);
+                        //     // Send container.
+                        //     getConference().send(c2);
+                        // }
 
-                    if (stateCounter == 1) {
-                        states = InLeftLane;
-                        cout << "IN LEFT LANE CHANGE" << "\n";
-                        stateCounter = 0;
-                        LANEFOLLOW = true;
-                    }
-
-                } else if ((states == InLeftLane || states == InChangeToRightLane) &&
-                            ((irfr < 0 || irfr > irthreshold) && (ultrafrontright < 0 || ultrafrontright > ultrathreshold))) {
-                    LANEFOLLOW = false;
-                    states = InChangeToRightLane;
-
-                    cout << "IN CHANGE TO RIGHT LANE!" << "\n";
-                    /*while(irrr < 0 || irrr > irthreshold) {
-                        irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
-                        m_vehicleControl.setSteeringWheelAngle(0.7);
-                         // Create container for finally sending the set values for the control algorithm.
-                        Container c2(m_vehicleControl);
-                        // Send container.
-                        getConference().send(c2);
-                    }*/
-                    for(int i = 0; i < 260; i++) {
                         m_vehicleControl.setSteeringWheelAngle(steeringRight);
-                         // Create container for finally sending the set values for the control algorithm.
-                        Container c2(m_vehicleControl);
-                        // Send container.
-                        getConference().send(c2);
+                        m_vehicleControl.setSpeed(speedCar);
+                    } else if ((irfr > 0 && irrr > 0) && !alreadyFound) {
+                        alreadyFound = true;
+                    } else if ((irfr - irrr) > 2) {
+                        m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                        m_vehicleControl.setSpeed(speedCar);
+                    } else if ((irfr - irrr) < - 2) {
+                        m_vehicleControl.setSteeringWheelAngle(steeringLeft);
+                        m_vehicleControl.setSpeed(speedCar);
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(0);
+                        m_vehicleControl.setSpeed(speedCar);
                     }
-
-                    m_vehicleControl.setSteeringWheelAngle(steeringRight);
-                    m_vehicleControl.setSpeed(1.0);
-                    cout << "CHANGE TO RIGHT" << "\n";
 
                     //Until in right lane
-                    if (irrr < 0 || irrr > irthreshold) {
+                    // if (irrr < 0 || irrr > irthreshold) {
+                    //     m_vehicleControl.setSteeringWheelAngle(steeringLeft);
+                    //     m_vehicleControl.setSpeed(speedCar);
+                    //     states = InRightLane;
+                    //     LANEFOLLOW = true;
+                    //     cout << "Back to lane follow in right lane" << "\n";
+                    // }
+                } else if (states == InChangeToRightLane) {
+                    cout << "currentDistance: " << currentDistance << endl;
+                    if (currentDistance >= startingDistance + distaceThresholdTurn) {
+                        m_vehicleControl.setSteeringWheelAngle(steeringLeft);
+                        m_vehicleControl.setSpeed(speedCar);
                         states = InRightLane;
+                        //LANEFOLLOW = true;
+                        cout << "To Right Lane Correct" << "\n";
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(steeringRight);
+                        m_vehicleControl.setSpeed(speedCar);
+                    }
+                } else if (states == InRightLaneCorrect) {
+                    if (currentDistance >= startingDistance + distanceThresholdCorrect) {
+                        states = InRightLane;
+                        cout << "Back to lanefollow in the left lane" << "\n";
                         LANEFOLLOW = true;
+                        m_vehicleControl.setSteeringWheelAngle(0);
+                        m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
+                    } else {
+                        m_vehicleControl.setSteeringWheelAngle(steeringLeft);
+                        m_vehicleControl.setSpeed(speedCar); //on the car use speed 13, on sim use 1.0
                     }
                 }
 
