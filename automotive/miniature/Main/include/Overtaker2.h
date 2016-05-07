@@ -41,13 +41,14 @@ class Overtaker2 {
         void process(odcore::data::Container &containerSensorBoardData);
         double getDesiredSteering();
         double getDesiredSpeed();
-        bool isOvertaking();
         bool shouldOvertake(odcore::data::Container &containerSensorBoardData);
 
     private:
 
-        void moveState();
+        void changeToLeftLane();
+        void changeToRightLane();
         void checkSensors(odcore::data::Container &containerSensorBoardData);
+        bool shouldChangeToRight();
 
         bool sim;
         bool overtaking;
@@ -58,12 +59,16 @@ class Overtaker2 {
         int32_t INFRARED_REAR_RIGHT;
         int32_t ULTRASONIC_FRONT_CENTER;
         double OVERTAKING_DISTANCE;
+        double ultrathreshold;
+        double irthreshold;
+        double steeringLeft;
+        double steeringRight;
 
-        enum Move{FORWARD, TURN_LEFT, TURN_RIGHT, FOLLOW_LEFT, ADJUST_RIGHT, ADJUST_LEFT, STOP};
-        enum Object{SETUP, TRACK_OBJECT, FOUND, NOT_FOUND};
-
-        Move moving;
-        Object obj;
+        enum STATES{InRightLane, InLeftLane, InChangeToLeftLane, InChangeToRightLane};
+        STATES states;
+        double ultrafrontright, irfr, irrr;
+        bool LANEFOLLOW;
+        int steeringCounter;
 
         double trackWheelAngle; //debug use to check which angle the wheels are in
         //test values to be compared with sensor values

@@ -50,8 +50,8 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Super::body() {
         
         Container containerSensor = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
 
-        if(overtaker.isOvertaking() || overtaker.shouldOvertake(containerSensor)) {
-
+        if(overtaker.shouldOvertake(containerSensor)) {
+            cout << "SHOULD OVERTAKE" << endl;
             overtaker.process(containerSensor);
 
             vehicleControl.setSpeed(overtaker.getDesiredSpeed());

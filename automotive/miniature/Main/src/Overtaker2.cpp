@@ -21,29 +21,42 @@ using namespace automotive::miniature;
 
 Overtaker2::Overtaker2(bool simulation) :
     sim(simulation),
-    overtaking(true),
+    overtaking(false),
     hasOvertaken(false),
 
-    ULTRASONIC_FRONT_RIGHT(4),
-    INFRARED_FRONT_RIGHT(0),
-    INFRARED_REAR_RIGHT(2),
-    ULTRASONIC_FRONT_CENTER(3),
-    OVERTAKING_DISTANCE(15),
+    // Values for the real car
+    ULTRASONIC_FRONT_RIGHT(1),
+    INFRARED_FRONT_RIGHT(2),
+    INFRARED_REAR_RIGHT(3),
+    ULTRASONIC_FRONT_CENTER(0),
+    OVERTAKING_DISTANCE(44),
+    ultrathreshold(40),
+    irthreshold(28),
+    steeringLeft(-0.785),
+    steeringRight(0.785),
+    states(InRightLane),
+    ultrafrontright(0),
+    irfr(0),
+    irrr(0),
+    LANEFOLLOW(false),
+    steeringCounter(0),
 
-    moving(FORWARD),
-    obj(SETUP),
     trackWheelAngle(0),
     distanceToOvertake(0),
     steering(0),
-    speed(1) {
+    speed(2) {
 
         //simulation value 1 = simulation, 0 is on the car
-        if(simulation) { //todo: fine tune the different angles on the wheel and distances for overtake
+        if(simulation) { 
             ULTRASONIC_FRONT_RIGHT = 4;
             INFRARED_FRONT_RIGHT = 0;
             INFRARED_REAR_RIGHT = 2;
             ULTRASONIC_FRONT_CENTER = 3;
-            OVERTAKING_DISTANCE = 6; //for a steep left turn 6 seems to be good
+            OVERTAKING_DISTANCE = 7; //for a steep left turn 6 seems to be good
+            ultrathreshold = 20;
+            irthreshold = 10;
+            steeringLeft = -1.0;
+            steeringRight = 0.3;
         }
     
     }
@@ -51,8 +64,15 @@ Overtaker2::Overtaker2(bool simulation) :
 Overtaker2::~Overtaker2() {}
 
 void Overtaker2::process(Container &containerSensorBoardData) {
+    
     checkSensors(containerSensorBoardData);
-    moveState();
+    
+    if(states == InChangeToRightLane) {
+        changeToRightLane();
+    } else {
+        changeToLeftLane();
+    }
+
 }
 
 double Overtaker2::getDesiredSteering() {
@@ -63,156 +83,97 @@ double Overtaker2::getDesiredSpeed() {
     return speed;
 }
 
-bool Overtaker2::isOvertaking() {
-    return overtaking;
-}
-
-bool Overtaker2::shouldOvertake(Container &containerSensorBoardData) {
-
-    SensorBoardData sbd = containerSensorBoardData.getData<automotive::miniature::SensorBoardData> ();
-
-    if(sbd.getValueForKey_MapOfDistances(3) > 0 && sbd.getValueForKey_MapOfDistances(3) < 16) {
-        cout << "Should overtake!!!!!!!" << endl;
+bool Overtaker2::shouldChangeToRight() {
+    
+    if(irfr <= 0 && ultrafrontright < 0) {
         return true;
     }
-    
+
     return false;
 
 }
 
-void Overtaker2::moveState() {
+bool Overtaker2::shouldOvertake(Container &containerSensorBoardData) {
 
-    //moving scheme
-    if(moving == FORWARD) {
-        // Go FORWARD
-        steering = 0;
+    checkSensors(containerSensorBoardData);
 
-        //onLeftLane = false;
-    }
-    else if(moving == TURN_LEFT) {
-        steering = -0.5; //sharp left turn to avoid object
-    }
-    else if(moving == TURN_RIGHT) {
-        steering = 0.5; //sharp right turn
-    }
+    if(states != InLeftLane) {
+        
+        if(overtaking) {
+            return true;
+        }
 
-    //TODO MAYBE CHANGE THIS INTO A CALL TO LANEFOLLOWING ON LEFT LANE
-    //OR "OVERRIDE" LANEFOLLOW TO KEEP OBJECT ON SPECIFIC LENGTH FROM VEHICLE UNTIL OVERTAKE IS DONE
-    else if(moving == FOLLOW_LEFT) {
-        steering = 0;
-        //onLeftLane = true;
-    }
-    else if(moving == STOP) {
-        steering = 0;
-        speed = 0;
-    }
-    //less steep right turn to get back into the right lane
-    else if(moving == ADJUST_RIGHT) {
-        steering = 0.5;
-    }
-    else if(moving == ADJUST_LEFT) {
-        steering = -0.5;
-        hasOvertaken = true;
+        if(distanceToOvertake > 0 && distanceToOvertake < OVERTAKING_DISTANCE) {
+            overtaking = true;
+            return true;
+        }
+    } else {
+        if(overtaking && shouldChangeToRight()) {
+            states = InChangeToRightLane;
+            return true;
+        }
     }
 
-    cout << "" << moving << endl;
+    return false;
 
 }
 
+void Overtaker2::changeToRightLane() {
 
-// This method will do the main data processing job.
+    if(states == InChangeToRightLane) {
+
+        if(irfr < 0 && irrr < 0) {
+            steering = 0;
+            overtaking = false;
+            states = InRightLane;
+        } else {
+            steering = steeringRight;
+        }
+
+    }
+
+}
+
+void Overtaker2::changeToLeftLane() {
+
+    if (states == InRightLane) {                       // Initial state
+
+        if(distanceToOvertake > OVERTAKING_DISTANCE && steeringCounter > 20) { // When the front US-sensor does not see the overtaking obsticle(the car has turned enough)
+                                                                               // steeringCounter > 20 makes sure that the car turns left for at least "a ẅhile", in order to prevent the US to stop seeing the car to the right
+            states = InChangeToLeftLane;
+            steeringCounter = 0;
+        
+        }
+
+        steering = steeringLeft;
+        steeringCounter++;
+
+    } else if (states == InChangeToLeftLane) { // When the car has turned left and should position itself in the leftlane
+
+        if(ultrafrontright > 0 || steeringCounter < 20) { // Go forward until the ultra sound front right sensor does not see the obsticle anymore
+            steering = 0;
+            steeringCounter++;
+        } else {
+            steering = steeringRight;
+        }
+
+        if((irfr - irrr) > 0 && (irfr - irrr) < 2) { // When the infrared sensor on the side of the car gives(almost) the same value, the car is going straight
+            states = InLeftLane;
+            steeringCounter = 0;
+        }
+
+    }
+
+}
+
 void Overtaker2::checkSensors(Container &containerSensorBoardData) {
-    //get values from the config file to determine if you're on the car or simulator
-    //KeyValueConfiguration kv = getKeyValueConfiguration();
-    //const bool sim = kv.getValue<uint32_t>("global.simulation") == 1; //from the config file
 
-
-    //comparison values for sensors
-    /*
-    
-    const double HEADING_PARALLEL = 0.04;
-*/
-
-    //The following makes it possible to get the sensor readings
-    // 2. Get most recent sensor board data: comes from automotive/miniature
-    //Container containerSensorBoardData = getKeyValueDataStore().get(automotive::miniature::SensorBoardData::ID());
     SensorBoardData sbd = containerSensorBoardData.getData<SensorBoardData> ();
 
+    //Sensors
     distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
+    ultrafrontright = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT);
+    irfr = sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT);
+    irrr = sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT);
 
-    //Calculations for overtaking
-    //looks for an object to overtake
-    if(obj == SETUP) {
-        
-        //if an object is discovered
-        if(distanceToOvertake > 0 && distanceToOvertake < 15) { // 30 real life?
-            obj = FOUND;
-            cout << "found " << endl;
-            
-        }   
-    }
-
-    else if(obj == TRACK_OBJECT) {
-        //here we can check if an object is suitable for overtaking before moving to overtaking state
-        if(distanceToOvertake <= OVERTAKING_DISTANCE) {
-            obj = FOUND;
-        }
-    }
-    //if an object is found start the overtaking process
-    else if(obj == FOUND) {
-        
-        //distanceToOvertake = sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER);
-        //TODO SIMPLIFY THIS TO BOTH IR SENSORS READ A VALUE > 0
-        if((sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 &&
-                sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 10 &&
-                sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > 0 &&
-                sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 10)) {
-            moving = FORWARD;
-            
-        }
-
-        //start overtaking object
-        if(sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) <= OVERTAKING_DISTANCE || 
-                sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) > 0) {
-            moving = TURN_LEFT;
-            
-        }
-        //if object is recognised in rear-R IR && nothing in front-R IR sensor start turning right
-        if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0 && 
-                sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 0) {
-            moving = TURN_RIGHT;
-            
-        }
-        
-        
-        //if front IR > back right IR and back has a reading adjust to the right right
-        if(sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) > sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) && 
-                sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) > 0) {
-            moving = ADJUST_RIGHT;
-        }
-        //TODO: ADD AN ADJUST_LEFT FUNCTION HERE for the case of IRRR > IRFR && IRFR has reading
-
-
-        //no sensors have readings go back to forward and look for a new object to overtake (lanefollow)
-        else if(sbd.getValueForKey_MapOfDistances(INFRARED_REAR_RIGHT) < 0 && 
-                sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_CENTER) < 0 &&
-                sbd.getValueForKey_MapOfDistances(ULTRASONIC_FRONT_RIGHT) < 0 &&
-                sbd.getValueForKey_MapOfDistances(INFRARED_FRONT_RIGHT) < 0) { //distanceToOvertake > OVERTAKING_DISTANCE 
-            
-            moving = FORWARD;
-            if(hasOvertaken)
-                overtaking = false;
-            //obj = SETUP;
-        }
-    }
-  
-  /*      //prints the current steeringwheel angle for debug purposes
-        trackWheelAngle = vc.getSteeringWheelAngle();
-        cout << trackWheelAngle << endl;
-
-        // Create container for finally sending the data.
-        Container c(vc);
-        // Send container.
-        getConference().send(c);
-*/
 }
