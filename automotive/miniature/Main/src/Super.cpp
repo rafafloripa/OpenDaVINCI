@@ -38,6 +38,7 @@ void Super::tearDown() {
 odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Super::body() { 
 
     VehicleControl vehicleControl;
+    vehicleControl.setSpeed(3.0);
 
     KeyValueConfiguration kv = getKeyValueConfiguration();
     bool debug = true;//kv.getValue<int32_t> ("lanefollower.debug") == 1;
@@ -54,14 +55,14 @@ odcore::data::dmcp::ModuleExitCodeMessage::ModuleExitCode Super::body() {
             cout << "SHOULD OVERTAKE" << endl;
             overtaker.process(containerSensor);
 
-            vehicleControl.setSpeed(overtaker.getDesiredSpeed());
+         //   vehicleControl.setSpeed(overtaker.getDesiredSpeed());
             vehicleControl.setSteeringWheelAngle(overtaker.getDesiredSteering());
 
         } else {
             Container container = getKeyValueDataStore().get(odcore::data::image::SharedImage::ID());
             laneFollower.process(container);
             
-            vehicleControl.setSpeed(laneFollower.getDesiredSpeed());
+           // vehicleControl.setSpeed(laneFollower.getDesiredSpeed());
             vehicleControl.setSteeringWheelAngle(laneFollower.getDesiredSteering());
         }
 

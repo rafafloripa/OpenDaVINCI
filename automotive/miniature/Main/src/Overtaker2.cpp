@@ -85,7 +85,7 @@ double Overtaker2::getDesiredSpeed() {
 
 bool Overtaker2::shouldChangeToRight() {
     
-    if(irfr <= 0 && ultrafrontright < 0) {
+    if(irfr <= 0 && ultrafrontright <= 0) {
         return true;
     }
 
@@ -122,13 +122,16 @@ void Overtaker2::changeToRightLane() {
 
     if(states == InChangeToRightLane) {
 
-        if(irfr < 0 && irrr < 0) {
+        if(irfr < 0 && irrr < 0 && steeringCounter > 40) {
             steering = 0;
             overtaking = false;
             states = InRightLane;
+            steeringCounter = 0;
         } else {
             steering = steeringRight;
         }
+
+        steeringCounter++;
 
     }
 
@@ -138,15 +141,16 @@ void Overtaker2::changeToLeftLane() {
 
     if (states == InRightLane) {                       // Initial state
 
-        if(distanceToOvertake > OVERTAKING_DISTANCE && steeringCounter > 20) { // When the front US-sensor does not see the overtaking obsticle(the car has turned enough)
+        if((distanceToOvertake > OVERTAKING_DISTANCE || distanceToOvertake < 0) && ultrafrontright > 0) { // When the front US-sensor does not see the overtaking obsticle(the car has turned enough)
+                    //  ((distanceToOvertake > OVERTAKING_DISTANCE || distanceToOvertake < 0) && ultrafrontright > 0)
                                                                                // steeringCounter > 20 makes sure that the car turns left for at least "a ẅhile", in order to prevent the US to stop seeing the car to the right
             states = InChangeToLeftLane;
-            steeringCounter = 0;
+            //steeringCounter = 0;
         
         }
 
         steering = steeringLeft;
-        steeringCounter++;
+        //steeringCounter++;
 
     } else if (states == InChangeToLeftLane) { // When the car has turned left and should position itself in the leftlane
 
