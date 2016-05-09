@@ -13,11 +13,9 @@
 
 using namespace std;
 using namespace odcore::base;
-//using namespace odcore::base::module;
 using namespace odcore::data;
 using namespace automotive;
 using namespace automotive::miniature;
-//using namespace odtools::recorder;
 
 Overtaker2::Overtaker2(bool simulation) :
     sim(simulation),
@@ -52,7 +50,7 @@ Overtaker2::Overtaker2(bool simulation) :
             INFRARED_FRONT_RIGHT = 0;
             INFRARED_REAR_RIGHT = 2;
             ULTRASONIC_FRONT_CENTER = 3;
-            OVERTAKING_DISTANCE = 7; //for a steep left turn 6 seems to be good
+            OVERTAKING_DISTANCE = 8; //for a steep left turn 6 seems to be good
             ultrathreshold = 20;
             irthreshold = 10;
             steeringLeft = -1.0;
