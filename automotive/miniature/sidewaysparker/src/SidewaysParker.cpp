@@ -68,8 +68,8 @@ namespace automotive {
         double front=0;
         bool stopped=0;
                 
-        // Varialbes for parking evaluation
-        double MIN_PARKING = 6.5;            // Simulator value
+        // Variables for parking evaluation
+        double MIN_PARKING = 6.9;            // Simulator value
         double REV_DISTANCE = 1.2;           // Simulator value
         double REV_BUFFER = 2.2;             // Simulator value
         double FINISH_BUFFER = 3.0;          // Simulator value
