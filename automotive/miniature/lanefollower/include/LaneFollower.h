@@ -30,8 +30,6 @@
 #include "automotivedata/GeneratedHeaders_AutomotiveData.h"
 #include "opendavinci/GeneratedHeaders_OpenDaVINCI.h"
 
-//#include "../../overtaker2/src/Overtaker2.cpp"
-
 namespace automotive {
     namespace miniature {
 
@@ -39,8 +37,8 @@ namespace automotive {
 
         /**
          * This class is an exemplary skeleton for processing video data.
-         */						//odcore::base::module::TimeTriggeredConferenceClientModule 
-        class LaneFollower : public odcore::base::module::TimeTriggeredConferenceClientModule {
+         */
+        class LaneFollower: public odcore::base::module::TimeTriggeredConferenceClientModule {
             private:
 	            /**
 	             * "Forbidden" copy constructor. Goal: The compiler should warn
@@ -88,6 +86,7 @@ namespace automotive {
 	            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 	            IplImage *m_image;
                 bool m_debug;
+                bool m_sim;
                 CvFont m_font;
 
                 odcore::data::TimeStamp m_previousTime;
@@ -107,6 +106,8 @@ namespace automotive {
 	            virtual void setUp();
 
 	            virtual void tearDown();
+
+	            void birdEyeTransform();
 
 	            void DetectLane();
 
