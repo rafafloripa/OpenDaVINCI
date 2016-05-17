@@ -86,17 +86,30 @@ namespace automotive {
 	            std::shared_ptr<odcore::wrapper::SharedMemory> m_sharedImageMemory;
 	            IplImage *m_image;
                 bool m_debug;
+                bool m_sim;
                 CvFont m_font;
 
                 odcore::data::TimeStamp m_previousTime;
                 double m_eSum;
                 double m_eOld;
 
+                double max_eSum;
+                double min_eSum;
+
+                double max_e;
+                double min_e;
+
+                double previousSteering;
+
                 automotive::VehicleControl m_vehicleControl;
 
 	            virtual void setUp();
 
 	            virtual void tearDown();
+
+	            void birdEyeTransform();
+
+	            void DetectLane();
 
                 void processImage();
         };

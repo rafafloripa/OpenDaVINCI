@@ -16,9 +16,10 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-#ifndef SerialReceiveBytes_H_
-#define SerialReceiveBytes_H_
+#ifndef SerialConnection_H_
+#define SerialConnection_H_
 
+#include <map>
 #include "opendavinci/odcore/io/StringListener.h"
 #include <opendavinci/odcore/wrapper/SerialPort.h>
 #include <opendavinci/odcore/wrapper/SerialPortFactory.h>
@@ -29,22 +30,22 @@ namespace automotive {
         using namespace std;
         using namespace odcore;
         using namespace odcore::wrapper;
-		// This class will handle the bytes received via a serial link.
-		class SerialReceiveBytes : public odcore::io::StringListener {
-		    // Your class needs to implement the method void nextString(const std::string &s).
+		class SerialConnection : public odcore::io::StringListener {
 		public:
-			SerialReceiveBytes(string Port, unsigned int BAUD_RATE);
-		    virtual void nextString(const std::string &s);
+			SerialConnection(string Port, unsigned int BAUD_RATE);
+		    virtual void nextString(const string &s);
 		    virtual void setUp();
 		    virtual void tearDown();
-		    std::string getData();
+		    void sendData(const string &s);
+		    string getBuffer();
 		private:
-			string current;
-			std::shared_ptr<SerialPort> serial;
+			string buffer;
+			shared_ptr<SerialPort> serial;
 			const string SERIAL_PORT;
             const uint32_t BAUD_RATE;
+            bool running;
 		};
 	}
 }
 
-#endif /*SerialReceiveBytes_H_*/
+#endif /*SerialConnection_H_*/
